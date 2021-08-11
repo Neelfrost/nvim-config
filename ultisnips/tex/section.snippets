@@ -1,0 +1,57 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: section.snippets
+
+# --------------------------- Section environments --------------------------- #
+
+snippet part "Part" b
+\part{${1:${VISUAL:Part}}}%
+$0
+endsnippet
+
+snippet chap "Chapter" b
+\chapter{${1:${VISUAL:Chapter}}}%
+$0
+endsnippet
+
+snippet sec "Section" b
+\section{${1:${VISUAL:Section}}}%
+$0
+endsnippet
+
+snippet sec* "Section" b
+\section*{${1:${VISUAL:Section}}}%
+${0}
+endsnippet
+
+snippet sub "Subsection" b
+\subsection{${1:${VISUAL:Subsection}}}%
+$0
+endsnippet
+
+snippet sub* "Subsection" b
+\subsection*{${1:${VISUAL:Subsection}}}%
+${0}
+endsnippet
+
+snippet ssub "Subsubsection" b
+\subsubsection{${1:${VISUAL:Subsubsection}}}%
+$0
+endsnippet
+
+snippet ssub* "Subsubsection" b
+\subsubsection*{${1:${VISUAL:Subsubsection}}}%
+${0}
+endsnippet
+
+snippet par "Paragraph" b
+\paragraph{${1:${VISUAL:Paragraph}}}%
+$0
+endsnippet
+
+snippet subp "Subparagraph" b
+\subparagraph{${1:${VISUAL:Subparagraph}}}%
+$0
+endsnippet
+
+# vim:ft=snippets:

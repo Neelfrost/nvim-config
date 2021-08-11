@@ -1,0 +1,448 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: math.snippets
+
+# --------------------------------- Contexts --------------------------------- #
+
+global !p
+def math():
+    return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+
+def comment():
+	return vim.eval('vimtex#syntax#in_comment()') == '1'
+
+def env(name):
+	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+	return x != '0' and x != '0'
+endglobal
+
+# -------------------------------- Math fonts -------------------------------- #
+
+snippet mcal "Caligraphy" i
+\mathcal{${1:${VISUAL}}}
+endsnippet
+
+snippet mrm "Roman" i
+\mathrm{${1:${VISUAL}}}
+endsnippet
+
+snippet mit "Italics" i
+\mathit{${1:${VISUAL}}}
+endsnippet
+
+snippet mfr "Fraktur" i
+\mathfrak{${1:${VISUAL}}}
+endsnippet
+
+snippet mbb "Blackboard bold" i
+\mathbb{${1:${VISUAL}}}
+endsnippet
+
+priority 10
+snippet msc "Script" i
+\mathscr{${1:${VISUAL}}}
+endsnippet
+
+priority 10
+snippet mbf "Bold" i
+\mathbf{${1:${VISUAL}}}
+endsnippet
+
+# ----------------------------- Math environments ---------------------------- #
+
+snippet ilc "Chemmacros environment" wA
+\ch{${1:${VISUAL}}}$0
+endsnippet
+
+snippet ilm "Inline math environment" wA
+$ ${1:${VISUAL}} $$0
+endsnippet
+
+snippet beq "Equation environment" b
+\begin{equation}
+	${0:${VISUAL}}
+\end{equation}
+endsnippet
+
+snippet bal "Align environment" b
+\begin{align}
+	${0:${VISUAL}}
+\end{align}
+endsnippet
+
+snippet bga "Gather environment" b
+\begin{gather}
+	${0:${VISUAL}}
+\end{gather}
+endsnippet
+
+# ---------------------- Sized brackets and parenthesis ---------------------- #
+
+context "math()"
+snippet @) "long (" iA
+\left( ${1:${VISUAL}} \right)
+endsnippet
+
+context "math()"
+snippet @} "long {" iA
+\left{ ${1:${VISUAL}} \right}
+endsnippet
+
+context "math()"
+snippet @] "long [" iA
+\left[ ${1:${VISUAL}} \right]
+endsnippet
+
+snippet \} "Chemmacros escaped {}" iA
+\\{${1:${VISUAL}}\\}
+endsnippet
+
+# ------------------------------ Math functions ------------------------------ #
+
+# Trig, log functions
+context "math()"
+snippet '(?<!\\)(sin|cos|tan|cosec|sec|cot|ln|log|exp)' "Trig, log functions" wrA
+\\`!p snip.rv = match.group(1) + ' '`
+endsnippet
+
+# Fractions
+context "math()"
+snippet frac "Math fraction" iA
+\frac{ ${1:Num} }{ ${2:Den} } $0
+endsnippet
+
+context "math()"
+snippet drac "Display fraction" iA
+\dfrac{ ${1:Num} }{ ${2:Den} } $0
+endsnippet
+
+# Sub and Superscripts
+context "math()"
+snippet < "Subscript" i
+_{$1}$0
+endsnippet
+
+context "math()"
+snippet > "Superscript" i
+^{$1}$0
+endsnippet
+
+context "math()"
+snippet '(\w)<(\S+) ' "Auto subscript" rA
+`!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
+endsnippet
+
+context "math()"
+snippet '(\w)>(\S+) ' "Auto superscript" rA
+`!p snip.rv = match.group(1)`^{`!p snip.rv = match.group(2)`}
+endsnippet
+
+# Math environment text
+context "math()"
+snippet ;t "Text in math environment" iA
+\text{${1:${VISUAL:Text}}}$0
+endsnippet
+
+context "math()"
+snippet ;q "Text between quads" iA
+\quad\text{${1:${VISUAL:Text}}}\quad$0
+endsnippet
+
+context "math()"
+snippet ;bt "Before text" iA
+\beforetext{${1:${VISUAL:Text}}}$0
+endsnippet
+
+context "math()"
+snippet ;it "Intertext" iA
+\intertext{${1:${VISUAL:Text}}}$0
+endsnippet
+
+# Aligned =
+context "env('align')"
+snippet ;= "&=" wA
+&= $0
+endsnippet
+
+# Reaction arrows
+context "env('gather')"
+# arrow
+snippet ;a "Arrow ->" wA
+-> $0
+endsnippet
+
+context "env('align')"
+snippet ;a "Arrow aligned &->" wA
+&-> $0
+endsnippet
+
+context "env('gather')"
+# equilibrium arrow
+snippet ;e "Equilibrium <=>" wA
+<=> $0
+endsnippet
+
+context "env('align')"
+snippet ;e "Equilibrium aligned &<=>" wA
+&<=> $0
+endsnippet
+
+# ------------------------------- Math symbols ------------------------------- #
+
+context "math()"
+snippet =e "equivalent" wA
+\equiv $0
+endsnippet
+
+context "math()"
+snippet =a "approx" wA
+\approx $0
+endsnippet
+
+context "math()"
+snippet =p "proportional" wA
+\propto $0
+endsnippet
+
+context "math()"
+snippet to "->" wA
+\to $0
+endsnippet
+
+context "math()"
+snippet ;x "times" iA
+\times $0
+endsnippet
+
+snippet ;cl "Chemical reaction with underset" iA
+!( ${1:${VISUAL:Bottom}} )( ${2:${VISUAL:Top}} ) $0
+endsnippet
+
+context "math()"
+snippet ;us "underset" iA
+\underset{${1:${VISUAL:Bottom}}}{${2:${VISUAL:Top}}} $0
+endsnippet
+
+context "math()"
+snippet @2 "sqrt" iA
+\sqrt{${1:${VISUAL}}} $0
+endsnippet
+
+context "math()"
+snippet @8 "infinity" iA
+\infty $0
+endsnippet
+
+context "math()"
+snippet @6 "partial" iA
+\partial $0
+endsnippet
+
+context "math()"
+snippet @@ "circ" iA
+\circ $0
+endsnippet
+
+context "math()"
+snippet @. "cdot" iA
+\cdot $0
+endsnippet
+
+context "math()"
+snippet ... "cdot" iA
+\cdots $0
+endsnippet
+
+# ------------------------------ Greek alphabets ----------------------------- #
+
+context "math()"
+snippet @a "alpha" iA
+\alpha
+endsnippet
+
+context "math()"
+snippet @b "beta" iA
+\beta
+endsnippet
+
+context "math()"
+snippet @c "chi" iA
+\chi
+endsnippet
+
+context "math()"
+snippet @d "delta" iA
+\delta
+endsnippet
+
+context "math()"
+snippet @e "epsilon" iA
+\epsilon
+endsnippet
+
+context "math()"
+snippet @ve "varepsilon" iA
+\varepsilon
+endsnippet
+
+context "math()"
+snippet @f "phi" iA
+\phi
+endsnippet
+
+context "math()"
+snippet @vf "varphi" iA
+\varphi
+endsnippet
+
+context "math()"
+snippet @g "gamma" iA
+\gamma
+endsnippet
+
+context "math()"
+snippet @h "eta" iA
+\eta
+endsnippet
+
+context "math()"
+snippet @i "iota" iA
+\iota
+endsnippet
+
+context "math()"
+snippet @k "kappa" iA
+\kappa
+endsnippet
+
+context "math()"
+snippet @l "lambda" iA
+\lambda
+endsnippet
+
+context "math()"
+snippet @m "mu" iA
+\mu
+endsnippet
+
+context "math()"
+snippet @n "nu" iA
+\nu
+endsnippet
+
+context "math()"
+snippet @p "pi" iA
+\pi
+endsnippet
+
+context "math()"
+snippet @q "theta" iA
+\theta
+endsnippet
+
+context "math()"
+snippet @vq "vartheta" iA
+\vartheta
+endsnippet
+
+context "math()"
+snippet @r "rho" iA
+\rho
+endsnippet
+
+context "math()"
+snippet @s "sigma" iA
+\sigma
+endsnippet
+
+context "math()"
+snippet @vs "varsigma" iA
+\varsigma
+endsnippet
+
+context "math()"
+snippet @t "tau" iA
+\tau
+endsnippet
+
+context "math()"
+snippet @u "upsilon" iA
+\upsilon
+endsnippet
+
+context "math()"
+snippet @o "omega" iA
+\omega
+endsnippet
+
+context "math()"
+snippet @& "wedge" iA
+\wedge
+endsnippet
+
+context "math()"
+snippet @x "xi" iA
+\xi
+endsnippet
+
+context "math()"
+snippet @y "psi" iA
+\psi
+endsnippet
+
+context "math()"
+snippet @z "zeta" iA
+\zeta
+endsnippet
+
+context "math()"
+snippet @D "Delta" iA
+\Delta
+endsnippet
+
+context "math()"
+snippet @F "Phi" iA
+\Phi
+endsnippet
+
+context "math()"
+snippet @G "Gamma" iA
+\Gamma
+endsnippet
+
+context "math()"
+snippet @Q "Theta" iA
+\Theta
+endsnippet
+
+context "math()"
+snippet @L "Lambda" iA
+\Lambda
+endsnippet
+
+context "math()"
+snippet @X "Xi" iA
+\Xi
+endsnippet
+
+context "math()"
+snippet @Y "Psi" iA
+\Psi
+endsnippet
+
+context "math()"
+snippet @S "Sigma" iA
+\Sigma
+endsnippet
+
+context "math()"
+snippet @U "Upsilon" iA
+\Upsilon
+endsnippet
+
+context "math()"
+snippet @W "Omega" iA
+\Omega
+endsnippet
+
+# vim:ft=snippets:

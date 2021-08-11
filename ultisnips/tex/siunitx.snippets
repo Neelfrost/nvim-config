@@ -1,0 +1,62 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: siunitx.snippets
+
+# ---------------------------------- siunitx --------------------------------- #
+
+# Requires siunitx package
+
+# Automatical angle
+# Usage: <num>angle -> \ang{<num>}
+snippet '(\d+\.\d+|\d+)ang' "Angle" rA
+\ang{`!p snip.rv = match.group(1)`}$0
+endsnippet
+
+# Automatic number
+# Usage: <num>num -> \num{<num>}, works with scientific notation eg., e5num -> \num{e5}
+snippet '(\d+\.\d+|\d+|[\w\d]+)num' "Number" rA
+\num{`!p snip.rv = match.group(1)`}$0
+endsnippet
+
+# Automatic number range
+# Usage: <num>-<num>num -> \numrange{<num>}
+priority 10
+snippet '(\d+\.\d+|\d+|[\w\d]+)-(\d+\.\d+|\d+|[\w\d]+)num' "Number range" rA
+\numrange{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}$0
+endsnippet
+
+# SI unit
+snippet si "SI-Unit" w
+\SI{${1:${VISUAL}}}{${2:Unit}}$0
+endsnippet
+
+# SI range
+snippet sr "SI-Range" w
+\SIrange{$1}{$2}{${3:Unit}}$0
+endsnippet
+
+# Automatic si unit
+# Usage: visual select a number, press tab, type asi
+snippet asi "Auto SI-Unit" wA
+\SI{`!p snip.rv = re.search("(\d+\.\d+|\d+)", snip.v.text).group()`}{${1:Unit}}$0
+endsnippet
+
+# Automatic si range
+# Usage: visual select a number range (eg., 10-12 or 10 to 3), press tab, type asr
+snippet asr "Auto SI-Range" wA
+\SIrange{`!p snip.rv = re.search("(\d+\.\d+|\d+).+?(\d+\.\d+|\d+)", snip.v.text).group(1)`}{`!p snip.rv = re.search("(\d+\.\d+|\d+).+?(\d+\.\d+|\d+)", snip.v.text).group(2)`}{${1:Unit}}$0
+endsnippet
+
+# Degree celsius
+# Usage: <num>dc -> \SI{<num>}{\celsius}
+snippet '(\d+\.\d+|\d+|[\w\d]+);dc' "Degree celsius" rwA
+\SI{`!p snip.rv = match.group(1)`}{\celsius}$0
+endsnippet
+
+# Usage: visual select number, press tab, type ;dc
+priority 10
+snippet adc "Degree celsius" wA
+\SI{`!p snip.rv = re.search("(\d+\.\d+|\d+)", snip.v.text).group()`}{\celsius}$0
+endsnippet
+
+# vim:ft=snippets:

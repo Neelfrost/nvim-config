@@ -1,0 +1,47 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: preamble.snippets
+
+# --------------------------------- Preamble --------------------------------- #
+
+global !p
+def get_tex_prog(letter):
+	tex_prog = ""
+	if letter == "l":
+		tex_prog = "lua"
+	elif letter == "x":
+		tex_prog = "xe"
+	elif letter == "p":
+		tex_prog = "pdf"
+	return tex_prog
+endglobal
+
+# Inserts tex-prog and encoding
+# Usage: x-texprog: where x corresponds to first inital of texprog
+snippet '(\w)-texprog' "Set tex program" br
+`!p snip.rv = "%!TEX TS-program = " + get_tex_prog(match.group(0)[0]) + "latex"`
+%!TEX encoding = UTF-8 Unicode
+$0
+endsnippet
+
+snippet usep "Usepackage" b
+\usepackage[${1:Options}]{${2:Package}}
+$0
+endsnippet
+
+snippet doc "Document class" b
+\documentclass[${1:Options}]{${2:Class}}
+$0
+endsnippet
+
+snippet input "Input" b
+\input{${1:File}}
+$0
+endsnippet
+
+snippet include "Include" b
+\include{${1:File}}
+$0
+endsnippet
+
+# vim:ft=snippets:
