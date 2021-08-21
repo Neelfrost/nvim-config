@@ -2,7 +2,7 @@ require("hop").setup({})
 
 local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "s", "<cmd>HopChar2<CR>", opts)
-vim.api.nvim_set_keymap("n", "<Leader>f", "<cmd>HopChar1<CR>", opts)
+vim.api.nvim_set_keymap("n", "f", "<cmd>HopChar1<CR>", opts)
 vim.api.nvim_set_keymap(
 	"v",
 	"f",

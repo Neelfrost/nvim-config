@@ -119,7 +119,7 @@ function M.LspProgress()
 	}
 	local ms = vim.loop.hrtime() / 1000000
 	local frame = math.floor(ms / 120) % #spinners
-	return table.concat(status, " | ") .. " " .. spinners[frame + 1]
+	return vim.fn.winwidth(0) > 70 and table.concat(status, " | ") .. " " .. spinners[frame + 1] or ""
 end
 
 return M

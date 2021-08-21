@@ -29,5 +29,4 @@
 -- })
 
 -- jiangmiao/auto-pairs
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("i", "<C-l>", "<cmd>call AutoPairsJump()<CR>", opts)
+vim.g.AutoPairsShortcutJump = "<C-l>"

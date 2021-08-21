@@ -22,13 +22,6 @@ vim.g.dashboard_custom_footer = {
 	plugins_count .. " plugins loaded",
 }
 
--- Rainbow header
--- vim.g.dashboard_preview_command = "type"
--- vim.g.dashboard_preview_pipeline = "lolcat.exe"
--- vim.g.dashboard_preview_file = "C:\\Users\\Neel\\AppData\\Local\\nvim\\dash.txt"
--- vim.g.dashboard_preview_file_height = 20
--- vim.g.dashboard_preview_file_width = 51
-
 vim.g.dashboard_custom_header = {
 	"              ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                ",
 	"              ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                ",
