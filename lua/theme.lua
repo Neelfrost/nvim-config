@@ -111,7 +111,15 @@ function M.gruvbox()
     ]])
 
 	-- Set colorscheme
-	vim.cmd([[colorscheme gruvbox-material]])
+	-- vim.cmd([[colorscheme gruvbox-material]])
+end
+
+function M.srcery()
+	vim.g.srcery_inverse = 0
+	vim.g.srcery_inverse_match_paren = 1
+
+	-- Set colorscheme
+	vim.cmd([[colorscheme srcery]])
 end
 
 return M

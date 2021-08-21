@@ -1,9 +1,9 @@
--- Compile oacker when pluginlist file changes
+-- Compile packer when pluginlist file changes
 vim.cmd([[autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile]])
 
+-- Check if packer is installed, if not install packer
 local install_path = PACKER_PATH .. "\\packer.nvim"
 
--- Check if packer is installed, if not install packer
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	print("Installing packer.nvim.")
 	vim.cmd([[
@@ -53,9 +53,22 @@ return packer.startup(function()
 			require("theme").gruvbox()
 		end,
 	})
+	-- use({
+	-- 	"rose-pine/neovim",
+	-- 	as = "rose-pine",
+	-- 	config = function()
+	-- 		require("rose-pine").set()
+	-- 	end,
+	-- })
+	-- use({
+	-- 	"srcery-colors/srcery-vim",
+	-- 	config = function()
+	-- 		require("theme").srcery()
+	-- 	end,
+	-- })
 
 	-- Lsp stuff
-	use({ "psf/black", branch = "stable", ft = "py", cmd = "Black" })
+	use({ "psf/black", branch = "stable", ft = "python", cmd = "Black" })
 	use({
 		"lervag/vimtex",
 		config = function()
@@ -81,13 +94,14 @@ return packer.startup(function()
 		end,
 	})
 	use({ "ray-x/lsp_signature.nvim" })
+	use({ "fvictorio/vim-extract-variable", ft = "python" })
 
 	-- Features
 	use({ "nvim-lua/plenary.nvim" })
 	use({ "nvim-lua/popup.nvim" })
 	use({ "tpope/vim-repeat" })
 	use({ "tpope/vim-surround" })
-	use({ "kevinhwang91/nvim-bqf", cmd = "QFix" })
+	use({ "kevinhwang91/nvim-bqf" })
 	use({ "junegunn/vim-easy-align", cmd = "EasyAlign" })
 	use({ "skywind3000/asyncrun.extra", after = "asyncrun.vim" })
 	use({ "skywind3000/asyncrun.vim", cmd = { "AsyncRun", "AsyncStop" } })
@@ -109,7 +123,7 @@ return packer.startup(function()
 	})
 	use({
 		"b3nj5m1n/kommentary",
-		keys = { "<C-/>" },
+		keys = { { "n", "<C-/>" }, { "i", "<C-/>" }, { "x", "<C-/>" } },
 		config = function()
 			require("plugins.kommentary")
 		end,
@@ -123,7 +137,7 @@ return packer.startup(function()
 	})
 	use({
 		"dhruvasagar/vim-open-url",
-		keys = { "<Leader>u", "<Leader>s" },
+		keys = { { "n", "<Leader>u" }, { "n", "<Leader>s" } },
 		config = function()
 			require("plugins.open-url")
 		end,
@@ -182,7 +196,7 @@ return packer.startup(function()
 	})
 	use({
 		"kyazdani42/nvim-tree.lua",
-		keys = { "<C-b>" },
+		keys = { { "n", "<C-b>" } },
 		cmd = { "NvimTreeToggle", "NvimTreeRefresh" },
 		config = function()
 			require("plugins.nvimtree")
