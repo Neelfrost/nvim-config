@@ -20,6 +20,7 @@ function _G.perform_cleanup()
 			vim.cmd([[
                 keeppatterns %s/\\item$/\\item /e " do not remove trailing space after LaTeX \item
                 keeppatterns %s/\\task$/\\task /e " do not remove trailing space after LaTeX \task
+                keeppatterns %s/^\s*\\item\s*\\item/\\item/e " remove duplicate \items on sameline
             ]])
 		end
 		vim.fn.winrestview(view)
@@ -50,7 +51,6 @@ end
 
 -- Quickfix toggle
 -- https://vim.fandom.com/wiki/Toggle_to_open_or_close_the_quickfix_window
-vim.cmd([[command -bang -nargs=? QFix lua qfix_toggle(<bang>0)]])
 function _G.qfix_toggle(forced)
 	if vim.g.qfix_win and forced then
 		vim.cmd([[cclose]])
@@ -60,6 +60,7 @@ function _G.qfix_toggle(forced)
 		vim.g.qfix_win = vim.fn.bufnr("$")
 	end
 end
+vim.cmd([[command -bang -nargs=? QFix lua qfix_toggle(<bang>0)]])
 
 -- Launch external program
 function _G.launch_ext_prog(prog, args)
@@ -110,3 +111,11 @@ if pcall(require, "plenary") then
 		return require(name)
 	end
 end
+
+vim.cmd([[
+    function! SortLines() range
+        execute a:firstline . "," . a:lastline . 's/^\(.*\)$/\=strdisplaywidth( submatch(0) ) . " " . submatch(0)/'
+        execute a:firstline . "," . a:lastline . 'sort n'
+        execute a:firstline . "," . a:lastline . 's/^\d\+\s//'
+    endfunction
+]])

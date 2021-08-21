@@ -59,7 +59,7 @@ vim.opt_global.foldmethod = "marker"
 -- vim.opt.list = true
 
 -- Display chars
-vim.opt.fillchars = { eob = "-", fold = " " }
+vim.opt.fillchars = { eob = "-", fold = " ", vert = "▏" }
 -- vim.opt.listchars = { eol = "↴" }
 
 -- Use en_us to spellcheck

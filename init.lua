@@ -15,7 +15,7 @@ ICON_HINT = "H"
 
 -- General config
 require("options")
-require("mappings")
 require("utils")
 require("autocommands")
+require("mappings")
 require("pluginlist")
