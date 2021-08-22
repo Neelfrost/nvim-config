@@ -73,4 +73,5 @@ vim.api.nvim_set_keymap("n", "<Leader>tf", "<cmd>lua require('telescope.builtin'
 vim.api.nvim_set_keymap("n", "<Leader>tp", "<cmd>lua require('plugins.config.telescope').dir_python()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<Leader>tn", "<cmd>lua require('plugins.config.telescope').dir_nvim()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<Leader>tl", "<cmd>lua require('plugins.config.telescope').dir_latex()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<Leader>ts", "<cmd>lua require('plugins.config.telescope').sessions()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('plugins.config.telescope').reload()<CR>", opts)

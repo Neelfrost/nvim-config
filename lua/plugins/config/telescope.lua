@@ -104,28 +104,9 @@ function M.reload()
 	local opts = {
 		prompt_title = prompt_title,
 		cwd = path,
-
 		theme = require("telescope.themes").get_dropdown({}),
 		previewer = false,
-
-		-- Multiple reloads at a time{{{
-		-- attach_mappings = function(_, map)
-		-- 	-- Reload module on enter
-		-- 	map("i", "<CR>", function(_)
-		-- 		-- these two a very self-explanatory
-		-- 		local entry = require("telescope.actions.state").get_selected_entry()
-		-- 		local name = get_module_name(entry.value)
-
-		-- 		-- call the helper method to reload the module
-		-- 		-- and give some feedback
-		-- 		plenary_reload(name)
-		-- 		verbose_print(name .. " Reloaded.")
-		-- 	end)
-
-		-- 	return true
-		-- end,}}}
-
-		attach_mappings = function(prompt_bufnr)
+		attach_mappings = function(prompt_bufnr, map)
 			-- This will replace select no matter on which key it is mapped by default
 			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
 				local entry = require("telescope.actions.state").get_selected_entry()
@@ -133,8 +114,18 @@ function M.reload()
 				local name = get_module_name(entry.value)
 
 				-- call the helper method to reload the module
-				-- and give some feedback
 				plenary_reload(name)
+				-- and give some feedback
+				verbose_print(name .. " Reloaded.")
+			end)
+			-- Map <C-e> to reload module
+			map("i", "<C-e>", function(_)
+				local entry = require("telescope.actions.state").get_selected_entry()
+				local name = get_module_name(entry.value)
+
+				-- call the helper method to reload the module
+				plenary_reload(name)
+				-- and give some feedback
 				verbose_print(name .. " Reloaded.")
 			end)
 
@@ -151,23 +142,33 @@ function M.sessions()
 		vim.cmd("source " .. file_path)
 	end
 
-	local opts = {
+	local function delete_sesssion(file_path)
+		local session = vim.fn.fnamemodify(file_path, ":t:r")
+		vim.cmd("echohl MoreMsg")
+		vim.cmd(string.format('echomsg "Session" "\'%s\'" "removed"', session))
+		vim.cmd("echohl None")
+		vim.cmd("silent !del " .. file_path)
+	end
 
+	local opts = {
 		prompt_title = "Sessions",
 		shorten_path = false,
 		cwd = vim.g.session_directory,
-
 		initial_mode = "insert",
 		selection_strategy = "reset",
 		theme = require("telescope.themes").get_dropdown({}),
 		previewer = false,
-
-		attach_mappings = function(prompt_bufnr)
+		attach_mappings = function(prompt_bufnr, map)
 			-- This will replace select no matter on which key it is mapped by default
 			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
 				local entry = require("telescope.actions.state").get_selected_entry()
 				require("telescope.actions").close(prompt_bufnr)
 				load_session(entry.value)
+			end)
+			-- Map <C-e> to remove session
+			map("i", "<C-e>", function(_)
+				local entry = require("telescope.actions.state").get_selected_entry()
+				delete_sesssion(entry.value)
 			end)
 
 			return true
