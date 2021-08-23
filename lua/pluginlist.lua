@@ -1,33 +1,7 @@
 -- Compile packer when pluginlist file changes
 vim.cmd([[autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile]])
 
--- Check if packer is installed, if not install packer
-local install_path = PACKER_PATH .. "\\packer.nvim"
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-	print("Installing packer.nvim.")
-	vim.cmd([[
-        highlight Normalfloat guibg=NONE
-        highlight Floatborder guibg=NONE
-    ]])
-	vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
-	vim.cmd([[packadd packer.nvim]])
-	print("Installation complete.\nStarting plugin installation.")
-end
-
-local packer = require("packer")
-
--- Initialize floating window for packer
-packer.init({
-	display = {
-		open_fn = function()
-			return require("packer.util").float({ border = "single" })
-		end,
-	},
-	git = {
-		clone_timeout = 600, -- Timeout, in seconds, for git clones
-	},
-})
+local packer = require("packerinit")
 
 return packer.startup(function()
 	-- Packer
@@ -53,19 +27,19 @@ return packer.startup(function()
 			require("theme").gruvbox()
 		end,
 	})
-	-- use({
-	-- 	"rose-pine/neovim",
-	-- 	as = "rose-pine",
-	-- 	config = function()
-	-- 		require("rose-pine").set()
-	-- 	end,
-	-- })
-	-- use({
-	-- 	"srcery-colors/srcery-vim",
-	-- 	config = function()
-	-- 		require("theme").srcery()
-	-- 	end,
-	-- })
+	use({
+		"rose-pine/neovim",
+		as = "rose-pine",
+		config = function()
+			require("theme").rosepine()
+		end,
+	})
+	use({
+		"srcery-colors/srcery-vim",
+		config = function()
+			require("theme").srcery()
+		end,
+	})
 
 	-- Lsp stuff
 	use({ "psf/black", branch = "stable", ft = "python", cmd = "Black" })
@@ -150,6 +124,7 @@ return packer.startup(function()
 	})
 	use({
 		"nvim-telescope/telescope.nvim",
+		commit = "d4a52ded6767ccda6c29e47332247003ac4c2007",
 		config = function()
 			require("plugins.telescope")
 		end,
@@ -213,6 +188,6 @@ return packer.startup(function()
 
 	-- Automatic initial plugin installation
 	if vim.fn.len(vim.fn.globpath(PACKER_PATH, "*", 0, 1)) == 1 then
-		vim.cmd([[redraw! | PackerSync]])
+		vim.cmd([[PackerSync]])
 	end
 end)
