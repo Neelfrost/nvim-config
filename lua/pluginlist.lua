@@ -12,7 +12,7 @@ return packer.startup(function()
 	use({
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
-			require("plugins.indentline")
+			require("plugins.others").indentline()
 		end,
 	})
 	use({
@@ -92,7 +92,7 @@ return packer.startup(function()
 		cmd = { "Repl", "ReplSend" },
 		ft = { "py" },
 		config = function()
-			require("plugins.zepl")
+			require("plugins.others").zepl()
 		end,
 	})
 	use({
@@ -113,13 +113,13 @@ return packer.startup(function()
 		"dhruvasagar/vim-open-url",
 		keys = { { "n", "<Leader>u" }, { "n", "<Leader>s" } },
 		config = function()
-			require("plugins.open-url")
+			require("plugins.others").openurl()
 		end,
 	})
 	use({
 		"ludovicchabant/vim-gutentags",
 		config = function()
-			require("plugins.gutentags")
+			require("plugins.others").gutentags()
 		end,
 	})
 	use({
@@ -144,21 +144,21 @@ return packer.startup(function()
 	use({
 		"SirVer/ultisnips",
 		config = function()
-			require("plugins.ultisnips")
+			require("plugins.others").ultisnips()
 		end,
 	})
 	use({
 		"skywind3000/vim-terminal-help",
 		event = "TermEnter",
 		config = function()
-			require("plugins.terminal-help")
+			require("plugins.others").terminalhelp()
 		end,
 	})
 	use({
 		"jiangmiao/auto-pairs",
 		event = "InsertEnter",
 		config = function()
-			require("plugins.autopairs")
+			require("plugins.others").autopairs()
 		end,
 	})
 	use({
