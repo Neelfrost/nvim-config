@@ -1,8 +1,8 @@
 local nvim_lsp = require("lspconfig")
 local lsp_signature = require("lsp_signature")
 
--- Define borders{{{
-local border = {
+-- Define borders
+local borders = {
 	{ "┌", "FloatBorder" },
 	{ "─", "FloatBorder" },
 	{ "┐", "FloatBorder" },
@@ -11,9 +11,9 @@ local border = {
 	{ "─", "FloatBorder" },
 	{ "└", "FloatBorder" },
 	{ "│", "FloatBorder" },
-} --}}}
+}
 
--- Define completion icons{{{
+-- Define completion icons
 vim.lsp.protocol.CompletionItemKind = {
 	"   (Text) ",
 	"   (Method)",
@@ -40,19 +40,26 @@ vim.lsp.protocol.CompletionItemKind = {
 	"   (Event)",
 	"   (Operator)",
 	"   (TypeParameter)",
-} --}}}
+}
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
+-- Set completion icons
+vim.fn.sign_define("LspDiagnosticsSignError", { text = ICON_ERROR })
+vim.fn.sign_define("LspDiagnosticsSignWarning", { text = ICON_WARN })
+vim.fn.sign_define("LspDiagnosticsSignInformation", { text = ICON_INFO })
+vim.fn.sign_define("LspDiagnosticsSignHint", { text = ICON_HINT })
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-- Use the following when lsp attches to a buffer
 local on_attach = function(client, bufnr)
-	-- Mappings{{{
+	-- Set mappings
 	local function buf_set_keymap(...)
 		vim.api.nvim_buf_set_keymap(bufnr, ...)
 	end
 
 	local opts = { noremap = true, silent = true }
 
-	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	-- buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 	-- buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
 	buf_set_keymap("n", "[d", "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>", opts)
@@ -65,13 +72,13 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap("n", "gl", "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", opts)
 	buf_set_keymap("n", "gr", "<cmd>lua require'lspsaga.rename'.rename()<CR>", opts)
 	buf_set_keymap("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-	buf_set_keymap("n", "gs", "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>", opts) --}}}
+	buf_set_keymap("n", "gs", "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>", opts)
 
-	-- Borders
-	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
-	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
+	-- Set borders
+	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
+	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
 
-	-- Lsp signature config
+	-- Setup lsp_signature
 	lsp_signature.on_attach({
 		bind = true,
 		floating_window = true,
@@ -85,60 +92,5 @@ local on_attach = function(client, bufnr)
 	})
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
--- Languages with defaults setup
-local servers = { "pyright" }
-
-for _, lsp in ipairs(servers) do
-	nvim_lsp[lsp].setup({
-		on_attach = on_attach,
-		capabilities = capabilities,
-	})
-end
-
--- Lua setup{{{
-local sumneko_root_path = "C:\\tools\\lua-language-server"
-local sumneko_binary = "C:\\tools\\lua-language-server\\bin\\lua-language-server.exe"
-
-local runtime_path = vim.split(package.path, ";")
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
-
-nvim_lsp.sumneko_lua.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-	cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
-	settings = {
-		Lua = {
-			runtime = {
-				-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-				version = "LuaJIT",
-				-- Setup your lua path
-				path = runtime_path,
-			},
-			diagnostics = {
-				-- Get the language server to recognize the `vim` global
-				globals = { "vim", "use" },
-			},
-			workspace = {
-				-- Make the server aware of Neovim runtime files
-				library = vim.api.nvim_get_runtime_file("", true),
-				maxPreload = 10000,
-				preloadFileSize = 10000,
-				checkThirdParty = false,
-			},
-			-- Do not send telemetry data containing a randomized but unique identifier
-			telemetry = {
-				enable = false,
-			},
-		},
-	},
-}) --}}}
-
--- Set completion icons
-vim.fn.sign_define("LspDiagnosticsSignError", { text = ICON_ERROR })
-vim.fn.sign_define("LspDiagnosticsSignWarning", { text = ICON_WARN })
-vim.fn.sign_define("LspDiagnosticsSignInformation", { text = ICON_INFO })
-vim.fn.sign_define("LspDiagnosticsSignHint", { text = ICON_HINT })
+-- Setup language servers
+require("plugins.config.lsp").language_servers(nvim_lsp, on_attach, capabilities)
