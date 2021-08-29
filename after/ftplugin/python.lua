@@ -1,10 +1,12 @@
--- Disable inserting comment leader after hitting o or O
--- Disable inserting comment leader after hitting <Enter> in insert mode
-vim.opt_local.formatoptions:remove({ "o", "r" })
 vim.opt_local.textwidth = 120
 
 -- Format on save
-vim.cmd([[autocmd BufWritePre *.py execute 'silent :Black']])
+vim.cmd([[
+    augroup PYTHON_FORMAT
+        autocmd!
+        autocmd BufWritePre *.py silent! execute ':Black'
+    augroup END
+]])
 
 -- Black config
 vim.g.black_linelength = 120

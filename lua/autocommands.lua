@@ -6,7 +6,7 @@ vim.cmd([[autocmd BufWritePre * silent! lua perform_cleanup()]])
 
 -- Highlight on yank
 vim.cmd(
-	[[autocmd TextYankPost * lua vim.highlight.on_yank { higroup = 'Visual', timeout = 500, on_visual = false, on_macro = true }]]
+	[[autocmd TextYankPost * lua vim.highlight.on_yank { higroup = 'Visual', timeout = 500, on_visual = true, on_macro = true }]]
 )
 
 -- Latex class file syntax
@@ -41,13 +41,20 @@ vim.cmd([[
 
 vim.cmd([[
     augroup RESTORE_WIN_VIEW
-    autocmd!
-    autocmd BufLeave * lua auto_save_win_view()
-    autocmd BufEnter * lua auto_restore_win_view()
+        autocmd!
+        autocmd BufLeave * lua auto_save_win_view()
+        autocmd BufEnter * lua auto_restore_win_view()
     augroup END
 ]])
 
 -- Lualine Lsp Progress
+vim.cmd([[autocmd User LspProgressUpdate let &ro = &ro]])
+
+-- Force disable inserting comment leader after hitting o or O
+-- Force disable inserting comment leader after hitting <Enter> in insert mode
 vim.cmd([[
-    autocmd User LspProgressUpdate let &ro = &ro
+    augroup FORCE_FORMAT_OPTIONS
+        autocmd!
+        autocmd BufEnter * setlocal formatoptions-=r formatoptions-=o
+    augroup END
 ]])

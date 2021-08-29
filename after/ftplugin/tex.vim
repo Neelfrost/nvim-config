@@ -6,7 +6,7 @@ setlocal wrap
 
 " --------------------------------- Functions -------------------------------- "
 
-" Auto insert \item on <CR>
+" Auto insert \item, \task on <CR>
 " https://stackoverflow.com/questions/2547739/auto-insert-text-at-a-newline-in-vim
 function! AutoItem()
     let [end_lnum, end_col] = searchpairpos('\\begin{', '', '\\end{', 'nW')
@@ -28,12 +28,6 @@ function! GetLine()
     endif
 endfunction
 
-inoremap <buffer> <expr> <CR> GetLine()
-            \ ? '<C-w><C-w>'
-            \ : (col(".") < col("$") ? '<CR>' : '<CR>'.AutoItem() )
-nnoremap <expr> o "o".AutoItem()
-nnoremap <expr> O "O".AutoItem()
-
 " Inverse search
 " https://github.com/lervag/vimtex/blob/master/doc/vimtex.txt
 function! SetServerName()
@@ -43,19 +37,12 @@ function! SetServerName()
     call system(printf("echo %s > %s", v:servername, nvim_server_file))
 endfunction
 
-augroup vimtex_common
-    autocmd!
-    call SetServerName()
-augroup END
-
 " Replace \ with / in LaTex input fields
 function! FixInputs()
     let l:save = winsaveview()
     keeppatterns %s/\(input\|include\)\({.\+\)\\\(.\+}\)/\1\2\/\3/ge "
     call winrestview(l:save)
 endfunction
-
-autocmd BufWritePre <buffer> :call FixInputs()
 
 " Set and Restore indent
 function! SetIndentLine()
@@ -68,15 +55,42 @@ function! ResetIndentLine()
     let g:indent_blankline_space_char = ' '
 endfunction
 
-autocmd BufEnter *.tex :call SetIndentLine()
-autocmd BufLeave * :call ResetIndentLine()
+" Clean up auxiliary files
+function! CleanAuxFiles(...) abort
+    let l:files = ['toc', 'out', 'aux', 'log', 'indent.log', 'nav', 'snm', 'vrb', 'fdb_latexmk', 'fls']
+    call map(l:files, {_, x -> printf('"%s\%s.%s"',
+                \ fnamemodify(b:vimtex.tex, ':p:h'), fnamemodify(b:vimtex.tex, ':t:r'), x)})
+    silent! execute '!del ' . join(l:files)
+endfunction
 
-" Clean up auxiliary files on quit
-autocmd User VimtexEventQuit VimtexStopAll
-autocmd User VimtexEventQuit VimtexClean
-autocmd BufWritePost *.tex execute 'silent !py "D:\My Folder\Dev\Python\latex\remove_indentlogs.py"'
+" ------------------------------- Autocommands ------------------------------- "
+
+augroup VIMTEX_COMMON
+    autocmd!
+    call SetServerName()
+augroup END
+
+augroup TEX_AUTOCOMMANDS
+    autocmd!
+    " Fix inputs
+    autocmd BufWritePre *.tex :call FixInputs()
+    " Set and Restore indent
+    autocmd BufEnter *.tex :call SetIndentLine()
+    autocmd BufLeave * :call ResetIndentLine()
+    " Clean up auxiliary files on quit
+    autocmd User VimtexEventQuit VimtexStopAll
+    autocmd User VimtexEventQuit :call CleanAuxFiles()
+    autocmd BufWritePost *.tex silent! execute '!py "D:\My Folder\Dev\Python\latex\remove_indentlogs.py"'
+augroup END
 
 " --------------------------------- Mappings --------------------------------- "
+
+" Auto \item, \task
+inoremap <buffer> <expr> <CR> GetLine()
+            \ ? '<C-w><C-w>'
+            \ : (col(".") < col("$") ? '<CR>' : '<CR>'.AutoItem() )
+nnoremap <expr> o "o".AutoItem()
+nnoremap <expr> O "O".AutoItem()
 
 " Push to next item of the list
 nnoremap <Insert> i<CR>\item <Esc>
