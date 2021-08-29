@@ -8,6 +8,8 @@ vim.g.ale_lint_on_text_changed = "never"
 vim.g.ale_warn_about_trailing_blank_lines = 0
 vim.g.ale_warn_about_trailing_whitespace = 0
 
+vim.g.ale_tex_latexindent_options = "-d"
+
 -- Set syntax checkers
 vim.g.ale_linters = {
 	python = { "flake8" },
@@ -17,8 +19,9 @@ vim.g.ale_linters = {
 -- Set syntax fixers
 vim.g.ale_fixers = {
 	lua = { "stylua" },
-	markdown = { "prettier" },
+	css = { "prettier" },
 	tex = { "latexindent" },
+	markdown = { "prettier" },
 }
 
 vim.g.ale_fix_on_save_ignore = {

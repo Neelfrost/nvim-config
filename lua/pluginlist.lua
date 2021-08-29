@@ -29,7 +29,6 @@ return packer.startup(function()
 	})
 	use({
 		"rose-pine/neovim",
-		as = "rose-pine",
 		config = function()
 			require("theme").rosepine()
 		end,

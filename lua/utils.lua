@@ -13,8 +13,8 @@ function _G.perform_cleanup()
 	if vim.bo.modified then
 		local view = vim.fn.winsaveview()
 		vim.cmd([[
-            keeppatterns %s/$\n\+\%$//e       " removes trailing lines
-            keeppatterns %s/\s\+$//e          " removes trailing spaces
+            keeppatterns %s/$\n\+\%$//e " removes trailing lines
+            keeppatterns %s/\s\+$//e " removes trailing spaces
         ]])
 		if vim.bo.filetype == "tex" then
 			vim.cmd([[
@@ -60,7 +60,7 @@ function _G.qfix_toggle(forced)
 		vim.g.qfix_win = vim.fn.bufnr("$")
 	end
 end
-vim.cmd([[command -bang -nargs=? QFix lua qfix_toggle(<bang>0)]])
+vim.cmd([[command! -bang -nargs=? QFix lua qfix_toggle(<bang>0)]])
 
 -- Launch external program
 function _G.launch_ext_prog(prog, args)
@@ -90,10 +90,13 @@ function _G.custom_fold_text()
 	line = line:gsub("%{%{%{", "")
 	-- Remove commentstring
 	line = line:gsub(comment, "")
+	-- Remove "-" in case of divider
+	line = line:gsub("%s-%s", " ")
+	line = line:gsub("-", "")
 	-- Remove spaces and tabs
-	line = line:gsub("%c", ""):gsub("%s+", " ")
+	line = line:gsub("%c", " "):gsub("%s+", " ")
 	local line_count = vim.v.foldend - vim.v.foldstart + 1
-	return "  " .. line .. ": " .. line_count .. " lines"
+	return "   ⋯ " .. line .. ": " .. line_count .. " lines ⋯"
 end
 
 -- Reloading lua modules using Telescope
@@ -112,10 +115,13 @@ if pcall(require, "plenary") then
 	end
 end
 
+-- Sort lines based on length
 vim.cmd([[
     function! SortLines() range
-        execute a:firstline . "," . a:lastline . 's/^\(.*\)$/\=strdisplaywidth( submatch(0) ) . " " . submatch(0)/'
-        execute a:firstline . "," . a:lastline . 'sort n'
-        execute a:firstline . "," . a:lastline . 's/^\d\+\s//'
+    execute a:firstline . "," . a:lastline . 's/^\(.*\)$/\=strdisplaywidth( submatch(0) ) . " " . submatch(0)/'
+    execute a:firstline . "," . a:lastline . 'sort n'
+    execute a:firstline . "," . a:lastline . 's/^\d\+\s//'
+    redraw!
     endfunction
 ]])
+vim.cmd([[command! -range Sort <line1>,<line2>call SortLines()]])

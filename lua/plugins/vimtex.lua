@@ -10,19 +10,22 @@ vim.g.vimtex_quickfix_ignore_mode = 0
 vim.g.vimtex_view_general_viewer = "SumatraPDF"
 vim.g.vimtex_view_general_options = "-reuse-instance -forward-search @tex @line @pdf"
 vim.g.vimtex_view_general_options_latexmk = "-reuse-instance"
+-- Do not auto open quickfix on compile erros
 vim.g.vimtex_quickfix_mode = 0
+-- Setup neovim remote
+vim.g.vimtex_compiler_progname = "nvr"
 -- Latex warnings to ignore
 vim.g.vimtex_quickfix_ignore_filters = {
-	[[Underfull \\hbox (badness [0-9]*) in paragraph at lines]],
-	[[Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in paragraph at lines]],
-	[[Underfull \\hbox (badness [0-9]*) in]],
-	[[Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in]],
-	"Package hyperref Warning: Token not allowed in a PDF string",
-	"Package typearea Warning: Bad type area settings!",
 	"Command terminated with space",
-	[[Package fancyhdr Warning: \\headheight is too small]],
-	"Package caption Warning: The option",
-	[[Package caption Warning: Unused \\captionsetup]],
-	"Package enumitem Warning: Negative labelwidth",
 	"LaTeX Font Warning: Font shape",
+	"Package caption Warning: The option",
+	[[Underfull \\hbox (badness [0-9]*) in]],
+	"Package enumitem Warning: Negative labelwidth",
+	[[Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in]],
+	[[Package caption Warning: Unused \\captionsetup]],
+	"Package typearea Warning: Bad type area settings!",
+	[[Package fancyhdr Warning: \\headheight is too small]],
+	[[Underfull \\hbox (badness [0-9]*) in paragraph at lines]],
+	"Package hyperref Warning: Token not allowed in a PDF string",
+	[[Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in paragraph at lines]],
 }

@@ -10,10 +10,10 @@ vim.g.dashboard_session_directory = vim.fn.stdpath("data") .. "\\session"
 vim.g.dashboard_custom_section = {
 	a = { description = { "  Recent File               1" }, command = "Telescope oldfiles" },
 	b = { description = { "  Find File                 2" }, command = "Telescope find_files" },
-	c = { description = { "洛 New File                  3" }, command = "DashboardNewFile" },
+	c = { description = { "  New File                  3" }, command = "DashboardNewFile" },
 	d = { description = { "  Load Last Session         4" }, command = "SessionLoad" },
 	e = {
-		description = { "况 List Sessions             5" },
+		description = { "  List Sessions             5" },
 		command = "lua require('plugins.config.telescope').sessions()",
 	},
 }
