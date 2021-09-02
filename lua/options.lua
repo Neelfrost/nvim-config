@@ -60,7 +60,7 @@ vim.opt.foldmethod = "marker"
 
 -- Display chars
 vim.opt.fillchars = { eob = "-", fold = " ", vert = "│" }
--- vim.opt.listchars = { eol = "↴" }
+vim.opt.listchars = { space = "·", eol = "↴" }
 
 -- Use en_us to spellcheck
 vim.opt.spelllang = "en_us"

@@ -14,19 +14,6 @@ function M.gutentags()
 	vim.g.gutentags_generate_on_empty_buffer = 0
 end
 
-function M.indentline()
-	vim.g.indent_blankline_filetype_exclude = {
-		"vim",
-		"help",
-		"packer",
-		"NvimTree",
-		"dashboard",
-	}
-	vim.g.indent_blankline_char = "▏"
-	vim.g.indent_blankline_show_first_indent_level = false
-	vim.g.indent_blankline_show_trailing_blankline_indent = false
-end
-
 function M.openurl()
 	vim.g.open_url_default_mappings = 0
 	vim.api.nvim_set_keymap("n", "<Leader>u", "<Plug>(open-url-browser)", {})

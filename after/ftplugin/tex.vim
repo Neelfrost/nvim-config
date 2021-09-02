@@ -51,7 +51,7 @@ function! SetIndentLine()
 endfunction
 
 function! ResetIndentLine()
-    let g:indent_blankline_char = '▏'
+    let g:indent_blankline_char = '│'
     let g:indent_blankline_space_char = ' '
 endfunction
 
