@@ -111,14 +111,11 @@ function M.gruvbox()
     ]])
 
 	-- Set colorscheme
-	-- vim.cmd([[colorscheme gruvbox-material]])
+	vim.cmd([[colorscheme gruvbox-material]])
 end
 
 function M.rosepine()
 	vim.g.rose_pine_variant = "base"
-
-	-- Set colorscheme
-	-- vim.cmd([[colorscheme rose-pine]])
 end
 
 function M.srcery()
@@ -126,9 +123,6 @@ function M.srcery()
 	vim.g.srcery_inverse_match_paren = 1
 	-- Color overides
 	vim.g.srcery_black = "#14171c"
-
-	-- Set colorscheme
-	vim.cmd([[colorscheme srcery]])
 end
 
 return M
