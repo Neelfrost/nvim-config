@@ -42,21 +42,7 @@ return packer.startup(function()
 	use({
 		"sainnhe/gruvbox-material",
 		config = function()
-			require("theme").gruvbox()
-		end,
-	})
-	use({
-		"rose-pine/neovim",
-		cmd = "colorscheme rose-pine",
-		setup = function()
-			require("theme").rosepine()
-		end,
-	})
-	use({
-		"srcery-colors/srcery-vim",
-		cmd = "colorscheme srcery",
-		setup = function()
-			require("theme").srcery()
+			require("themes").gruvbox()
 		end,
 	})
 
@@ -67,12 +53,6 @@ return packer.startup(function()
 	use({
 		"fvictorio/vim-extract-variable",
 		keys = "<Leader>ev",
-	})
-	use({
-		"psf/black",
-		branch = "stable",
-		cmd = "Black",
-		ft = "python",
 	})
 	use({
 		"lervag/vimtex",
@@ -112,9 +92,6 @@ return packer.startup(function()
 	})
 
 	-- Features
-	use({
-		"dstein64/vim-startuptime",
-	})
 	use({
 		"nvim-lua/plenary.nvim",
 	})
@@ -162,7 +139,7 @@ return packer.startup(function()
 	use({
 		"terrortylor/nvim-comment",
 		cmd = "CommentToggle",
-		keys = { { "n", "gcc" }, { "v", "gc" } },
+		keys = { { "n", "gc" }, { "v", "gc" } },
 		config = function()
 			require("plugins.others").nvim_comment()
 		end,
@@ -182,6 +159,7 @@ return packer.startup(function()
 	})
 	use({
 		"ludovicchabant/vim-gutentags",
+		ft = { "tex" },
 		config = function()
 			require("plugins.others").gutentags()
 		end,
@@ -207,7 +185,6 @@ return packer.startup(function()
 	})
 	use({
 		"SirVer/ultisnips",
-		event = "InsertEnter",
 		config = function()
 			require("plugins.others").ultisnips()
 		end,

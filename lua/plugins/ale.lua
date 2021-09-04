@@ -9,6 +9,7 @@ vim.g.ale_warn_about_trailing_blank_lines = 0
 vim.g.ale_warn_about_trailing_whitespace = 0
 
 vim.g.ale_tex_latexindent_options = "-d"
+vim.g.ale_python_black_use_global = 1
 
 -- Set syntax checkers
 vim.g.ale_linters = {
@@ -19,9 +20,13 @@ vim.g.ale_linters = {
 -- Set syntax fixers
 vim.g.ale_fixers = {
 	lua = { "stylua" },
-	css = { "prettier" },
+	python = { "black" },
 	tex = { "latexindent" },
+	css = { "prettier" },
 	markdown = { "prettier" },
+	json = { "prettier" },
+	yaml = { "prettier" },
+	xml = { "prettier" },
 }
 
 vim.g.ale_fix_on_save_ignore = {

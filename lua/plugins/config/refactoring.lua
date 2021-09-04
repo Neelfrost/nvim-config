@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 -- Telescope refactoring helper
 function M.refactor(prompt_bufnr)
