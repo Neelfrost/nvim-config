@@ -1,5 +1,10 @@
 -- Compile packer when pluginlist file changes
-vim.cmd([[autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile]])
+vim.cmd([[
+    augroup PACKER_COMPILE_ONCHANGE
+        autocmd!
+        autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile
+    augroup END
+]])
 
 local packer = require("packerinit")
 local use = packer.use
@@ -16,6 +21,7 @@ return packer.startup(function()
 	})
 	use({
 		"lukas-reineke/indent-blankline.nvim",
+		commit = "f26818bbb0a5428b4699f6c49fc3d3fa3e822930",
 		event = "BufRead",
 		setup = function()
 			require("plugins.indentline").setup()
@@ -45,6 +51,15 @@ return packer.startup(function()
 			require("themes").gruvbox()
 		end,
 	})
+	use({
+		"norcalli/nvim-colorizer.lua",
+		cmd = {
+			"ColorizerAttachToBuffer",
+			"ColorizerDetachFromBuffer",
+			"ColorizerReloadAllBuffers",
+			"ColorizerToggle",
+		},
+	})
 
 	-- Lsp stuff
 	use({
@@ -72,12 +87,6 @@ return packer.startup(function()
 		"neovim/nvim-lspconfig",
 		config = function()
 			require("plugins.lsp")
-		end,
-	})
-	use({
-		"glepnir/lspsaga.nvim",
-		config = function()
-			require("plugins.lspsaga")
 		end,
 	})
 	use({
@@ -110,6 +119,10 @@ return packer.startup(function()
 	use({
 		"christoomey/vim-titlecase",
 		keys = "gt",
+	})
+	use({
+		"dstein64/vim-startuptime",
+		cmd = "StartupTime",
 	})
 	use({
 		"junegunn/vim-easy-align",
@@ -213,9 +226,15 @@ return packer.startup(function()
 		end,
 	})
 	use({
-		"hoob3rt/lualine.nvim",
+		"shadmansaleh/lualine.nvim",
 		config = function()
 			require("plugins.lualine")
+		end,
+	})
+	use({
+		"antoinemadec/FixCursorHold.nvim",
+		run = function()
+			vim.g.curshold_updatime = 1000
 		end,
 	})
 	-- use('honza/vim-snippets')

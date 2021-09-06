@@ -62,17 +62,17 @@ local on_attach = function(client, bufnr)
 
 	-- buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 	-- buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-	buf_set_keymap("n", "[d", "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>", opts)
-	buf_set_keymap("n", "]d", "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>", opts)
-	buf_set_keymap("n", "ga", "<cmd>lua require'lspsaga.codeaction'.code_action()<CR>", opts)
-	buf_set_keymap("n", "gd", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", opts)
+	buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
+	buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+	buf_set_keymap("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+	buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
 	buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 	buf_set_keymap("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-	buf_set_keymap("n", "gl", "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", opts)
-	buf_set_keymap("n", "gr", "<cmd>lua require'lspsaga.rename'.rename()<CR>", opts)
+	buf_set_keymap("n", "gl", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+	buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 	buf_set_keymap("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-	buf_set_keymap("n", "gs", "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>", opts)
+	buf_set_keymap("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 
 	-- Set borders
 	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
@@ -81,15 +81,15 @@ local on_attach = function(client, bufnr)
 	-- Setup lsp_signature
 	lsp_signature.on_attach({
 		bind = true,
-		floating_window = true,
 		fix_pos = false,
 		hint_enable = false,
+		floating_window = true,
 		hi_parameter = "BufferCurrent",
+		extra_trigger_chars = { "(", "," },
 		handler_opts = {
 			border = "single",
 		},
-		extra_trigger_chars = { "(", "," },
-	})
+	}, bufnr)
 end
 
 -- Setup language servers
