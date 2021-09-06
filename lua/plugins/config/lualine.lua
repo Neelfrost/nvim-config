@@ -1,40 +1,66 @@
 local M = {}
-function M.BufIsPlugin()
+
+local fn = vim.fn
+local half_winwidth = 88
+
+M.buffer_is_plugin = function() --{{{
 	local plugins = { "NvimTree", "packer", "dashboard" }
-	local filename = vim.fn.expand("%:t")
+	local filename = fn.expand("%:t")
 	for _, v in pairs(plugins) do
 		if filename == v or vim.bo.filetype == v then
 			return true
 		end
 	end
-end
+end --}}}
 
-function M.FileIcon()
-	local filename = vim.fn.expand("%:t")
+M.file_icon = function(file_name, file_type) --{{{
 	local icon = ""
-	if not M.BufIsPlugin() and vim.fn.winwidth(0) > 70 and string.len(vim.bo.filetype) > 0 then
-		icon = require("nvim-web-devicons").get_icon(filename, vim.bo.filetype) .. " "
+	if file_type ~= "" then
+		icon = require("nvim-web-devicons").get_icon(file_name, file_type)
 	end
-	return icon
-end
 
-function M.Filename()
-	local filename = vim.fn.expand("%:t")
-	local fname = filename == "NvimTree" and ""
-		or filename == "packer" and ""
-		or filename ~= "" and filename
-		or "[No Name]"
-	return M.Readonly() .. fname
-end
+	-- Return file_name if icon does not exist
+	if icon == nil or icon == "" then
+		return file_name
+	end
 
-function M.Readonly()
+	-- Join icon and file_name if icon exists
+	return icon .. " " .. file_name
+end --}}}
+
+M.file_name = function() --{{{
+	local plugins = { "NvimTree", "packer", "dashboard" }
+	local file_name = fn.expand("%:r")
+	local file_type = fn.expand("%:e")
+
+	-- Truncate file_name if too big
+	-- Set file name to [No Name] on empty buffers
+	if #file_name > 15 then
+		file_name = string.sub(file_name, 1, 8) .. "⋯"
+	elseif file_name == "" then
+		file_name = "[No Name]"
+	end
+
+	-- Join file_name and file_type if file_type exists
+	local final_name = file_type ~= "" and file_name .. "." .. file_type or file_name
+
+	-- Empty file_name for plugin releated buffers
+	for _, v in pairs(plugins) do
+		if v == vim.bo.filetype then
+			final_name = "⋯"
+		end
+	end
+
+	return M.readonly() .. M.file_icon(final_name, file_type)
+end --}}}
+
+M.readonly = function() --{{{
 	local readonly = vim.api.nvim_exec([[echo &readonly || !&modifiable ? ' ' : '']], true)
 	return readonly
-end
+end --}}}
 
-function M.Mode()
-	local fname = vim.fn.expand("%:t")
-
+M.current_mode = function() --{{{
+	local buffer_name = fn.expand("%:t")
 	local plugins = {
 		NvimTree = "NVIMTREE",
 		packer = "PACKER",
@@ -42,84 +68,159 @@ function M.Mode()
 		mode = require("lualine.utils.mode").get_mode(),
 	}
 
+	-- Return mode if in command mode
+	if fn.mode() == "c" then
+		return plugins["mode"]
+	end
+
+	-- Return plugin name
 	for k, v in pairs(plugins) do
-		if vim.bo.filetype == k or fname == k then
+		if vim.bo.filetype == k or buffer_name == k then
 			return v
 		end
 	end
 
+	-- Return mode
 	return plugins["mode"]
-end
+end --}}}
 
-function M.Paste()
+M.git_branch = function() --{{{
+	local branch = require("lualine.components.branch").update_status()
+	local icon = " "
+
+	if branch ~= "" and not M.buffer_is_plugin() then
+		return icon .. branch
+	end
+	return ""
+end --}}}
+
+M.paste = function() --{{{
 	return vim.o.paste and "PASTE" or ""
-end
+end --}}}
 
-function M.Wrap()
+M.wrap = function() --{{{
 	return vim.o.wrap and "WRAP" or ""
-end
+end --}}}
 
-function M.Spell()
+M.spell = function() --{{{
 	return vim.wo.spell and vim.bo.spelllang or ""
-end
+end --}}}
 
-function M.FileFormat()
-	local fileformat = ""
-	if not M.BufIsPlugin() and vim.fn.winwidth(0) > 70 then
-		fileformat = vim.bo.fileformat
+M.file_format = function() --{{{
+	if not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth then
+		return vim.bo.fileformat
+	else
+		return ""
 	end
-	return fileformat
-end
+end --}}}
 
-function M.FileEncoding()
-	local fileencoding = ""
-	if not M.BufIsPlugin() and vim.fn.winwidth(0) > 70 then
-		fileencoding = vim.bo.fileencoding
+M.file_encoding = function() --{{{
+	if not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth then
+		return vim.bo.fileencoding
+	else
+		return ""
 	end
-	return fileencoding
-end
+end --}}}
 
-function M.BufPercent()
-	return vim.fn.winwidth(0) > 70 and string.format(
+M.buffer_percent = function() --{{{
+	return fn.winwidth(0) > half_winwidth and string.format(
 		"並%d%% of %d",
-		(100 * vim.fn.line(".") / vim.fn.line("$")),
-		vim.fn.line("$")
+		(100 * fn.line(".") / fn.line("$")),
+		fn.line("$")
 	) or ""
-end
+end --}}}
 
-function M.LineInfo()
-	return vim.fn.winwidth(0) > 70 and string.format("Ln %d, Col %-2d", vim.fn.line("."), vim.fn.col(".")) or ""
-end
-
-function M.TotalLines()
-	return vim.fn.winwidth(0) > 70 and string.format("%d ﲯ", vim.fn.line("$")) or ""
-end
-
--- https://github.com/samrath2007/kyoto.nvim/blob/main/lua/plugins/statusline.lua
-function M.LspProgress()
-	local messages = vim.lsp.util.get_progress_messages()
-	if #messages == 0 then
-		return
+M.line_info = function() --{{{
+	if not M.buffer_is_plugin() then
+		if fn.winwidth(0) > half_winwidth then
+			return string.format("Ln %d, Col %-2d", fn.line("."), fn.col("."))
+		else
+			return string.format("%d : %-2d", fn.line("."), fn.col("."))
+		end
+	else
+		return ""
 	end
+end --}}}
+
+M.total_lines = function() --{{{
+	return not M.buffer_is_plugin() and string.format("%d ﲯ", fn.line("$")) or ""
+end --}}}
+
+M.lsp_client_name = function() --{{{
+	local clients = vim.lsp.get_active_clients()
+	for _, client in pairs(clients) do
+		local client_filetype = client.config.filetypes[1]
+		local client_name = client.name
+		if client_filetype == vim.bo.filetype then
+			return client_name
+		end
+	end
+	return ""
+end --}}}
+
+M.lsp_status = function() --{{{
+	-- https://github.com/samrath2007/kyoto.nvim/blob/main/lua/plugins/statusline.lua
+	local messages = vim.lsp.util.get_progress_messages()
+	local client_name = M.lsp_client_name()
+
+	-- Show client if client has been loaded
+	if #messages == 0 then
+		return client_name
+	end
+
+	-- Show client load progress
 	local status = {}
 	for _, msg in pairs(messages) do
 		table.insert(status, (msg.percentage or 0) .. "%% " .. (msg.title or ""))
 	end
-	local spinners = {
-		"⠋",
-		"⠙",
-		"⠹",
-		"⠸",
-		"⠼",
-		"⠴",
-		"⠦",
-		"⠧",
-		"⠇",
-		"⠏",
+
+	return fn.winwidth(0) > half_winwidth and table.concat(status, " | ") or ""
+end --}}}
+
+M.theme_transparent = function() --{{{
+	local colors = {
+		darkgray = "#1d1f21",
+		gray = "#3f4b59",
+		innerbg = "NONE",
+		outerbg = "NONE",
+		outerfg = "#14191f",
+		insert = "#99c794",
+		normal = "#6699cc",
+		replace = "#ec5f67",
+		visual = "#f99157",
 	}
-	local ms = vim.loop.hrtime() / 1000000
-	local frame = math.floor(ms / 120) % #spinners
-	return vim.fn.winwidth(0) > 70 and table.concat(status, " | ") .. " " .. spinners[frame + 1] or ""
-end
+	return {
+		inactive = {
+			a = { fg = colors.darkgray, bg = colors.outerbg, gui = "bold" },
+			b = { fg = colors.gray, bg = colors.outerfg },
+			c = { fg = colors.gray, bg = colors.innerbg },
+		},
+		visual = {
+			a = { fg = colors.darkgray, bg = colors.visual, gui = "bold" },
+			b = { fg = colors.gray, bg = colors.outerfg },
+			c = { fg = colors.gray, bg = colors.innerbg },
+		},
+		replace = {
+			a = { fg = colors.darkgray, bg = colors.replace, gui = "bold" },
+			b = { fg = colors.gray, bg = colors.outerfg },
+			c = { fg = colors.gray, bg = colors.innerbg },
+		},
+		normal = {
+			a = { fg = colors.darkgray, bg = colors.normal, gui = "bold" },
+			b = { fg = colors.gray, bg = colors.outerfg },
+			c = { fg = colors.gray, bg = colors.innerbg },
+		},
+		insert = {
+			a = { fg = colors.darkgray, bg = colors.insert, gui = "bold" },
+			b = { fg = colors.gray, bg = colors.outerfg },
+			c = { fg = colors.gray, bg = colors.innerbg },
+		},
+		command = {
+			a = { fg = colors.darkgray, bg = colors.insert, gui = "bold" },
+			b = { fg = colors.gray, bg = colors.outerfg },
+			c = { fg = colors.gray, bg = colors.innerbg },
+		},
+	}
+end --}}}
 
 return M

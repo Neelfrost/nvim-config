@@ -1,26 +1,22 @@
 local components = require("plugins.config.lualine")
 
 require("lualine").setup({
-	options = { theme = "ayu_dark", section_separators = "", component_separators = { "│", "│" } },
+	options = {
+		theme = components.theme_transparent(),
+		section_separators = "",
+		component_separators = { "│", "│" },
+	},
 	sections = {
-		lualine_a = { { components.Mode }, { components.Wrap }, { components.Paste } },
-		lualine_b = { { components.Filename }, { components.Spell } },
-		lualine_c = { { components.FileEncoding }, { components.FileFormat } },
-		lualine_x = {
-			{ components.LspProgress },
-			{
-				"branch",
-				condition = function()
-					return vim.fn.winwidth(0) > 70 and not components.BufIsPlugin()
-				end,
-			},
-		},
-		lualine_y = { { components.LineInfo } },
-		lualine_z = { { components.TotalLines } },
+		lualine_a = { { components.current_mode }, { components.wrap }, { components.paste } },
+		lualine_b = { { components.file_name }, { components.lsp_status } },
+		lualine_c = { { components.spell }, { components.file_encoding }, { components.file_format } },
+		lualine_x = {},
+		lualine_y = { { components.git_branch }, { components.line_info } },
+		lualine_z = { { components.total_lines } },
 	},
 	inactive_sections = {
 		lualine_a = {},
-		lualine_b = { { components.Filename } },
+		lualine_b = { { components.file_name } },
 		lualine_c = {},
 		lualine_x = {},
 		lualine_y = {},
