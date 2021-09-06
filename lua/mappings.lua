@@ -1,12 +1,13 @@
-local ns_opts = { noremap = true, silent = true }
-local ne_opts = { noremap = true, expr = true }
 local n_opts = { noremap = true }
+local ne_opts = { noremap = true, expr = true }
+local ns_opts = { noremap = true, silent = true }
+local nse_opts = { noremap = true, silent = true, expr = true }
 
--- Open alacritty terminal at cwd
+-- Open windows terminal terminal at cwd
 vim.api.nvim_set_keymap(
 	"n",
 	"<Leader><Leader>t",
-	"<cmd>lua launch_ext_prog('start alacritty.exe', '--working-directory ' .. vim.fn.expand('%:p:h'))<CR>",
+	"<cmd>lua launch_ext_prog('wt.exe -d', string.format('\"%s\"', vim.fn.expand('%:p:h')))<CR>",
 	ns_opts
 )
 
@@ -22,7 +23,8 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap("n", "<Leader><Leader>c", "<cmd>lua launch_ext_prog('code', '%')<CR>", ns_opts)
 
 -- Replace word under cursor
-vim.api.nvim_set_keymap("n", "<Leader><Leader>r", [[:%s/\<<C-r><C-w>\>/]], n_opts)
+vim.api.nvim_set_keymap("n", "<F2>", [[:%s/\<<C-r><C-w>\>/]], n_opts)
+vim.api.nvim_set_keymap("v", "<F2>", [[y:%s/\V<C-r>"/]], n_opts)
 
 -- Save file
 vim.api.nvim_set_keymap("n", "<C-s>", "<cmd>update!<CR>", ns_opts)
@@ -84,7 +86,6 @@ vim.api.nvim_set_keymap("i", "<C-Del>", "<C-o>dW", n_opts)
 -- Indenting
 vim.api.nvim_set_keymap("n", "<M-]>", ">>", n_opts)
 vim.api.nvim_set_keymap("n", "<M-[>", "<<", n_opts)
-vim.api.nvim_set_keymap("i", "<S-Tab>", "<C-o><<", n_opts)
 
 -- Continuous visual shifting https://superuser.com/q/310417/736190
 vim.api.nvim_set_keymap("x", "<M-]>", ">gv", n_opts)
@@ -116,3 +117,12 @@ vim.api.nvim_set_keymap("v", "<A-k>", ":m '<-2<CR>gv-gv", n_opts)
 
 -- Toggle wrap
 vim.api.nvim_set_keymap("n", "<F11>", "<cmd>set wrap!<CR>", ns_opts)
+
+-- Close buffer
+vim.api.nvim_set_keymap("n", "<Leader>w", "winnr('$') >= 2 ? ':close<CR>' : ':bd!<CR>'", nse_opts)
+
+-- Undo break points
+local break_points = { ".", ",", "!", "?", "=", "-", "_" }
+for _, v in pairs(break_points) do
+	vim.api.nvim_set_keymap("i", tostring(v), v .. "<C-g>u", n_opts)
+end

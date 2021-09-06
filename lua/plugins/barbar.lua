@@ -14,4 +14,3 @@ vim.g.bufferline = {
 local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "<Tab>", "<cmd>BufferNext<CR>", opts)
 vim.api.nvim_set_keymap("n", "<S-Tab>", "<cmd>BufferPrevious<CR>", opts)
-vim.api.nvim_set_keymap("n", "<Leader>w", "<cmd>bd!<CR>", opts)

@@ -8,16 +8,10 @@ vim.g.nvim_tree_highlight_opened_files = 1
 vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_quit_on_open = 1
 vim.g.nvim_tree_side = "right"
+-- vim.g.nvim_tree_follow = 1
 vim.g.nvim_tree_width = 24
-vim.g.nvim_tree_follow = 1
 vim.g.nvim_tree_hijack_cursor = 1
-vim.g.nvim_tree_update_cwd = 1
-vim.g.nvim_tree_show_icons = {
-	git = 0,
-	folders = 1,
-	files = 1,
-	folder_arrows = 0,
-}
+-- vim.g.nvim_tree_update_cwd = 1
 vim.g.nvim_tree_ignore = {
 	-- tex
 	"*.cb",
@@ -43,6 +37,10 @@ vim.g.nvim_tree_ignore = {
 	-- python
 	"__pycache__",
 }
+vim.g.nvim_tree_special_files = {}
+vim.g.nvim_tree_ignore = { ".git", "node_modules", ".cache" }
+vim.g.nvim_tree_show_icons = { git = 0, folders = 1, files = 1, folder_arrows = 0 }
+vim.g.nvim_tree_window_picker_exclude = { filetype = { "packer", "qf" }, buftype = { "terminal" } }
 
 local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "<C-b>", "<cmd>NvimTreeToggle<CR>", opts)

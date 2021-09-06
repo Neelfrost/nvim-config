@@ -16,8 +16,8 @@ vim.cmd([[autocmd BufNewFile,BufRead *.cls set filetype=tex]])
 vim.cmd([[
     augroup AUTO_READ
         autocmd!
-        autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() == 'n' && getcmdwintype() == '' | checktime | endif
-        autocmd FileChangedShellPost * echohl WarningMsg | echo 'File changed on disk. Buffer reloaded!' | echohl None
+        autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+        autocmd FileChangedShellPost * echohl WarningMsg | echon 'File changed on disk. Buffer reloaded!' | echohl None
     augroup END
 ]])
 
@@ -25,7 +25,7 @@ vim.cmd([[
 vim.cmd([[
     augroup UPDATE_WINDOW_TITLE
         autocmd!
-        autocmd BufEnter * :set title | let &titlestring = expand('%') !=# '' ? expand('%') : 'Neovim'
+        autocmd BufEnter *.* :set title | let &titlestring = expand('%') !=# '' ? expand('%') : 'Neovim'
     augroup END
 ]])
 
@@ -48,7 +48,12 @@ vim.cmd([[
 ]])
 
 -- Lualine Lsp Progress
-vim.cmd([[autocmd User LspProgressUpdate let &ro = &ro]])
+vim.cmd([[
+    augroup UPDATE_STATUS_LINE
+        autocmd!
+        autocmd User LspProgressUpdate let &ro = &ro
+    augroup END
+]])
 
 -- Force disable inserting comment leader after hitting o or O
 -- Force disable inserting comment leader after hitting <Enter> in insert mode
