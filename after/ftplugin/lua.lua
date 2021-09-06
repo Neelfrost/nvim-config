@@ -1,5 +1,4 @@
 vim.opt_local.textwidth = 120
-vim.cmd([[let b:AutoPairs = AutoPairsDefine({'<' : '>'})]])
 
 local n_opts = { noremap = true }
 -- Run lua script

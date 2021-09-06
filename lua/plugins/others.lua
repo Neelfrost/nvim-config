@@ -2,9 +2,12 @@
 local M = {}
 
 function M.autopairs()
-	-- jiangmiao/auto-pairs
 	vim.g.AutoPairsShortcutToggle = ""
-	vim.api.nvim_set_keymap("i", "<C-l>", "<cmd>call AutoPairsJump()<CR>", { noremap = true })
+	vim.api.nvim_set_keymap("i", "<C-l>", "<Esc><cmd>call AutoPairsJump()<CR>a", { noremap = true })
+	-- Use defer to lazy loading
+	vim.defer_fn(function()
+		vim.cmd([[let g:AutoPairs = AutoPairsDefine({'<' : '>'})]])
+	end, 30)
 end
 
 function M.gutentags()
@@ -20,15 +23,9 @@ function M.openurl()
 	vim.api.nvim_set_keymap("n", "<Leader>s", "<Plug>(open-url-search)", {})
 end
 
-function M.terminalhelp()
-	vim.g.terminal_height = 15
-	vim.g.terminal_list = 0
-end
-
 function M.ultisnips()
 	-- Disable snipmate plugins to avoid duplicate snippets
 	vim.g.UltiSnipsEnableSnipMate = 0
-	-- Mappings
 	vim.g.UltiSnipsExpandTrigger = "<Tab>"
 	vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
 	vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
@@ -43,6 +40,49 @@ function M.zepl()
 			formatter = vim.fn["zepl#contrib#python#formatter"],
 		},
 	}
+end
+
+function M.treesitter()
+	require("nvim-treesitter.configs").setup({
+		ensure_installed = { "python", "comment", "lua", "c_sharp" },
+		highlight = {
+			enable = true,
+			additional_vim_regex_highlighting = false,
+		},
+	})
+end
+
+function M.ts_rainbow()
+	require("nvim-treesitter.configs").setup({
+		rainbow = {
+			enable = true,
+			extended_mode = true, -- Highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+			max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
+		},
+	})
+end
+
+function M.nvim_comment()
+	require("nvim_comment").setup({
+		comment_empty = false,
+	})
+end
+
+function M.refactoring()
+	require("refactoring").setup()
+	local nse_opts = { noremap = true, silent = true, expr = false }
+	vim.api.nvim_set_keymap(
+		"v",
+		"<Leader>ef",
+		[[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
+		nse_opts
+	)
+	vim.api.nvim_set_keymap(
+		"v",
+		"<Leader>rt",
+		[[ <Esc><Cmd>lua require("plugins.config.refactoring").refactors()<CR>]],
+		nse_opts
+	)
 end
 
 return M
