@@ -21,7 +21,6 @@ return packer.startup(function()
 	})
 	use({
 		"lukas-reineke/indent-blankline.nvim",
-		commit = "f26818bbb0a5428b4699f6c49fc3d3fa3e822930",
 		event = "BufRead",
 		setup = function()
 			require("plugins.indentline").setup()
@@ -235,6 +234,13 @@ return packer.startup(function()
 		"antoinemadec/FixCursorHold.nvim",
 		run = function()
 			vim.g.curshold_updatime = 1000
+		end,
+	})
+	use({
+		"davidgranstrom/nvim-markdown-preview",
+		ft = { "markdown" },
+		config = function()
+			vim.g.nvim_markdown_preview_theme = "github"
 		end,
 	})
 	-- use('honza/vim-snippets')

@@ -56,11 +56,11 @@ vim.opt.viewoptions:remove("options")
 vim.opt.foldmethod = "marker"
 
 -- Display eol characters
--- vim.opt.list = true
+vim.opt.list = true
 
 -- Display chars
 vim.opt.fillchars = { eob = "-", fold = " ", vert = "│" }
-vim.opt.listchars = { space = "·", eol = "↴" }
+vim.opt.listchars = vim.opt.listchars + { tab = "··", lead = "·", eol = "﬋" }
 
 -- Use en_us to spellcheck
 vim.opt.spelllang = "en_us"
