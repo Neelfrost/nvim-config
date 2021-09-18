@@ -1,87 +1,85 @@
 -- Custom telescope pickers
 local M = {}
 
+-- Square borders
+M.square_borders = function() --{{{
+	return {
+		{ "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+		prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+		results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+		preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+	}
+end --}}}
+
+-- Only list files with extensions in the whitelist
+local file_sorter = function(whitelist) --{{{
+	local sorter = require("telescope.sorters").get_fuzzy_file()
+
+	sorter._was_discarded = function()
+		return false
+	end
+
+	-- Filter based on whitelist
+	sorter.filter_function = function(_, prompt, entry)
+		for _, v in ipairs(whitelist) do
+			if entry.value:find(v) then
+				-- 0 is highest filtering score
+				return 0, prompt
+			end
+		end
+		-- -1 is considered filtered
+		return -1, prompt
+	end
+
+	return sorter
+end --}}}
+
 -- Find files in custom dirs
-function M.dir_nvim()
+M.dir_nvim = function() --{{{
 	local opts = {
-		prompt_title = "Neovim",
-		shorten_path = false,
 		cwd = CONFIG_PATH,
 		file_ignore_patterns = { ".git", "tags" },
-		initial_mode = "insert",
-		selection_strategy = "reset",
-		theme = require("telescope.themes").get_dropdown({}),
 		previewer = false,
+		prompt_title = "Neovim",
+		theme = "dropdown",
+		borderchars = M.square_borders(),
 	}
 
 	require("telescope.builtin").find_files(opts)
-end
+end --}}}
 
-function M.dir_latex()
+M.dir_latex = function() --{{{
 	local opts = {
-		prompt_title = "LaTeX",
-		shorten_path = false,
 		cwd = HOME_PATH .. "\\Documents\\LaTeX",
-		file_ignore_patterns = {
-			".cb",
-			".gz",
-			".lb",
-			".aux",
-			".cb2",
-			".fls",
-			".fmt",
-			".fot",
-			".git",
-			".jpg",
-			".lof",
-			".log",
-			".lot",
-			".nav",
-			".otf",
-			".out",
-			".pdf",
-			".pdf",
-			".png",
-			".snm",
-			".toc",
-			".ttf",
-			".vrb",
-			".zip",
-			"tags",
-			".synctex",
-			"indent.log",
-			".synctex.gz",
-			".fdb_latexmk",
-			".synctex(busy)",
-		},
-		initial_mode = "insert",
-		selection_strategy = "reset",
-		theme = require("telescope.themes").get_dropdown({}),
+		file_ignore_patterns = { ".git", "tags" },
 		previewer = false,
+		prompt_title = "LaTeX",
+		sorter = file_sorter({ "%.tex$", "%.sty$", "%.cls$" }),
+		theme = require("telescope.themes").get_dropdown(),
+		borderchars = M.square_borders(),
 	}
 
 	require("telescope.builtin").find_files(opts)
-end
+end --}}}
 
-function M.dir_python()
+M.dir_python = function() --{{{
 	local opts = {
-		prompt_title = "Python",
-		shorten_path = false,
 		cwd = "D:\\My Folder\\Dev\\Python",
-		file_ignore_patterns = { ".git", "tags", "__pycache__" },
-		initial_mode = "insert",
-		selection_strategy = "reset",
-		theme = require("telescope.themes").get_dropdown({}),
+		file_ignore_patterns = { ".git", "tags", "__pycache__", "venv", "__init__" },
 		previewer = false,
+		prompt_title = "Python",
+		sorter = file_sorter({ "%.py$" }),
+		theme = require("telescope.themes").get_dropdown(),
+		borderchars = M.square_borders(),
 	}
 
 	require("telescope.builtin").find_files(opts)
-end
+end --}}}
 
 -- Reloading lua modules using Telescope
 -- taken and modified from:
 -- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
-function M.reload()
+M.reload_modules = function() --{{{
 	-- set the path to the lua folder
 	local path = CONFIG_PATH .. "\\lua\\"
 
@@ -90,29 +88,25 @@ function M.reload()
 	-- the module name: ju.colors
 	local function get_module_name(s)
 		local module_name
-
 		module_name = s:gsub(path, "")
 		module_name = module_name:gsub("%.lua", "")
 		module_name = module_name:gsub("\\", ".")
 		module_name = module_name:gsub("%.init", "")
-
 		return module_name
 	end
 
-	local prompt_title = "Reload Neovim Modules"
-
 	local opts = {
-		prompt_title = prompt_title,
 		cwd = path,
-		theme = require("telescope.themes").get_dropdown({}),
 		previewer = false,
+		prompt_title = "Reload Neovim Modules",
+		theme = require("telescope.themes").get_dropdown(),
+		borderchars = M.square_borders(),
 		attach_mappings = function(prompt_bufnr, map)
-			-- This will replace select no matter on which key it is mapped by default
+			-- Reload module and close prompt
 			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
 				local entry = require("telescope.actions.state").get_selected_entry()
 				require("telescope.actions").close(prompt_bufnr)
 				local name = get_module_name(entry.value)
-
 				-- call the helper method to reload the module
 				plenary_reload(name)
 				-- and give some feedback
@@ -122,7 +116,6 @@ function M.reload()
 			map("i", "<C-e>", function(_)
 				local entry = require("telescope.actions.state").get_selected_entry()
 				local name = get_module_name(entry.value)
-
 				-- call the helper method to reload the module
 				plenary_reload(name)
 				-- and give some feedback
@@ -134,10 +127,10 @@ function M.reload()
 	}
 
 	require("telescope.builtin").find_files(opts)
-end
+end --}}}
 
 -- Session list
-function M.sessions()
+M.list_sessions = function() --{{{
 	local function load_session(file_path)
 		vim.cmd("source " .. file_path)
 	end
@@ -151,13 +144,11 @@ function M.sessions()
 	end
 
 	local opts = {
-		prompt_title = "Sessions",
-		shorten_path = false,
 		cwd = vim.g.session_directory,
-		initial_mode = "insert",
-		selection_strategy = "reset",
-		theme = require("telescope.themes").get_dropdown({}),
 		previewer = false,
+		prompt_title = "Sessions",
+		theme = require("telescope.themes").get_dropdown(),
+		borderchars = M.square_borders(),
 		attach_mappings = function(prompt_bufnr, map)
 			-- This will replace select no matter on which key it is mapped by default
 			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
@@ -176,6 +167,6 @@ function M.sessions()
 	}
 
 	require("telescope.builtin").find_files(opts)
-end
+end --}}}
 
 return M

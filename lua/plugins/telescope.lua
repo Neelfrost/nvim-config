@@ -1,4 +1,5 @@
 local actions = require("telescope.actions")
+local custom_config = require("plugins.config.telescope")
 
 require("telescope").setup({
 	defaults = {
@@ -11,13 +12,6 @@ require("telescope").setup({
 			"--column",
 			"--smart-case",
 		},
-		prompt_prefix = "❯ ",
-		selection_caret = "❯ ",
-		entry_prefix = "  ",
-		initial_mode = "insert",
-		selection_strategy = "reset",
-		sorting_strategy = "descending",
-		layout_strategy = "horizontal",
 		layout_config = {
 			horizontal = {
 				mirror = false,
@@ -26,17 +20,22 @@ require("telescope").setup({
 				mirror = false,
 			},
 		},
-		file_sorter = require("telescope.sorters").get_fuzzy_file,
-		file_ignore_patterns = { ".git", "tags" },
-		generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
 		winblend = 0,
-		border = {},
-		borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-		color_devicons = true,
 		use_less = true,
+		entry_prefix = "  ",
+		prompt_prefix = "❯ ",
+		color_devicons = true,
+		selection_caret = "❯ ",
+		initial_mode = "insert",
+		selection_strategy = "reset",
 		path_display = { "absolute" },
-		set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+		layout_strategy = "horizontal",
+		sorting_strategy = "descending",
+		file_ignore_patterns = { ".git", "tags" },
+		set_env = { ["COLORTERM"] = "truecolor" },
+		file_sorter = require("telescope.sorters").get_fuzzy_file,
 		file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+		generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
 		grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
 		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
 		mappings = {
@@ -56,13 +55,15 @@ require("telescope").setup({
 	},
 	pickers = {
 		find_files = {
-			theme = "dropdown",
 			previewer = false,
+			theme = "dropdown",
+			borderchars = custom_config.square_borders(),
 		},
 		oldfiles = {
-			prompt_title = "Recent Files",
-			theme = "dropdown",
 			previewer = false,
+			theme = "dropdown",
+			borderchars = custom_config.square_borders(),
+			prompt_title = "Recent Files",
 		},
 	},
 })
@@ -73,5 +74,5 @@ vim.api.nvim_set_keymap("n", "<Leader>tf", "<cmd>lua require('telescope.builtin'
 vim.api.nvim_set_keymap("n", "<Leader>tp", "<cmd>lua require('plugins.config.telescope').dir_python()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<Leader>tn", "<cmd>lua require('plugins.config.telescope').dir_nvim()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<Leader>tl", "<cmd>lua require('plugins.config.telescope').dir_latex()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<Leader>ts", "<cmd>lua require('plugins.config.telescope').sessions()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('plugins.config.telescope').reload()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<Leader>ts", "<cmd>lua require('plugins.config.telescope').list_sessions()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('plugins.config.telescope').reload_modules()<CR>", opts)
