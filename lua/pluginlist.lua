@@ -18,6 +18,15 @@ return packer.startup(function()
 	-- Style
 	use({
 		"kyazdani42/nvim-web-devicons",
+		config = function()
+			require("plugins.devicons")
+		end,
+	})
+	use({
+		"sainnhe/gruvbox-material",
+		config = function()
+			require("themes").gruvbox()
+		end,
 	})
 	use({
 		"lukas-reineke/indent-blankline.nvim",
@@ -45,17 +54,8 @@ return packer.startup(function()
 		end,
 	})
 	use({
-		"sainnhe/gruvbox-material",
-		config = function()
-			require("themes").gruvbox()
-		end,
-	})
-	use({
 		"norcalli/nvim-colorizer.lua",
 		cmd = {
-			"ColorizerAttachToBuffer",
-			"ColorizerDetachFromBuffer",
-			"ColorizerReloadAllBuffers",
 			"ColorizerToggle",
 		},
 	})
@@ -158,6 +158,7 @@ return packer.startup(function()
 	})
 	use({
 		"dense-analysis/ale",
+		event = "BufRead",
 		config = function()
 			require("plugins.ale")
 		end,
