@@ -121,6 +121,9 @@ vim.api.nvim_set_keymap("n", "<F11>", "<cmd>set wrap!<CR>", ns_opts)
 -- Close buffer
 vim.api.nvim_set_keymap("n", "<Leader>w", "winnr('$') >= 2 ? ':close<CR>' : ':bd!<CR>'", nse_opts)
 
+-- Enter normal mode in terminal
+vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", ns_opts)
+
 -- Undo break points
 local break_points = { ".", ",", "!", "?", "=", "-", "_" }
 for _, v in pairs(break_points) do

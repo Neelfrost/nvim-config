@@ -3,8 +3,8 @@ local components = require("plugins.config.lualine")
 require("lualine").setup({
 	options = {
 		theme = components.theme_transparent(),
-		section_separators = "",
-		component_separators = { "│", "│" },
+		section_separators = { left = "", right = "" },
+		component_separators = { left = "│", right = "│" },
 	},
 	sections = {
 		lualine_a = { { components.current_mode }, { components.wrap }, { components.paste } },

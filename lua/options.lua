@@ -122,6 +122,14 @@ vim.opt.wildignore = {
 	"*.pdf",
 }
 
+-- Undo dir (persistent undo's)
+local undo_dir = HOME_PATH .. [[\.cache\vim\undo]]
+if not vim.fn.isdirectory(undo_dir) then
+	vim.fn.mkdir(undo_dir)
+end
+vim.opt.undodir = undo_dir
+vim.opt.undofile = true
+
 -- Python3 path
 vim.g.python3_host_prog = vim.fn.trim(vim.fn.system("which python"))
 

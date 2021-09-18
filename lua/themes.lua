@@ -1,33 +1,28 @@
 local M = {}
 
-local function hifg(group, fg)
-	vim.cmd("highlight " .. group .. " guifg = " .. fg)
-end
+local function highlight(group, guifg, guibg, style) --{{{
+	local list = { group }
+	if guifg then
+		table.insert(list, "guifg=" .. guifg)
+	end
+	if guibg then
+		table.insert(list, "guibg=" .. guibg)
+	end
+	if style then
+		table.insert(list, "gui=" .. style)
+	end
 
-local function hibg(group, bg)
-	vim.cmd("highlight " .. group .. " guibg = " .. bg)
-end
-
-local function hifgbg(group, fg, bg)
-	vim.cmd("highlight " .. group .. " guifg = " .. fg .. " guibg = " .. bg)
-end
-
-local function hifgbgs(group, fg, bg, style)
-	vim.cmd("highlight " .. group .. " guifg = " .. fg .. " guibg = " .. bg .. " gui = " .. style)
-end
-
-local function hilink(group1, group2)
-	vim.cmd("highlight clear " .. group1)
-	vim.cmd("highlight link " .. group1 .. " " .. group2)
-end
+	vim.api.nvim_command("highlight " .. table.concat(list, " "))
+end --}}}
 
 function M.gruvbox() --{{{
 	-- Setup
 	vim.g.gruvbox_material_show_eob = 1
 	vim.g.gruvbox_material_palette = "mix"
 	vim.g.gruvbox_material_background = "hard"
-	vim.g.gruvbox_material_better_performance = 1
+	-- vim.g.gruvbox_material_better_performance = 1
 	vim.g.gruvbox_material_sign_column_background = "none"
+	vim.g.gruvbox_material_enable_italic = 1
 	-- Color overrides
 	vim.g.gruvbox_material_palette = {
 		none = { "NONE", "NONE" },
@@ -79,45 +74,51 @@ end --}}}
 function M.gruvbox_highlights() --{{{
 	local palette = vim.g.gruvbox_material_palette
 	-- Remove float background, fix compe backgroup
-	hifgbg("Normalfloat", "NONE", "NONE")
-	hifgbg("Floatborder", palette.bg_blue[1], "NONE")
-	hibg("CompeDocumentation", palette.bg3[1])
-	hibg("CompeDocumentationBorder", palette.bg3[1])
+	highlight("Normalfloat", "NONE", "NONE")
+	highlight("Floatborder", palette.bg_blue[1], "NONE")
+	highlight("CompeDocumentation", nil, palette.bg3[1])
+	highlight("CompeDocumentationBorder", nil, palette.bg3[1])
 	-- SpellBad
-	hifgbgs("SpellBad", palette.red[1], "NONE", "bold")
+	highlight("SpellBad", palette.red[1], "NONE", "bold")
 	-- Telescope
-	hifgbg("TelescopeBorder", palette.bg_blue[1], "NONE")
-	hifgbg("TelescopeMatching", palette.bg_red[1], "NONE")
-	hifgbg("TelescopePromptPrefix", palette.bg_red[1], "NONE")
-	hifgbg("TelescopeSelectionCaret", palette.bg_red[1], "NONE")
-	hifgbg("TelescopePromptBorder", palette.bg_blue[1], "NONE")
-	hifgbg("TelescopeResultsBorder", palette.bg_blue[1], "NONE")
-	hifgbg("TelescopePreviewBorder", palette.bg_blue[1], "NONE")
+	highlight("TelescopeBorder", palette.bg_blue[1], "NONE")
+	highlight("TelescopeMatching", palette.bg_red[1], "NONE")
+	highlight("TelescopePromptPrefix", palette.bg_red[1], "NONE")
+	highlight("TelescopeSelectionCaret", palette.bg_red[1], "NONE")
+	highlight("TelescopePromptBorder", palette.bg_blue[1], "NONE")
+	highlight("TelescopeResultsBorder", palette.bg_blue[1], "NONE")
+	highlight("TelescopePreviewBorder", palette.bg_blue[1], "NONE")
 	-- Barbar
-	hifgbg("BufferCurrent", palette.bg_blue[1], palette.bg0[1])
-	hifgbg("BufferCurrent", palette.bg_blue[1], palette.bg0[1])
-	hifgbg("BufferCurrentMod", palette.bg_red[1], palette.bg0[1])
-	hifgbg("BufferCurrentIcon", palette.grey0[1], palette.bg0[1])
-	hifgbg("BufferCurrentIndex", palette.grey0[1], palette.bg0[1])
-	hifgbg("BufferCurrentSign", palette.bg_blue[1], palette.bg0[1])
-	hifgbg("BufferVisible", palette.fg0[1], palette.bg1[1])
-	hifgbg("BufferVisibleMod", palette.bg_red[1], palette.bg1[1])
-	hifgbg("BufferVisibleIcon", palette.grey0[1], palette.bg1[1])
-	hifgbg("BufferVisibleIndex", palette.grey0[1], palette.bg1[1])
-	hifgbg("BufferVisibleSign", palette.fg0[1], palette.bg1[1])
-	hifgbg("BufferInactive", palette.grey0[1], palette.bg1[1])
-	hifgbg("BufferInactiveMod", palette.bg_red[1], palette.bg1[1])
-	hifgbg("BufferInactiveIcon", palette.grey0[1], palette.bg1[1])
-	hifgbg("BufferInactiveSign", palette.grey0[1], palette.bg1[1])
-	hifgbg("BufferInactiveIndex", palette.grey0[1], palette.bg1[1])
+	highlight("BufferCurrent", palette.bg_blue[1], palette.bg0[1])
+	highlight("BufferCurrent", palette.bg_blue[1], palette.bg0[1])
+	highlight("BufferCurrentMod", palette.bg_red[1], palette.bg0[1])
+	highlight("BufferCurrentIcon", palette.grey0[1], palette.bg0[1])
+	highlight("BufferCurrentIndex", palette.grey0[1], palette.bg0[1])
+	highlight("BufferCurrentSign", palette.bg_blue[1], palette.bg0[1])
+	highlight("BufferVisible", palette.fg0[1], palette.bg1[1])
+	highlight("BufferVisibleMod", palette.bg_red[1], palette.bg1[1])
+	highlight("BufferVisibleIcon", palette.grey0[1], palette.bg1[1])
+	highlight("BufferVisibleIndex", palette.grey0[1], palette.bg1[1])
+	highlight("BufferVisibleSign", palette.fg0[1], palette.bg1[1])
+	highlight("BufferInactive", palette.grey0[1], palette.bg1[1])
+	highlight("BufferInactiveMod", palette.bg_red[1], palette.bg1[1])
+	highlight("BufferInactiveIcon", palette.grey0[1], palette.bg1[1])
+	highlight("BufferInactiveSign", palette.grey0[1], palette.bg1[1])
+	highlight("BufferInactiveIndex", palette.grey0[1], palette.bg1[1])
 	-- Dashboard
-	hifg("dashboardHeader", palette.bg_blue[1])
-	hifg("dashboardFooter", palette.red[1])
+	highlight("dashboardHeader", palette.bg_blue[1])
+	highlight("dashboardFooter", palette.red[1])
 	-- Nvimtree
-	hifg("NvimTreeFolderName", palette.bg_blue[1])
-	hifg("NvimTreeFolderIcon", palette.bg_blue[1])
-	hifg("NvimTreeEmptyFolderName", palette.bg_blue[1])
-	hifg("NvimTreeOpenedFolderName", palette.bg_blue[1])
+	highlight("NvimTreeFolderName", palette.bg_blue[1])
+	highlight("NvimTreeFolderIcon", palette.bg_blue[1])
+	highlight("NvimTreeEmptyFolderName", palette.bg_blue[1])
+	highlight("NvimTreeOpenedFolderName", palette.bg_blue[1])
+	-- Treesitter
+	highlight("TSConstructor", palette.yellow[1])
+	-- Fold
+	highlight("Folded", palette.grey1[1], nil, "italic")
+	-- CursorLineNr
+	highlight("CursorLineNr", palette.bg_blue[1], nil, "bold")
 end --}}}
 
 return M
