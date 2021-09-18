@@ -15,6 +15,7 @@ function _G.perform_cleanup()
 		vim.cmd([[
             keeppatterns %s/$\n\+\%$//e " removes trailing lines
             keeppatterns %s/\s\+$//e " removes trailing spaces
+            keeppatterns %s/\r//e " removes linux line endings
         ]])
 		if vim.bo.filetype == "tex" then
 			vim.cmd([[
@@ -113,6 +114,16 @@ if pcall(require, "plenary") then
 		reload(name)
 		return require(name)
 	end
+end
+
+-- Setup neovim-remote
+-- for inverse search in vimtex
+-- https://github.com/lervag/vimtex/blob/master/doc/vimtex.txt
+function _G.set_servername()
+	local server_file = vim.fn.expand("$TEMP") .. "\\curnvimserver.txt"
+	local file = io.open(server_file, "w+")
+	file:write(vim.v.servername)
+	file:close()
 end
 
 -- Sort lines based on length

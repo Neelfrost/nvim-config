@@ -9,15 +9,12 @@ vim.cmd(
 	[[autocmd TextYankPost * lua vim.highlight.on_yank { higroup = 'Visual', timeout = 500, on_visual = true, on_macro = true }]]
 )
 
--- Latex class file syntax
-vim.cmd([[autocmd BufNewFile,BufRead *.cls set filetype=tex]])
-
 -- Automatically reload the file if it is changed outside of nvim
 vim.cmd([[
     augroup AUTO_READ
         autocmd!
         autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
-        autocmd FileChangedShellPost * echohl WarningMsg | echon 'File changed on disk. Buffer reloaded!' | echohl None
+        autocmd FileChangedShellPost * echohl WarningMsg | redraw | echo 'File changed on disk. Buffer reloaded!' | echohl None
     augroup END
 ]])
 
@@ -63,3 +60,21 @@ vim.cmd([[
         autocmd BufEnter * setlocal formatoptions-=r formatoptions-=o
     augroup END
 ]])
+
+-- Setup neovim-remote
+vim.cmd([[
+    augroup SETUP_NVR
+        autocmd!
+        autocmd VimEnter * lua set_servername()
+    augroup END
+]])
+
+-- vim.cmd([[
+--     augroup TERM_POWERSHELL
+--         let &shell = has('win32') ? 'powershell' : 'pwsh'
+--         let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+--         let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+--         let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+--         set shellquote= shellxquote=
+--     augroup END
+-- ]])

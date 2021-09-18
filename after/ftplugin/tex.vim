@@ -21,23 +21,10 @@ endfunction
 
 function! GetLine()
     let list = ['\\task $', '\item $']
-    if getline('.') =~ list[0] || getline('.') =~ list[1]
-        return 1
-    else
-        return 0
-    endif
+    return getline('.') =~ list[0] || getline('.') =~ list[1]
 endfunction
 
-" Inverse search
-" https://github.com/lervag/vimtex/blob/master/doc/vimtex.txt
-function! SetServerName()
-    let nvim_server_file = has('win32')
-                \ ? $TEMP . "/curnvimserver.txt"
-                \ : "/tmp/curnvimserver.txt"
-    call system(printf("echo %s > %s", v:servername, nvim_server_file))
-endfunction
-
-" Replace \ with / in LaTex input fields
+" Replace \ with / in LaTeX input fields
 function! FixInputs()
     let l:save = winsaveview()
     keeppatterns %s/\(input\|include\)\({.\+\)\\\(.\+}\)/\1\2\/\3/ge "
@@ -65,11 +52,6 @@ endfunction
 
 " ------------------------------- Autocommands ------------------------------- "
 
-augroup VIMTEX_COMMON
-    autocmd!
-    call SetServerName()
-augroup END
-
 augroup TEX_AUTOCOMMANDS
     autocmd!
     " Fix inputs
@@ -80,7 +62,6 @@ augroup TEX_AUTOCOMMANDS
     " Clean up auxiliary files on quit
     autocmd User VimtexEventQuit VimtexStopAll
     autocmd User VimtexEventQuit :call CleanAuxFiles()
-    autocmd BufWritePost *.tex silent! execute '!py "D:\My Folder\Dev\Python\latex\remove_indentlogs.py"'
 augroup END
 
 " --------------------------------- Mappings --------------------------------- "
