@@ -14,7 +14,7 @@ vim.g.dashboard_custom_section = {
 	d = { description = { "  Load Last Session         4" }, command = "SessionLoad" },
 	e = {
 		description = { "  List Sessions             5" },
-		command = "lua require('plugins.config.telescope').sessions()",
+		command = "lua require('plugins.config.telescope').list_sessions()",
 	},
 }
 
