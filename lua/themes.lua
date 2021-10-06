@@ -32,22 +32,10 @@ function M.gruvbox() --{{{
 		bg3 = { "#3c3836", "237" },
 		bg4 = { "#3c3836", "237" },
 		bg5 = { "#504945", "239" },
-		fg0 = { "#e2cca9", "223" },
-		fg1 = { "#e2cca9", "223" },
-		red = { "#f2594b", "167" },
-		aqua = { "#8bba7f", "108" },
-		blue = { "#80aa9e", "109" },
-		green = { "#b0b846", "142" },
 		grey0 = { "#7c6f64", "243" },
 		grey1 = { "#928374", "245" },
 		grey2 = { "#928374", "246" },
 		bg_blue = { "#36a3d9", "4" },
-		orange = { "#f28534", "208" },
-		yellow = { "#e9b143", "214" },
-		purple = { "#d3869b", "175" },
-		bg_red = { "#db4740", "167" },
-		bg_green = { "#b0b846", "142" },
-		bg_yellow = { "#e9b143", "214" },
 		bg_diff_red = { "#3c1f1e", "52" },
 		bg_diff_blue = { "#0d3138", "17" },
 		bg_diff_green = { "#32361a", "22" },
@@ -59,6 +47,18 @@ function M.gruvbox() --{{{
 		bg_visual_green = { "#333e34", "22" },
 		bg_visual_yellow = { "#473c29", "94" },
 		bg_current_word = { "#32302f", "236" },
+		fg0 = { "#d4be98", "223" },
+		fg1 = { "#ddc7a1", "223" },
+		red = { "#ea6962", "167" },
+		orange = { "#e78a4e", "208" },
+		yellow = { "#d8a657", "214" },
+		green = { "#a9b665", "142" },
+		aqua = { "#89b482", "108" },
+		blue = { "#7daea3", "109" },
+		purple = { "#d3869b", "175" },
+		bg_red = { "#ea6962", "167" },
+		bg_green = { "#a9b665", "142" },
+		bg_yellow = { "#d8a657", "214" },
 	}
 	-- Apply custom highlights
 	vim.cmd([[
@@ -82,29 +82,12 @@ function M.gruvbox_highlights() --{{{
 	highlight("SpellBad", palette.red[1], "NONE", "bold")
 	-- Telescope
 	highlight("TelescopeBorder", palette.bg_blue[1], "NONE")
-	highlight("TelescopeMatching", palette.bg_red[1], "NONE")
+	highlight("TelescopeMatching", palette.fg0[1], palette.bg_diff_red[1], "NONE")
 	highlight("TelescopePromptPrefix", palette.bg_red[1], "NONE")
 	highlight("TelescopeSelectionCaret", palette.bg_red[1], "NONE")
 	highlight("TelescopePromptBorder", palette.bg_blue[1], "NONE")
 	highlight("TelescopeResultsBorder", palette.bg_blue[1], "NONE")
 	highlight("TelescopePreviewBorder", palette.bg_blue[1], "NONE")
-	-- Barbar
-	highlight("BufferCurrent", palette.bg_blue[1], palette.bg0[1])
-	highlight("BufferCurrent", palette.bg_blue[1], palette.bg0[1])
-	highlight("BufferCurrentMod", palette.bg_red[1], palette.bg0[1])
-	highlight("BufferCurrentIcon", palette.grey0[1], palette.bg0[1])
-	highlight("BufferCurrentIndex", palette.grey0[1], palette.bg0[1])
-	highlight("BufferCurrentSign", palette.bg_blue[1], palette.bg0[1])
-	highlight("BufferVisible", palette.fg0[1], palette.bg1[1])
-	highlight("BufferVisibleMod", palette.bg_red[1], palette.bg1[1])
-	highlight("BufferVisibleIcon", palette.grey0[1], palette.bg1[1])
-	highlight("BufferVisibleIndex", palette.grey0[1], palette.bg1[1])
-	highlight("BufferVisibleSign", palette.fg0[1], palette.bg1[1])
-	highlight("BufferInactive", palette.grey0[1], palette.bg1[1])
-	highlight("BufferInactiveMod", palette.bg_red[1], palette.bg1[1])
-	highlight("BufferInactiveIcon", palette.grey0[1], palette.bg1[1])
-	highlight("BufferInactiveSign", palette.grey0[1], palette.bg1[1])
-	highlight("BufferInactiveIndex", palette.grey0[1], palette.bg1[1])
 	-- Dashboard
 	highlight("dashboardHeader", palette.bg_blue[1])
 	highlight("dashboardFooter", palette.red[1])
@@ -117,6 +100,7 @@ function M.gruvbox_highlights() --{{{
 	highlight("TSConstructor", palette.yellow[1])
 	-- Fold
 	highlight("Folded", palette.grey1[1], nil, "italic")
+	highlight("FoldColumn", palette.bg_blue[1], palette.bg2[1])
 	-- CursorLineNr
 	highlight("CursorLineNr", palette.bg_blue[1], nil, "bold")
 end --}}}
