@@ -54,22 +54,21 @@ require("telescope").setup({
 		},
 	},
 	pickers = {
-		find_files = {
-			previewer = false,
-			theme = "dropdown",
-			borderchars = custom_config.square_borders(),
-		},
-		oldfiles = {
-			previewer = false,
-			theme = "dropdown",
-			borderchars = custom_config.square_borders(),
-			prompt_title = "Recent Files",
+		find_files = custom_config.dropdown(),
+		oldfiles = custom_config.dropdown({ prompt_title = "Recent Files" }),
+		git_files = custom_config.dropdown(),
+	},
+	extensions = {
+		frecency = {
+			show_scores = false,
+			show_unindexed = false,
+			ignore_patterns = { "*.git/*" },
 		},
 	},
 })
 
 local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "<Leader>tr", "<cmd>lua require('telescope.builtin').oldfiles()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<Leader>tr", "<cmd>lua require('plugins.config.telescope').frecency()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<Leader>tf", "<cmd>lua require('telescope.builtin').find_files()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<Leader>tp", "<cmd>lua require('plugins.config.telescope').dir_python()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<Leader>tn", "<cmd>lua require('plugins.config.telescope').dir_nvim()<CR>", opts)

@@ -8,7 +8,10 @@ vim.g.dashboard_default_executive = "telescope"
 vim.g.dashboard_session_directory = vim.fn.stdpath("data") .. "\\session"
 
 vim.g.dashboard_custom_section = {
-	a = { description = { "  Recent File               1" }, command = "Telescope oldfiles" },
+	a = {
+		description = { "  Recent File               1" },
+		command = "lua require('plugins.config.telescope').frecency()",
+	},
 	b = { description = { "  Find File                 2" }, command = "Telescope find_files" },
 	c = { description = { "  New File                  3" }, command = "DashboardNewFile" },
 	d = { description = { "  Load Last Session         4" }, command = "SessionLoad" },

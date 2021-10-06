@@ -1,14 +1,39 @@
 -- Custom telescope pickers
 local M = {}
 
--- Square borders
-M.square_borders = function() --{{{
-	return {
-		{ "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-		prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-		results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-		preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+-- Custom dropdown theme
+M.dropdown = function(opts) --{{{
+	opts = opts or {}
+
+	local theme_opts = {
+		theme = "dropdown",
+
+		previewer = false,
+		results_title = false,
+
+		sorting_strategy = "ascending",
+		layout_strategy = "center",
+
+		layout_config = {
+			width = function(_, max_columns, _)
+				return math.min(max_columns - 10, 100)
+			end,
+
+			height = function(_, _, max_lines)
+				return math.min(max_lines, 20)
+			end,
+		},
+
+		border = true,
+		borderchars = {
+			{ "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+			prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+			results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+			preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+		},
 	}
+
+	return vim.tbl_deep_extend("force", theme_opts, opts)
 end --}}}
 
 -- Only list files with extensions in the whitelist
@@ -39,10 +64,7 @@ M.dir_nvim = function() --{{{
 	local opts = {
 		cwd = CONFIG_PATH,
 		file_ignore_patterns = { ".git", "tags" },
-		previewer = false,
 		prompt_title = "Neovim",
-		theme = "dropdown",
-		borderchars = M.square_borders(),
 	}
 
 	require("telescope.builtin").find_files(opts)
@@ -52,11 +74,8 @@ M.dir_latex = function() --{{{
 	local opts = {
 		cwd = HOME_PATH .. "\\Documents\\LaTeX",
 		file_ignore_patterns = { ".git", "tags" },
-		previewer = false,
 		prompt_title = "LaTeX",
 		sorter = file_sorter({ "%.tex$", "%.sty$", "%.cls$" }),
-		theme = require("telescope.themes").get_dropdown(),
-		borderchars = M.square_borders(),
 	}
 
 	require("telescope.builtin").find_files(opts)
@@ -66,11 +85,8 @@ M.dir_python = function() --{{{
 	local opts = {
 		cwd = "D:\\My Folder\\Dev\\Python",
 		file_ignore_patterns = { ".git", "tags", "__pycache__", "venv", "__init__" },
-		previewer = false,
 		prompt_title = "Python",
 		sorter = file_sorter({ "%.py$" }),
-		theme = require("telescope.themes").get_dropdown(),
-		borderchars = M.square_borders(),
 	}
 
 	require("telescope.builtin").find_files(opts)
@@ -97,10 +113,7 @@ M.reload_modules = function() --{{{
 
 	local opts = {
 		cwd = path,
-		previewer = false,
 		prompt_title = "Reload Neovim Modules",
-		theme = require("telescope.themes").get_dropdown(),
-		borderchars = M.square_borders(),
 		attach_mappings = function(prompt_bufnr, map)
 			-- Reload module and close prompt
 			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
@@ -145,10 +158,7 @@ M.list_sessions = function() --{{{
 
 	local opts = {
 		cwd = vim.g.session_directory,
-		previewer = false,
 		prompt_title = "Sessions",
-		theme = require("telescope.themes").get_dropdown(),
-		borderchars = M.square_borders(),
 		attach_mappings = function(prompt_bufnr, map)
 			-- This will replace select no matter on which key it is mapped by default
 			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
@@ -167,6 +177,12 @@ M.list_sessions = function() --{{{
 	}
 
 	require("telescope.builtin").find_files(opts)
+end --}}}
+
+-- Frecency
+M.frecency = function() --{{{
+	local frecency_opts = M.dropdown({ prompt_title = "Recent Files" })
+	require("telescope").extensions.frecency.frecency(frecency_opts)
 end --}}}
 
 return M
