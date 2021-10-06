@@ -33,17 +33,6 @@ function M.ultisnips()
 	vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 end
 
-function M.zepl()
-	-- Enable the Python contrib module
-	vim.cmd([[runtime zepl/contrib/python.vim]])
-	vim.g.repl_config = {
-		python = {
-			cmd = "python",
-			formatter = vim.fn["zepl#contrib#python#formatter"],
-		},
-	}
-end
-
 function M.treesitter()
 	require("nvim-treesitter.configs").setup({
 		ensure_installed = { "python", "comment", "lua", "c_sharp" },
@@ -70,23 +59,6 @@ function M.nvim_comment()
 	})
 	vim.api.nvim_set_keymap("n", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
 	vim.api.nvim_set_keymap("v", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
-end
-
-function M.refactoring()
-	require("refactoring").setup()
-	local nse_opts = { noremap = true, silent = true, expr = false }
-	vim.api.nvim_set_keymap(
-		"v",
-		"<Leader>ef",
-		[[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
-		nse_opts
-	)
-	vim.api.nvim_set_keymap(
-		"v",
-		"<Leader>rt",
-		[[ <Esc><Cmd>lua require("plugins.config.refactoring").refactors()<CR>]],
-		nse_opts
-	)
 end
 
 return M

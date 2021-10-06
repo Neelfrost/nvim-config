@@ -88,16 +88,6 @@ return packer.startup(function()
 			require("plugins.lsp")
 		end,
 	})
-	use({
-		"ThePrimeagen/refactoring.nvim",
-		requires = {
-			{ "nvim-lua/plenary.nvim" },
-			{ "nvim-treesitter/nvim-treesitter" },
-		},
-		config = function()
-			require("plugins.others").refactoring()
-		end,
-	})
 
 	-- Features
 	use({
@@ -117,7 +107,7 @@ return packer.startup(function()
 	})
 	use({
 		"christoomey/vim-titlecase",
-		keys = "gt",
+		keys = "gz",
 	})
 	use({
 		"dstein64/vim-startuptime",
@@ -136,22 +126,9 @@ return packer.startup(function()
 		cmd = { "AsyncRun", "AsyncStop" },
 	})
 	use({
-		"inkarkat/vim-SpellCheck",
-		requires = { "inkarkat/vim-ingo-library" },
-		cmd = { "SpellCheck", "SpellLCheck" },
-	})
-	use({
-		"axvr/zepl.vim",
-		cmd = { "Repl", "ReplSend" },
-		ft = { "python" },
-		config = function()
-			require("plugins.others").zepl()
-		end,
-	})
-	use({
 		"terrortylor/nvim-comment",
 		cmd = "CommentToggle",
-		keys = { { "n", "gc" }, { "v", "gc" } },
+		keys = { { "n", "<C-/>" }, { "v", "<C-/>" }, { "n", "gc" }, { "v", "gc" } },
 		config = function()
 			require("plugins.others").nvim_comment()
 		end,
@@ -184,6 +161,14 @@ return packer.startup(function()
 		end,
 	})
 	use({
+		"nvim-telescope/telescope-frecency.nvim",
+		config = function()
+			vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
+			require("telescope").load_extension("frecency")
+		end,
+		requires = { "tami5/sqlite.lua" },
+	})
+	use({
 		"phaazon/hop.nvim",
 		event = "BufRead",
 		config = function()
@@ -191,9 +176,10 @@ return packer.startup(function()
 		end,
 	})
 	use({
-		"romgrk/barbar.nvim",
+		"noib3/cokeline.nvim",
+		after = "telescope.nvim", -- Load after telescope so that highlights are defined
 		config = function()
-			require("plugins.barbar")
+			require("plugins.cokeline")
 		end,
 	})
 	use({
@@ -234,7 +220,7 @@ return packer.startup(function()
 	use({
 		"antoinemadec/FixCursorHold.nvim",
 		run = function()
-			vim.g.curshold_updatime = 1000
+			vim.g.curshold_updatime = 500
 		end,
 	})
 	use({
@@ -244,7 +230,9 @@ return packer.startup(function()
 			vim.g.nvim_markdown_preview_theme = "github"
 		end,
 	})
-	-- use('honza/vim-snippets')
+	-- use({
+	--         'honza/vim-snippets'
+	--     })
 
 	-- Automatic initial plugin installation
 	if vim.fn.len(vim.fn.globpath(PACKER_PATH, "*", 0, 1)) == 1 then
