@@ -28,12 +28,13 @@ vim.api.nvim_set_keymap("v", "<F2>", [[y:%s/\V<C-r>"/]], n_opts)
 
 -- Save file
 vim.api.nvim_set_keymap("n", "<C-s>", "<cmd>update!<CR>", ns_opts)
+vim.api.nvim_set_keymap("i", "<C-s>", "<Esc><cmd>update!<CR>", ns_opts)
 
 -- Toggle quickfix
 vim.api.nvim_set_keymap("n", "<Leader>q", "<cmd>QFix<CR>", ns_opts)
 
 -- Format entire document
-vim.api.nvim_set_keymap("n", "<C-f>", "gg=G<C-o>zt<Esc>", ns_opts)
+vim.api.nvim_set_keymap("n", "<C-f>", "gg=G<C-o>zz<Esc>", ns_opts)
 
 -- Toggle spell
 vim.api.nvim_set_keymap("n", "<F1>", "<cmd>setlocal spell!<CR>", ns_opts)
@@ -129,3 +130,6 @@ local break_points = { ".", ",", "!", "?", "=", "-", "_" }
 for _, v in pairs(break_points) do
 	vim.api.nvim_set_keymap("i", tostring(v), v .. "<C-g>u", n_opts)
 end
+
+vim.api.nvim_set_keymap("n", "n", "nzz", n_opts)
+vim.api.nvim_set_keymap("n", "N", "Nzz", n_opts)

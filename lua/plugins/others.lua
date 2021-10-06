@@ -4,10 +4,12 @@ local M = {}
 function M.autopairs()
 	vim.g.AutoPairsShortcutToggle = ""
 	vim.api.nvim_set_keymap("i", "<C-l>", "<Esc><cmd>call AutoPairsJump()<CR>a", { noremap = true })
-	-- Use defer to lazy loading
-	vim.defer_fn(function()
-		vim.cmd([[let g:AutoPairs = AutoPairsDefine({'<' : '>'})]])
-	end, 30)
+	vim.cmd([[
+        augroup DEFINE_AUTOPAIRS
+            autocmd!
+            autocmd FileType lua,vim,md let b:AutoPairs = AutoPairsDefine({'<' : '>'})
+        augroup END
+    ]])
 end
 
 function M.gutentags()
@@ -66,6 +68,8 @@ function M.nvim_comment()
 	require("nvim_comment").setup({
 		comment_empty = false,
 	})
+	vim.api.nvim_set_keymap("n", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
+	vim.api.nvim_set_keymap("v", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
 end
 
 function M.refactoring()

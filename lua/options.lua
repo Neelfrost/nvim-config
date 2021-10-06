@@ -59,7 +59,7 @@ vim.opt.foldmethod = "marker"
 vim.opt.list = true
 
 -- Display chars
-vim.opt.fillchars = { eob = "-", fold = " ", vert = "│" }
+vim.opt.fillchars = { eob = "-", fold = " ", vert = "│", foldclose = "", foldopen = "" }
 vim.opt.listchars = vim.opt.listchars + { tab = "··", lead = "·", eol = "﬋" }
 
 -- Use en_us to spellcheck
@@ -70,6 +70,9 @@ vim.opt.hidden = true
 
 -- Statusline
 vim.opt.laststatus = 2
+
+-- Fold column
+vim.opt.foldcolumn = "2"
 
 -- No redraw during macro, regex execution
 vim.opt.lazyredraw = true

@@ -88,6 +88,8 @@ M.git_branch = function() --{{{
 	local branch = require("lualine.components.branch").update_status()
 	local icon = " "
 
+	require("lualine.components.branch").update_branch()
+
 	if branch ~= "" and not M.buffer_is_plugin() then
 		return icon .. branch
 	end
@@ -191,7 +193,7 @@ M.theme_transparent = function() --{{{
 	}
 	return {
 		inactive = {
-			a = { fg = colors.darkgray, bg = colors.outerbg, gui = "bold" },
+			a = { fg = colors.gray, bg = colors.outerbg, gui = "bold" },
 			b = { fg = colors.gray, bg = colors.outerfg },
 			c = { fg = colors.gray, bg = colors.innerbg },
 		},

@@ -25,6 +25,11 @@ require("nvim-web-devicons").setup({
 			color = "#008080",
 			name = "Tags",
 		},
+		ps1 = {
+			icon = "ﲵ",
+			color = "#4478D2",
+			name = "Powershell",
+		},
 	},
 	default = true,
 })
