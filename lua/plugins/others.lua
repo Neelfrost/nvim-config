@@ -58,7 +58,12 @@ function M.nvim_comment()
 		comment_empty = false,
 	})
 	vim.api.nvim_set_keymap("n", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
-	vim.api.nvim_set_keymap("v", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
+	vim.api.nvim_set_keymap(
+		"v",
+		"<C-/>",
+		":<C-u>call CommentOperator(visualmode())<CR>",
+		{ silent = true, noremap = true }
+	)
 end
 
 return M
