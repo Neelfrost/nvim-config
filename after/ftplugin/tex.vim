@@ -44,10 +44,31 @@ endfunction
 
 " Clean up auxiliary files
 function! CleanAuxFiles(...) abort
-    let l:files = ['toc', 'out', 'aux', 'log', 'indent.log', 'nav', 'snm', 'vrb', 'fdb_latexmk', 'fls']
-    call map(l:files, {_, x -> printf('"%s\%s.%s"',
-                \ fnamemodify(b:vimtex.tex, ':p:h'), fnamemodify(b:vimtex.tex, ':t:r'), x)})
-    silent! execute '!del ' . join(l:files)
+let l:cur_tex_path = fnamemodify(b:vimtex.tex, ':p:h')
+python3 << EOF
+import vim
+import os
+cur_tex_path = vim.eval("l:cur_tex_path")
+
+for folder, _, files in os.walk(cur_tex_path):
+    for file in files:
+        if file.endswith(
+            (
+                ".toc",
+                ".out",
+                ".aux",
+                ".log",
+                ".nav",
+                ".snm",
+                ".vrb",
+                ".fls",
+                "indent.log",
+                ".fdb_latexmk",
+            )
+        ):
+            os.remove(os.path.join(folder, file))
+EOF
+echo "Auxiliary files cleaned!"
 endfunction
 
 " ------------------------------- Autocommands ------------------------------- "
@@ -61,10 +82,13 @@ augroup TEX_AUTOCOMMANDS
     autocmd BufLeave * :call ResetIndentLine()
     " Clean up auxiliary files on quit
     autocmd User VimtexEventQuit silent! VimtexStopAll
-    autocmd User VimtexEventQuit :call CleanAuxFiles()
+    autocmd User VimtexEventQuit :silent! call CleanAuxFiles()
 augroup END
 
 " --------------------------------- Mappings --------------------------------- "
+
+" Override VimtexClean
+nnoremap <silent> <Leader>lc :call CleanAuxFiles()<CR>
 
 " Auto \item, \task
 inoremap <buffer> <expr> <CR> GetLine()
@@ -72,6 +96,9 @@ inoremap <buffer> <expr> <CR> GetLine()
             \ : (col(".") < col("$") ? '<CR>' : '<CR>'.AutoItem() )
 nnoremap <expr> o "o".AutoItem()
 nnoremap <expr> O "O".AutoItem()
+
+" Insert \item, \task on Numpad Enter
+imap <kEnter> <C-o>o
 
 " Push to next item of the list
 nnoremap <Insert> i<CR>\item <Esc>
@@ -85,6 +112,10 @@ nnoremap <M-b> diwi\textbi{}<Esc>P
 " Bold word under cursor or selected
 vnoremap <M-B> di\textbf{}<Esc>P
 nnoremap <M-B> diwi\textbf{}<Esc>P
+
+" Underline word under cursor or selected
+vnoremap <M-u> di\ul{}<Esc>P
+nnoremap <M-u> diwi\ul{}<Esc>P
 
 " Put the word inside chem environment
 nnoremap <M-v> diwi\ch{}<Esc>P
