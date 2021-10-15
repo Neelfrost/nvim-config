@@ -85,10 +85,11 @@ M.current_mode = function() --{{{
 end --}}}
 
 M.git_branch = function() --{{{
-	local branch = require("lualine.components.branch").update_status()
 	local icon = " "
+	local git_branch = require("lualine.components.branch.git_branch")
+	git_branch.init()
 
-	require("lualine.components.branch").update_branch()
+	local branch = git_branch.get_branch()
 
 	if branch ~= "" and not M.buffer_is_plugin() then
 		return icon .. branch
