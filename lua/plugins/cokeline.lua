@@ -6,7 +6,7 @@ require("cokeline").setup({
 
 	default_hl = {
 		focused = {
-			fg = get_hex("dashboardHeader", "fg"),
+			fg = get_hex("TelescopeBorder", "fg"),
 			bg = get_hex("ColorColumn", "bg"),
 		},
 		unfocused = {
@@ -17,7 +17,7 @@ require("cokeline").setup({
 
 	components = {
 		{
-			text = "│ ",
+			text = "| ",
 			hl = {
 				fg = get_hex("folded", "fg"),
 				style = "bold",
@@ -28,9 +28,6 @@ require("cokeline").setup({
 				return buffer.index .. ": "
 			end,
 			hl = {
-				fg = function(buffer)
-					return buffer.is_modified and get_hex("SpellBad", "fg") or nil
-				end,
 				style = "bold",
 			},
 		},
@@ -39,9 +36,6 @@ require("cokeline").setup({
 				return buffer.unique_prefix
 			end,
 			hl = {
-				fg = function(buffer)
-					return buffer.is_modified and get_hex("SpellBad", "fg") or nil
-				end,
 				style = "bold",
 			},
 		},
@@ -50,14 +44,13 @@ require("cokeline").setup({
 				return buffer.filename .. " "
 			end,
 			hl = {
-				fg = function(buffer)
-					return buffer.is_modified and get_hex("SpellBad", "fg") or nil
-				end,
 				style = "bold",
 			},
 		},
 		{
-			text = " ",
+			text = function(buffer)
+				return buffer.is_modified and " " or " "
+			end,
 			delete_buffer_on_left_click = true,
 			hl = {
 				fg = function(buffer)
@@ -71,7 +64,7 @@ require("cokeline").setup({
 		{
 			text = function(buffer)
 				local no_of_buffers = #vim.fn.getbufinfo({ buflisted = 1 })
-				return buffer.index == no_of_buffers and "│" or ""
+				return buffer.index == no_of_buffers and "|" or ""
 			end,
 			hl = {
 				fg = get_hex("folded", "fg"),
