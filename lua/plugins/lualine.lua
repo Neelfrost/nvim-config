@@ -11,7 +11,16 @@ require("lualine").setup({
 		lualine_b = { { components.file_name }, { components.lsp_status } },
 		lualine_c = { { components.spell }, { components.file_encoding }, { components.file_format } },
 		lualine_x = {},
-		lualine_y = { { components.git_branch }, { components.line_info } },
+		lualine_y = {
+			{
+				"branch",
+				icon = "",
+				cond = function()
+					return not components.buffer_is_plugin()
+				end,
+			},
+			{ components.line_info },
+		},
 		lualine_z = { { components.total_lines } },
 	},
 	inactive_sections = {
