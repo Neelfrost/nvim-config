@@ -4,6 +4,12 @@ require("cokeline").setup({
 	hide_when_one_buffer = false,
 	cycle_prev_next_mappings = true,
 
+	buffers = {
+		filter = function(buffer)
+			return buffer.type ~= "terminal"
+		end,
+	},
+
 	default_hl = {
 		focused = {
 			fg = get_hex("TelescopeBorder", "fg"),
