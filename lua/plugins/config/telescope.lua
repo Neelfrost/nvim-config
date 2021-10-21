@@ -59,7 +59,7 @@ local file_sorter = function(whitelist) --{{{
 	return sorter
 end --}}}
 
--- Find files in custom dirs
+-- List files in specified directories with pre-filtering
 M.dir_nvim = function() --{{{
 	local opts = {
 		cwd = CONFIG_PATH,
@@ -92,16 +92,15 @@ M.dir_python = function() --{{{
 	require("telescope.builtin").find_files(opts)
 end --}}}
 
--- Reloading lua modules using Telescope
+-- Reload lua modules using Telescope
 -- taken and modified from:
 -- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
 M.reload_modules = function() --{{{
-	-- set the path to the lua folder
+	-- Set the path to the lua folder
 	local path = CONFIG_PATH .. "\\lua\\"
 
-	-- Telescope will give us something like ju/colors.lua,
-	-- so this function convert the selected entry to
-	-- the module name: ju.colors
+	-- Given a path "C:\Users\Neel\AppData\Local\nvim\lua\plugins\config\telescope.lua"
+	-- Return "plugins.config.telescope"
 	local function get_module_name(s)
 		local module_name
 		module_name = s:gsub(path, "")
@@ -111,29 +110,27 @@ M.reload_modules = function() --{{{
 		return module_name
 	end
 
+	local actions_state = require("telescope.actions.state")
+
 	local opts = {
 		cwd = path,
 		prompt_title = "Reload Neovim Modules",
 		attach_mappings = function(prompt_bufnr, map)
-			-- Reload module and close prompt
-			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
-				local entry = require("telescope.actions.state").get_selected_entry()
+			-- Reload module
+			local reload_module_map = function()
+				local entry = actions_state.get_selected_entry()
+				local name = get_module_name(entry.value)
 				require("telescope.actions").close(prompt_bufnr)
-				local name = get_module_name(entry.value)
-				-- call the helper method to reload the module
+				-- Reload filename
 				plenary_reload(name)
-				-- and give some feedback
-				verbose_print(name .. " Reloaded.")
-			end)
-			-- Map <C-e> to reload module
-			map("i", "<C-e>", function(_)
-				local entry = require("telescope.actions.state").get_selected_entry()
-				local name = get_module_name(entry.value)
-				-- call the helper method to reload the module
-				plenary_reload(name)
-				-- and give some feedback
-				verbose_print(name .. " Reloaded.")
-			end)
+				-- Print filename
+				print(name .. " Reloaded.")
+			end
+
+			-- Map <Enter> to reload module
+			require("telescope.actions.set").select:replace(reload_module_map)
+			-- Map <C-r> to reload module
+			map("i", "<C-r>", reload_module_map)
 
 			return true
 		end,
@@ -142,10 +139,12 @@ M.reload_modules = function() --{{{
 	require("telescope.builtin").find_files(opts)
 end --}}}
 
--- Session list
+-- Load/delete vim sessions using Telescope
 M.list_sessions = function() --{{{
 	local function load_session(file_path)
-		vim.cmd("source " .. file_path)
+		vim.lsp.stop_client(vim.lsp.get_active_clients())
+		vim.api.nvim_command("silent! source " .. file_path)
+		vim.cmd(string.format('echomsg "Loaded" "\'%s\'" "session"', file_path:gsub("\\", "\\\\")))
 	end
 
 	local function delete_sesssion(file_path)
@@ -156,21 +155,30 @@ M.list_sessions = function() --{{{
 		vim.cmd("silent !del " .. file_path)
 	end
 
+	local actions_state = require("telescope.actions.state")
+
 	local opts = {
+		initial_mode = "insert",
 		cwd = vim.g.session_directory,
 		prompt_title = "Sessions",
 		attach_mappings = function(prompt_bufnr, map)
-			-- This will replace select no matter on which key it is mapped by default
-			require("telescope.actions.set").select:replace(function(prompt_bufnr, type)
-				local entry = require("telescope.actions.state").get_selected_entry()
+			-- Load session
+			local load_session_map = function()
+				local entry = actions_state.get_selected_entry()
 				require("telescope.actions").close(prompt_bufnr)
 				load_session(entry.value)
-			end)
-			-- Map <C-e> to remove session
-			map("i", "<C-e>", function(_)
-				local entry = require("telescope.actions.state").get_selected_entry()
+			end
+
+			-- Delete session
+			local delete_session_map = function()
+				local entry = actions_state.get_selected_entry()
 				delete_sesssion(entry.value)
-			end)
+			end
+
+			-- Map <Enter> to load session
+			require("telescope.actions.set").select:replace(load_session_map)
+			-- Map <C-d> to delete session
+			map("i", "<C-d>", delete_session_map)
 
 			return true
 		end,
@@ -179,7 +187,7 @@ M.list_sessions = function() --{{{
 	require("telescope.builtin").find_files(opts)
 end --}}}
 
--- Frecency
+-- Use dropdown theme with Frecency
 M.frecency = function() --{{{
 	local frecency_opts = M.dropdown({ prompt_title = "Recent Files" })
 	require("telescope").extensions.frecency.frecency(frecency_opts)
