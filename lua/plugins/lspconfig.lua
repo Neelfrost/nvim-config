@@ -1,5 +1,4 @@
-local nvim_lsp = require("lspconfig")
-local lsp_signature = require("lsp_signature")
+local lspconfig = require("lspconfig")
 
 -- Define borders
 local borders = {
@@ -13,35 +12,6 @@ local borders = {
 	{ "│", "FloatBorder" },
 }
 
--- Define completion icons
-vim.lsp.protocol.CompletionItemKind = {
-	"   (Text) ",
-	"   (Method)",
-	"   (Function)",
-	"   (Constructor)",
-	" ﴲ  (Field)",
-	"   (Variable)",
-	"   (Class)",
-	" ﰮ  (Interface)",
-	"   (Module)",
-	" 襁 (Property)",
-	"   (Unit)",
-	"   (Value)",
-	" 練 (Enum)",
-	"   (Keyword)",
-	"   (Snippet)",
-	"   (Color)",
-	"   (File)",
-	"   (Reference)",
-	"   (Folder)",
-	"   (EnumMember)",
-	" ﲀ  (Constant)",
-	" ﳤ  (Struct)",
-	"   (Event)",
-	"   (Operator)",
-	"   (TypeParameter)",
-}
-
 -- Set completion icons
 vim.fn.sign_define("LspDiagnosticsSignError", { text = ICON_ERROR })
 vim.fn.sign_define("LspDiagnosticsSignWarning", { text = ICON_WARN })
@@ -50,6 +20,13 @@ vim.fn.sign_define("LspDiagnosticsSignHint", { text = ICON_HINT })
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+	properties = {
+		"documentation",
+		"detail",
+		"additionalTextEdits",
+	},
+}
 
 -- Use the following when lsp attches to a buffer
 local on_attach = function(client, bufnr)
@@ -78,19 +55,11 @@ local on_attach = function(client, bufnr)
 	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
 	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
 
-	-- Setup lsp_signature
-	lsp_signature.on_attach({
-		bind = true,
-		fix_pos = false,
-		hint_enable = false,
-		floating_window = true,
-		hi_parameter = "BufferCurrent",
-		extra_trigger_chars = { "(", "," },
-		handler_opts = {
-			border = "single",
-		},
-	}, bufnr)
+	-- Format on save if formatting is available
+	if client.resolved_capabilities.document_formatting then
+		vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+	end
 end
 
 -- Setup language servers
-require("plugins.config.lsp").language_servers(nvim_lsp, on_attach, capabilities)
+require("plugins.config.lspconfig").language_servers(lspconfig, on_attach, capabilities)

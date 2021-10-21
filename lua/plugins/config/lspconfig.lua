@@ -1,6 +1,6 @@
 local M = {}
 
-function M.language_servers(nvim_lsp, on_attach, capabilities)
+function M.language_servers(lspconfig, on_attach, capabilities)
 	-- Language servers:
 	local servers = { "pyright", "sumneko_lua", "omnisharp" }
 
@@ -12,9 +12,9 @@ function M.language_servers(nvim_lsp, on_attach, capabilities)
 			local runtime_path = vim.split(package.path, ";")
 			table.insert(runtime_path, "lua/?.lua")
 			table.insert(runtime_path, "lua/?/init.lua")
-			nvim_lsp[lsp].setup({
+			lspconfig[lsp].setup({
 				on_attach = on_attach,
-				capabilities = capabilities,
+				capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities),
 				cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
 				settings = {
 					Lua = {
@@ -40,15 +40,15 @@ function M.language_servers(nvim_lsp, on_attach, capabilities)
 		elseif lsp == "omnisharp" then
 			local pid = vim.fn.getpid()
 			local omnisharp_bin = vim.fn.trim(vim.fn.system("which omnisharp"))
-			nvim_lsp[lsp].setup({
+			lspconfig[lsp].setup({
 				on_attach = on_attach,
-				capabilities = capabilities,
+				capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities),
 				cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
 			})
 		else
-			nvim_lsp[lsp].setup({
+			lspconfig[lsp].setup({
 				on_attach = on_attach,
-				capabilities = capabilities,
+				capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities),
 			})
 		end
 	end

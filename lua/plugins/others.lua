@@ -28,6 +28,7 @@ end
 function M.ultisnips()
 	-- Disable snipmate plugins to avoid duplicate snippets
 	vim.g.UltiSnipsEnableSnipMate = 0
+	vim.g.UltiSnipsRemoveSelectModeMappings = 0
 	vim.g.UltiSnipsExpandTrigger = "<Tab>"
 	vim.g.UltiSnipsJumpForwardTrigger = "<Tab>"
 	vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
@@ -64,6 +65,27 @@ function M.nvim_comment()
 		":<C-u>call CommentOperator(visualmode())<CR>",
 		{ silent = true, noremap = true }
 	)
+end
+
+function M.fastfold()
+	vim.g.fastfold_savehook = 1
+	vim.g.fastfold_fold_command_suffixes = { "x", "X", "a", "A", "o", "O", "c", "C", "m" }
+	vim.g.fastfold_fold_movement_commands = { "]z", "[z", "zj", "zk" }
+	vim.g.tex_fold_enabled = 1
+end
+
+function M.lsp_signature()
+	require("lsp_signature").setup({
+		bind = true,
+		hint_enable = false,
+		hint_prefix = "",
+		floating_window = false,
+		hi_parameter = "TelescopeBorder",
+		extra_trigger_chars = { "(", "," },
+		handler_opts = {
+			border = "single",
+		},
+	})
 end
 
 return M

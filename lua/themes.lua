@@ -35,7 +35,7 @@ function M.gruvbox() --{{{
 		grey0 = { "#7c6f64", "243" },
 		grey1 = { "#928374", "245" },
 		grey2 = { "#928374", "246" },
-		bg_blue = { "#36a3d9", "4" },
+		bg_blue = { "#4f9cfe", "4" },
 		bg_diff_red = { "#3c1f1e", "52" },
 		bg_diff_blue = { "#0d3138", "17" },
 		bg_diff_green = { "#32361a", "22" },
@@ -73,11 +73,11 @@ end --}}}
 
 function M.gruvbox_highlights() --{{{
 	local palette = vim.g.gruvbox_material_palette
-	-- Remove float background, fix compe backgroup
+	-- Remove float background, fix compe background
 	highlight("Normalfloat", "NONE", "NONE")
 	highlight("Floatborder", palette.bg_blue[1], "NONE")
-	highlight("CompeDocumentation", nil, palette.bg3[1])
-	highlight("CompeDocumentationBorder", nil, palette.bg3[1])
+	highlight("CmpDocumentation", nil, palette.bg3[1])
+	highlight("CmpDocumentationBorder", nil, palette.bg3[1])
 	-- SpellBad
 	highlight("SpellBad", palette.red[1], "NONE", "bold")
 	-- Telescope
@@ -100,7 +100,7 @@ function M.gruvbox_highlights() --{{{
 	highlight("TSConstructor", palette.yellow[1])
 	-- Fold
 	highlight("Folded", palette.grey1[1], nil, "italic")
-	highlight("FoldColumn", palette.bg_blue[1], palette.bg2[1])
+	highlight("FoldColumn", palette.bg_blue[1], palette.bg0[1])
 	-- CursorLineNr
 	highlight("CursorLineNr", palette.bg_blue[1], nil, "bold")
 end --}}}

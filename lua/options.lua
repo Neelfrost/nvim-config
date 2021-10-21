@@ -42,7 +42,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Enable completion for vim-compe
-vim.opt.completeopt = { "menuone", "noselect" }
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
 -- Show max. 10 completions
 vim.opt.pumheight = 10
 
