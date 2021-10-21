@@ -41,3 +41,43 @@ vim.g.vimtex_quickfix_ignore_filters = {
 	"Package hyperref Warning: Token not allowed in a PDF string",
 	[[Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in paragraph at lines]],
 }
+vim.g.vimtex_fold_types = {
+	cmd_addplot = {
+		cmds = { "addplot[+3]?" },
+	},
+	cmd_multi = {
+		cmds = {
+			"%(re)?new%(command|environment)",
+			"providecommand",
+			"presetkeys",
+			"Declare%(Multi|Auto)?CiteCommand",
+			"Declare%(Index)?%(Field|List|Name)%(Format|Alias)",
+		},
+	},
+	cmd_single = {
+		cmds = { "hypersetup", "tikzset", "pgfplotstableread", "lstset" },
+	},
+	cmd_single_opt = {
+		cmds = { "usepackage", "includepdf" },
+	},
+	comments = {
+		enabled = 0,
+	},
+	env_options = vim.empty_dict(),
+	envs = {
+		blacklist = {},
+		whitelist = { "splitcols" },
+	},
+	items = {
+		enabled = 0,
+	},
+	markers = vim.empty_dict(),
+	preamble = {
+		enabled = 0,
+	},
+	sections = {
+		parse_levels = 0,
+		parts = { "appendix", "frontmatter", "mainmatter", "backmatter" },
+		sections = { "%(add)?part", "%(chapter|addchap)", "subsection", "subsubsection" },
+	},
+}

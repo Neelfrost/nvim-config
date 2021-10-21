@@ -51,7 +51,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- Folding configuration
-vim.opt.foldtext = "v:lua.custom_fold_text()"
+vim.opt.foldtext = "CustomFoldText()"
 vim.opt.viewoptions:remove("options")
 vim.opt.foldmethod = "marker"
 
@@ -59,7 +59,7 @@ vim.opt.foldmethod = "marker"
 vim.opt.list = true
 
 -- Display chars
-vim.opt.fillchars = { eob = "-", fold = " ", vert = "│", foldclose = "", foldopen = "" }
+vim.opt.fillchars = { eob = "-", fold = " ", vert = "│", foldsep = " ", foldclose = "", foldopen = "" }
 vim.opt.listchars = vim.opt.listchars + { tab = "··", lead = "·", eol = "﬋" }
 
 -- Use en_us to spellcheck
@@ -72,7 +72,7 @@ vim.opt.hidden = true
 vim.opt.laststatus = 2
 
 -- Fold column
-vim.opt.foldcolumn = "2"
+vim.opt.foldcolumn = "auto:3"
 
 -- No redraw during macro, regex execution
 vim.opt.lazyredraw = true

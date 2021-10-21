@@ -69,37 +69,6 @@ function _G.launch_ext_prog(prog, args)
 	vim.cmd([[redraw!]])
 end
 
--- Custom foldtext
-function _G.custom_fold_text()
-	local matches = {
-		["^"] = "%^",
-		["$"] = "%$",
-		["("] = "%(",
-		[")"] = "%)",
-		["%"] = "%%",
-		["."] = "%.",
-		["["] = "%[",
-		["]"] = "%]",
-		["*"] = "%*",
-		["+"] = "%+",
-		["-"] = "%-",
-		["?"] = "%?",
-	}
-	local line = vim.fn.getline(vim.v.foldstart)
-	local comment = vim.bo.commentstring:gsub("%s*%%s", ""):gsub(".", matches)
-	-- Remove markers
-	line = line:gsub("%{%{%{", "")
-	-- Remove commentstring
-	line = line:gsub(comment, "")
-	-- Remove "-" in case of divider
-	line = line:gsub("%s-%s", " ")
-	line = line:gsub("-", "")
-	-- Remove spaces and tabs
-	line = line:gsub("%c", " "):gsub("%s+", " ")
-	local line_count = vim.v.foldend - vim.v.foldstart + 1
-	return "   ⋯ " .. line .. ": " .. line_count .. " lines ⋯"
-end
-
 -- Reloading lua modules using Telescope
 -- taken and modified from:
 -- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
@@ -126,13 +95,4 @@ function _G.set_servername()
 	file:close()
 end
 
--- Sort lines based on length
-vim.cmd([[
-    function! SortLines() range
-    execute a:firstline . "," . a:lastline . 's/^\(.*\)$/\=strdisplaywidth( submatch(0) ) . " " . submatch(0)/'
-    execute a:firstline . "," . a:lastline . 'sort n'
-    execute a:firstline . "," . a:lastline . 's/^\d\+\s//'
-    redraw!
-    endfunction
-]])
-vim.cmd([[command! -range Sort <line1>,<line2>call SortLines()]])
+vim.cmd("source ~/AppData/Local/nvim/lua/utils.vim")

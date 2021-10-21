@@ -3,6 +3,11 @@
 setlocal spell
 setlocal linebreak
 setlocal wrap
+setlocal shiftwidth=2
+setlocal softtabstop=2
+setlocal tabstop=2
+setlocal foldmethod=expr
+setlocal foldexpr=vimtex#fold#level(v:lnum)
 
 " --------------------------------- Functions -------------------------------- "
 
@@ -11,23 +16,23 @@ setlocal wrap
 function! AutoItem()
     let [end_lnum, end_col] = searchpairpos('\\begin{', '', '\\end{', 'nW')
     if match(getline(end_lnum), '\(itemize\|enumerate\|description\)') != -1
-        return "\\item "
+        return '\item '
     elseif match(getline(end_lnum), '\(tasks\)') != -1
-        return "\\task "
+        return '\task '
     else
-        return ""
+        return ''
     endif
 endfunction
 
 function! GetLine()
-    let list = ['\\task $', '\item $']
+    let list = ['\\task $', '\\item $']
     return getline('.') =~ list[0] || getline('.') =~ list[1]
 endfunction
 
 " Replace \ with / in LaTeX input fields
 function! FixInputs()
     let l:save = winsaveview()
-    keeppatterns %s/\(input\|include\)\({.\+\)\\\(.\+}\)/\1\2\/\3/ge "
+    keeppatterns %s/\(input\|include\)\({.\+\)\\\(.\+}\)/\1\2\/\3/ge
     call winrestview(l:save)
 endfunction
 
@@ -64,24 +69,33 @@ for folder, _, files in os.walk(cur_tex_path):
                 ".fls",
                 "indent.log",
                 ".fdb_latexmk",
+                "synctex(busy)",
             )
         ):
             os.remove(os.path.join(folder, file))
 EOF
-echo "Auxiliary files cleaned!"
+echo 'Auxiliary files cleaned!'
 endfunction
 
 " ------------------------------- Autocommands ------------------------------- "
 
 augroup TEX_AUTOCOMMANDS
     autocmd!
+    " Cmp
+    autocmd FileType tex lua require('cmp').setup.buffer {
+    \   sources = {
+    \         { name = 'omni', keyword_pattern = vim.g['vimtex#re#neocomplete'] },
+    \         { name = 'ultisnips' },
+    \         { name = 'buffer' },
+    \      },
+    \   }
     " Fix inputs
     autocmd BufWritePre *.tex :call FixInputs()
     " Set and Restore indent
     autocmd BufEnter *.tex :call SetIndentLine()
     autocmd BufLeave * :call ResetIndentLine()
     " Clean up auxiliary files on quit
-    autocmd User VimtexEventQuit silent! VimtexStopAll
+    autocmd User VimtexEventQuit :silent! VimtexStopAll
     autocmd User VimtexEventQuit :silent! call CleanAuxFiles()
 augroup END
 
@@ -91,11 +105,11 @@ augroup END
 nnoremap <silent> <Leader>lc :call CleanAuxFiles()<CR>
 
 " Auto \item, \task
-inoremap <buffer> <expr> <CR> GetLine()
+inoremap <expr> <CR> GetLine()
             \ ? '<C-w><C-w>'
-            \ : (col(".") < col("$") ? '<CR>' : '<CR>'.AutoItem() )
-nnoremap <expr> o "o".AutoItem()
-nnoremap <expr> O "O".AutoItem()
+            \ : (col('.') < col('$') ? '<CR>' : '<CR>' . AutoItem())
+nnoremap <expr> o 'o' . AutoItem()
+nnoremap <expr> O 'O' . AutoItem()
 
 " Insert \item, \task on Numpad Enter
 imap <kEnter> <C-o>o
