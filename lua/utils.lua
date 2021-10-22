@@ -95,4 +95,29 @@ function _G.set_servername()
 	file:close()
 end
 
+-- Given a path "C:\Users\Neel\AppData\Local\nvim\lua\plugins\config\telescope.lua"
+-- Return "plugins.config.telescope"
+function _G.get_module_name(file_path)
+	-- Path to the lua folder
+	local path_to_lua = CONFIG_PATH .. "\\lua\\"
+	local module_name
+	module_name = file_path:gsub(path_to_lua, "")
+	module_name = module_name:gsub("%.lua", "")
+	module_name = module_name:gsub("\\", ".")
+	module_name = module_name:gsub("%.init", "")
+	return module_name
+end
+
+-- Save and reload a module
+function _G.save_reload_module()
+	local file_path = vim.fn.expand("%:p")
+	local module = get_module_name(file_path)
+	-- Save
+	vim.cmd("update!")
+	-- Reload
+	plenary_reload(module)
+	-- Print
+	print(module .. " Reloaded.")
+end
+
 vim.cmd("source ~/AppData/Local/nvim/lua/utils.vim")

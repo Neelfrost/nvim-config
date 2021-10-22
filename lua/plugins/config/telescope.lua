@@ -96,31 +96,21 @@ end --}}}
 -- taken and modified from:
 -- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
 M.reload_modules = function() --{{{
-	-- Set the path to the lua folder
-	local path = CONFIG_PATH .. "\\lua\\"
-
-	-- Given a path "C:\Users\Neel\AppData\Local\nvim\lua\plugins\config\telescope.lua"
-	-- Return "plugins.config.telescope"
-	local function get_module_name(s)
-		local module_name
-		module_name = s:gsub(path, "")
-		module_name = module_name:gsub("%.lua", "")
-		module_name = module_name:gsub("\\", ".")
-		module_name = module_name:gsub("%.init", "")
-		return module_name
-	end
-
 	local actions_state = require("telescope.actions.state")
 
 	local opts = {
-		cwd = path,
+		cwd = CONFIG_PATH .. "\\lua\\",
 		prompt_title = "Reload Neovim Modules",
 		attach_mappings = function(prompt_bufnr, map)
 			-- Reload module
-			local reload_module_map = function()
+			local reload_module_map = function(should_close)
 				local entry = actions_state.get_selected_entry()
 				local name = get_module_name(entry.value)
-				require("telescope.actions").close(prompt_bufnr)
+
+				if should_close then
+					require("telescope.actions").close(prompt_bufnr)
+				end
+
 				-- Reload filename
 				plenary_reload(name)
 				-- Print filename
@@ -128,9 +118,13 @@ M.reload_modules = function() --{{{
 			end
 
 			-- Map <Enter> to reload module
-			require("telescope.actions.set").select:replace(reload_module_map)
+			require("telescope.actions.set").select:replace(function()
+				reload_module_map(true)
+			end)
 			-- Map <C-r> to reload module
-			map("i", "<C-r>", reload_module_map)
+			map("i", "<C-r>", function()
+				reload_module_map()
+			end)
 
 			return true
 		end,
