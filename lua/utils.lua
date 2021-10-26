@@ -102,6 +102,13 @@ function _G.get_module_name(file_path)
 	local path_to_lua = CONFIG_PATH .. "\\lua\\"
 	local module_name
 	module_name = file_path:gsub(path_to_lua, "")
+
+	-- In the case that current file is not within "lua" folder
+	if module_name == file_path then
+		print("Not a valid module.")
+		return nil
+	end
+
 	module_name = module_name:gsub("%.lua", "")
 	module_name = module_name:gsub("\\", ".")
 	module_name = module_name:gsub("%.init", "")
@@ -112,12 +119,16 @@ end
 function _G.save_reload_module()
 	local file_path = vim.fn.expand("%:p")
 	local module = get_module_name(file_path)
-	-- Save
-	vim.cmd("update!")
-	-- Reload
-	plenary_reload(module)
-	-- Print
-	print(module .. " Reloaded.")
+
+	-- Only reload if current file is a valid module
+	if module then
+		-- Save
+		vim.cmd("update!")
+		-- Reload
+		plenary_reload(module)
+		-- Print
+		print(module .. " Reloaded.")
+	end
 end
 
 vim.cmd("source ~/AppData/Local/nvim/lua/utils.vim")
