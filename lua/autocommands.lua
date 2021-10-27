@@ -6,7 +6,7 @@ vim.cmd([[autocmd BufWritePre * silent! lua perform_cleanup()]])
 
 -- Highlight on yank
 vim.cmd(
-	[[autocmd TextYankPost * lua vim.highlight.on_yank { higroup = 'Visual', timeout = 500, on_visual = true, on_macro = true }]]
+    [[autocmd TextYankPost * lua vim.highlight.on_yank { higroup = 'Visual', timeout = 500, on_visual = true, on_macro = true }]]
 )
 
 -- Automatically reload the file if it is changed outside of nvim
@@ -68,13 +68,3 @@ vim.cmd([[
         autocmd VimEnter * lua set_servername()
     augroup END
 ]])
-
--- vim.cmd([[
---     augroup TERM_POWERSHELL
---         let &shell = has('win32') ? 'powershell' : 'pwsh'
---         let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
---         let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
---         let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
---         set shellquote= shellxquote=
---     augroup END
--- ]])
