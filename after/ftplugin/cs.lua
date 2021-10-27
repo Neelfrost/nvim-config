@@ -1,11 +1,3 @@
--- Format on save
-vim.cmd([[
-    augroup CS_FORMAT
-        autocmd!
-        autocmd BufWritePre *.cs silent! execute 'lua vim.lsp.buf.formatting()'
-    augroup END
-]])
-
 local n_opts = { noremap = true }
 -- Run C# console app
 -- With terminal
