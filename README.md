@@ -1,4 +1,5 @@
-<p align="center">Just another visually appealing, opinionated Neovim IDE. Currently supports LaTeX, Python, Lua, and C#.</p>
+<p align="center">Just another visually appealing, opinionated Neovim IDE.</p>
+<p align="center">Currently supports LaTeX, Python, Lua, and C#.</p>
 
 # Table of Contents <!-- omit in toc -->
 
@@ -24,9 +25,13 @@
 Using [Neovide](https://github.com/neovide/neovide) + [Gruvbox Material](https://github.com/sainnhe/gruvbox-material) + [Caskaydia Cove NF](https://www.nerdfonts.com/font-downloads)
 
 ![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.png "Dashboard Start Screen")
-![explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.png "NvimTree File Explorer")
-![navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.png "Telescope Finder")
-![tex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.png "LaTeX Preview")
+![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.png "NvimTree File Explorer")
+![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.png "Telescope Fuzzy Finder")
+![statusline](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/statusline.png "Lualine statusline")
+
+> From left to right: Mode, Wrap, Paste, File Name, Language Server, File Encoding, File Format, Mixed Indent, Line, Column Number, Total Lines, Git Branch
+
+![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.png "LaTeX Preview")
 ![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/py.png "Python Preview")
 
 # Installation ⚡
@@ -43,7 +48,7 @@ The following instructions are for Windows (powershell). **An admin prompt is re
 
     ```powershell
     choco install git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration" -y;
-    choco install neovim python universal-ctags sumatrapdf.install miktex.install which strawberryperl -y; RefreshEnv.cmd; exit
+    choco install neovim python universal-ctags sumatrapdf.install miktex.install which strawberryperl make -y; RefreshEnv.cmd; exit
     ```
 
 3. Configure python.
@@ -170,9 +175,11 @@ Use `:checkhealth` to check for errors if any.
 
 General
 
+-   Clean folds.
 -   Smart display line movement.
 -   Resume cursor position when re-opening a file.
 -   Auto update file if changed outside of neovim.
+-   Fix mixed indents (tabs are converted to spaces).
 -   Persistent cursor positions when switching buffers.
 -   Ability to load/delete sessions using telescope.nvim.
 -   Ability to search custom directories in telescope.nvim.
@@ -184,8 +191,11 @@ LaTeX
 
 -   Extensive snippets for LaTeX.
 -   Better auxiliary file cleaner.
+-   Sectional folding.
 -   Automatically substitute `\` in imports (include, input) with `/` on save.
 -   Start newline with \item (or \task) if inside a list environment when pressing <kbd>Enter</kbd>, <kbd>o</kbd> or <kbd>O</kbd>.
+
+> Note: nvim-cmp's omni source is broken, use <kbd>Ctrl O</kbd> to trigger completion of ref, cite, figure etc.
 
 ## Plugins Used ⚓
 
@@ -194,7 +204,7 @@ LaTeX
 -   Snippet engine: [ultisnips](https://github.com/SirVer/ultisnips)
 -   Repeat actions: [vim-repeat](https://github.com/tpope/vim-repeat)
 -   Faster navigation: [hop.nvim](https://github.com/phaazon/hop.nvim)
--   Code completion: [nvim-compe](https://github.com/hrsh7th/nvim-compe)
+-   Code completion: [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
 -   Better quickfix: [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)
 -   Aligning: [vim-easy-align](https://github.com/junegunn/vim-easy-align)
 -   Commenting: [nvim-comment](https://github.com/terrortylor/nvim-comment)
@@ -206,22 +216,23 @@ LaTeX
 -   Bracket operations: [vim-surround](https://github.com/tpope/vim-surround)
 -   Lua support: [sumneko_lua](https://github.com/sumneko/lua-language-server)
 -   Language server: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
--   Syntax checking and formatting: [ale](https://github.com/dense-analysis/ale)
+-   Syntax checking and formatting: [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
 -   Startup time: [vim-startuptime](https://github.com/dstein64/vim-startuptime)
 -   Open URLs and more: [vim-open-url](https://github.com/dhruvasagar/vim-open-url)
 -   Colorizer: [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
 -   Tag management: [vim-gutentags](https://github.com/ludovicchabant/vim-gutentags)
--   Refactoring: [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim)
 -   Bufferline and navigation: [cokeline.nvim](https://github.com/noib3/cokeline.nvim)
 -   Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
 -   Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 -   Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
 -   Indent lines: [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 -   Fix cursorhold autocmd: [FixCursorHold.nvim](https://github.com/antoinemadec/FixCursorHold.nvim)
+-   Fast folds: [FastFold](https://github.com/antoinemadec/Konfekt/FastFold)
 -   Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
 -   Snippet collection: [vim-snippets](https://github.com/honza/vim-snippets) _(disabled by default)_
 -   Markdown preview: [nvim-markdown-preview](https://github.com/davidgranstrom/nvim-markdown-preview)
 -   Telescope frecency picker: [telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim)
+-   Telescope fzf sorter: [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
 -   Icons for nvim-tree, dashboard, telescope, bufferline, and statusline: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
 -   File navigation: [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua), [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
 -   Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
@@ -244,9 +255,9 @@ LaTeX
 | <kbd>\\\\t</kbd>          | Normal               | Open windows terminal at cwd                       |
 | <kbd>\\\\e</kbd>          | Normal               | Open explorer at cwd                               |
 | <kbd>\\\\c</kbd>          | Normal               | Open current file in VSCode                        |
-| <kbd>\tf</kbd>            | Normal               | Open telescope.nvim files browser                  |
-| <kbd>\tr</kbd>            | Normal               | Open telescope.nvim recent files browser           |
-| <kbd>\ts</kbd>            | Normal               | Open telescope.nvim session browser                |
+| <kbd>tf</kbd>             | Normal               | Open telescope.nvim files browser                  |
+| <kbd>tr</kbd>             | Normal               | Open telescope.nvim recent files browser           |
+| <kbd>ts</kbd>             | Normal               | Open telescope.nvim session browser                |
 | <kbd>\q</kbd>             | Normal               | Toggle quickfix                                    |
 | <kbd>\h</kbd>             | Normal               | Disable search highlight                           |
 | <kbd>\v</kbd>             | Normal/Insert        | Paste from system clipboard in paste mode          |
@@ -276,6 +287,7 @@ LaTeX
 | <kbd>Ctrl f</kbd>         | Normal               | Format document                                    |
 | <kbd>Ctrl h(jkl)</kbd>    | Normal               | Move to window to the left (down, up, right)       |
 | <kbd>Ctrl s</kbd>         | Normal               | Save current file                                  |
+| <kbd>Ctrl Shift s</kbd>   | Normal               | Save and reload module (current file)              |
 | <kbd>Ctrl v</kbd>         | Insert               | Paste from system clipboard                        |
 | <kbd>Ctrl z</kbd>         | Insert               | Correct preceding misspelt word                    |
 | <kbd>Ctrl z</kbd>         | Normal               | Correct misspelt word under cursor                 |
