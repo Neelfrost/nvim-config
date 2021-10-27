@@ -81,28 +81,16 @@ M.current_mode = function() --{{{
 	end
 
 	-- Return mode
+	-- return plugins["mode"] .. M.wrap()
 	return plugins["mode"]
 end --}}}
 
-M.git_branch = function() --{{{
-	local icon = " "
-	local git_branch = require("lualine.components.branch.git_branch")
-	git_branch.init()
-
-	local branch = git_branch.get_branch()
-
-	if branch ~= "" and not M.buffer_is_plugin() then
-		return icon .. branch
-	end
-	return ""
-end --}}}
-
 M.paste = function() --{{{
-	return vim.o.paste and "PASTE" or ""
+	return vim.o.paste and "" or ""
 end --}}}
 
 M.wrap = function() --{{{
-	return vim.o.wrap and "WRAP" or ""
+	return vim.o.wrap and "" or ""
 end --}}}
 
 M.spell = function() --{{{
@@ -126,11 +114,9 @@ M.file_encoding = function() --{{{
 end --}}}
 
 M.buffer_percent = function() --{{{
-	return fn.winwidth(0) > half_winwidth and string.format(
-		"並%d%% of %d",
-		(100 * fn.line(".") / fn.line("$")),
-		fn.line("$")
-	) or ""
+	return fn.winwidth(0) > half_winwidth
+			and string.format("並%d%% of %d", (100 * fn.line(".") / fn.line("$")), fn.line("$"))
+		or ""
 end --}}}
 
 M.line_info = function() --{{{
@@ -146,7 +132,7 @@ M.line_info = function() --{{{
 end --}}}
 
 M.total_lines = function() --{{{
-	return not M.buffer_is_plugin() and string.format("%d ﲯ", fn.line("$")) or ""
+	return not M.buffer_is_plugin() and string.format("%d ", fn.line("$")) or ""
 end --}}}
 
 M.lsp_client_name = function() --{{{
@@ -180,17 +166,25 @@ M.lsp_status = function() --{{{
 	return fn.winwidth(0) > half_winwidth and table.concat(status, " | ") or ""
 end --}}}
 
+M.mixed_indent = function() --{{{
+	local space_indent = vim.fn.search([[\v^ +]], "nw") > 0
+	local tab_indent = vim.fn.search([[\v^\t+]], "nw") > 0
+	local mixed = (space_indent and tab_indent) or vim.fn.search([[\v^(\t+ | +\t)]], "nw") > 0
+	return mixed and "" or ""
+end --}}}
+
 M.theme_transparent = function() --{{{
 	local colors = {
 		darkgray = "#1d1f21",
 		gray = "#3f4b59",
-		innerbg = "NONE",
-		outerbg = "NONE",
+		innerbg = nil,
+		outerbg = nil,
 		outerfg = "#14191f",
-		insert = "#99c794",
-		normal = "#6699cc",
-		replace = "#ec5f67",
-		visual = "#f99157",
+		normal = "#4f9cfe",
+		insert = "#a9b665",
+		visual = "#e78a4e",
+		replace = "#ea6962",
+		command = "#d8a657",
 	}
 	return {
 		inactive = {
@@ -219,7 +213,7 @@ M.theme_transparent = function() --{{{
 			c = { fg = colors.gray, bg = colors.innerbg },
 		},
 		command = {
-			a = { fg = colors.darkgray, bg = colors.insert, gui = "bold" },
+			a = { fg = colors.darkgray, bg = colors.command, gui = "bold" },
 			b = { fg = colors.gray, bg = colors.outerfg },
 			c = { fg = colors.gray, bg = colors.innerbg },
 		},

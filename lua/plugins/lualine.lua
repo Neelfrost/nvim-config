@@ -7,11 +7,12 @@ require("lualine").setup({
 		component_separators = { left = "│", right = "│" },
 	},
 	sections = {
-		lualine_a = { { components.current_mode }, { components.wrap }, { components.paste } },
-		lualine_b = { { components.file_name }, { components.lsp_status } },
+		lualine_a = { { components.current_mode } },
+		lualine_b = { { components.wrap }, { components.paste }, { components.file_name }, { components.lsp_status } },
 		lualine_c = { { components.spell }, { components.file_encoding }, { components.file_format } },
-		lualine_x = {},
-		lualine_y = {
+		lualine_x = { components.mixed_indent },
+		lualine_y = { { components.line_info }, { components.total_lines } },
+		lualine_z = {
 			{
 				"branch",
 				icon = "",
@@ -19,9 +20,7 @@ require("lualine").setup({
 					return not components.buffer_is_plugin()
 				end,
 			},
-			{ components.line_info },
 		},
-		lualine_z = { { components.total_lines } },
 	},
 	inactive_sections = {
 		lualine_a = {},
