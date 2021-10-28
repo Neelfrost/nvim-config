@@ -1,7 +1,7 @@
 local M = {}
 
 local fn = vim.fn
-local half_winwidth = 88
+local half_winwidth = 91
 
 M.buffer_is_plugin = function() --{{{
 	local plugins = { "NvimTree", "packer", "dashboard" }
@@ -122,9 +122,9 @@ end --}}}
 M.line_info = function() --{{{
 	if not M.buffer_is_plugin() then
 		if fn.winwidth(0) > half_winwidth then
-			return string.format("Ln %d, Col %-2d", fn.line("."), fn.col("."))
+			return string.format("Ln %d, Col %d", fn.line("."), fn.col("."))
 		else
-			return string.format("%d : %-2d", fn.line("."), fn.col("."))
+			return string.format("%d : %d", fn.line("."), fn.col("."))
 		end
 	else
 		return ""
@@ -135,35 +135,45 @@ M.total_lines = function() --{{{
 	return not M.buffer_is_plugin() and string.format("%d ", fn.line("$")) or ""
 end --}}}
 
-M.lsp_client_name = function() --{{{
-	local clients = vim.lsp.get_active_clients()
-	for _, client in pairs(clients) do
-		local client_filetype = client.config.filetypes[1]
-		local client_name = client.name
-		if client_filetype == vim.bo.filetype then
-			return client_name
+M.lsp_client_names = function() --{{{
+	-- Get all active clients in the buffer
+	local clients = vim.lsp.buf_get_clients()
+	local client_names = {}
+
+	-- Return csv of all clients current window width > half window width
+	if fn.winwidth(0) > half_winwidth then
+		for _, client in pairs(clients) do
+			table.insert(client_names, client.name)
+		end
+		return table.concat(client_names, ", ")
+	else
+		-- Return "main" client
+		for _, client in pairs(clients) do
+			if #clients == 1 then
+				return client.name
+			else
+				if client.name ~= "null-ls" then
+					return client.name
+				end
+			end
 		end
 	end
-	return ""
 end --}}}
 
 M.lsp_status = function() --{{{
 	-- https://github.com/samrath2007/kyoto.nvim/blob/main/lua/plugins/statusline.lua
-	local messages = vim.lsp.util.get_progress_messages()
-	local client_name = M.lsp_client_name()
+	local lsp_status = vim.lsp.util.get_progress_messages()[1]
+	local client_names = M.lsp_client_names()
 
 	-- Show client if client has been loaded
-	if #messages == 0 then
-		return client_name
+	if not lsp_status then
+		return not M.buffer_is_plugin() and client_names or ""
 	end
 
-	-- Show client load progress
-	local status = {}
-	for _, msg in pairs(messages) do
-		table.insert(status, (msg.percentage or 0) .. "%% " .. (msg.title or ""))
-	end
-
-	return fn.winwidth(0) > half_winwidth and table.concat(status, " | ") or ""
+	-- Show client status
+	local status = (lsp_status.percentage and (lsp_status.percentage .. "%% ") or lsp_status.message)
+		.. lsp_status.title
+	return not M.buffer_is_plugin() and status or ""
 end --}}}
 
 M.mixed_indent = function() --{{{
