@@ -2,7 +2,8 @@
 vim.cmd([[
     augroup PACKER_COMPILE_ONCHANGE
         autocmd!
-        autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile | colorscheme gruvbox-material
+        autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile
+        autocmd User PackerCompileDone colorscheme gruvbox-material
     augroup END
 ]])
 
@@ -65,8 +66,15 @@ return packer.startup(function()
     -- --------------------------------- LSP -------------------------------- --
     use({
         "neovim/nvim-lspconfig",
-        after = "cmp-nvim-lsp",
+        after = "nvim-cmp",
+        requires = { "hrsh7th/cmp-nvim-lsp", "jose-elias-alvarez/null-ls.nvim" },
+    })
+    use({
+        "jose-elias-alvarez/null-ls.nvim",
+        after = "nvim-cmp",
+        requires = { "hrsh7th/cmp-nvim-lsp", "jose-elias-alvarez/null-ls.nvim" },
         config = function()
+            require("plugins.null_ls")
             require("plugins.lspconfig")
         end,
     })
@@ -75,12 +83,6 @@ return packer.startup(function()
         after = "nvim-lspconfig",
         config = function()
             require("plugins.others").lsp_signature()
-        end,
-    })
-    use({
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("plugins.null_ls")
         end,
     })
     use({
@@ -94,28 +96,22 @@ return packer.startup(function()
         config = function()
             require("plugins.cmp")
         end,
-    })
-    use({
-        "quangnguyen30192/cmp-nvim-ultisnips",
-        after = "nvim-cmp",
-    })
-    use({
-        "hrsh7th/cmp-nvim-lsp",
-        after = "nvim-cmp",
-    })
-    use({
-        "hrsh7th/cmp-buffer",
-        after = "nvim-cmp",
-    })
-    use({
-        "hrsh7th/cmp-omni",
-        after = "nvim-cmp",
+        requires = {
+            { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
+            { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", requires = "neovim/nvim-lspconfig" },
+            { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+            -- Wait for fix
+            -- { "hrsh7th/cmp-omni", after="nvim-cmp"},
+        },
     })
 
     -- ------------------------------ Features ------------------------------ --
     use({
         "dstein64/vim-startuptime",
         cmd = "StartupTime",
+        config = function()
+            vim.g.startuptime_tries = 5
+        end,
     })
     use({
         "skywind3000/asyncrun.extra",
@@ -155,10 +151,12 @@ return packer.startup(function()
         end,
     })
     use({
-        "davidgranstrom/nvim-markdown-preview",
-        ft = { "markdown" },
+        "iamcco/markdown-preview.nvim",
+        run = "cd app && yarn install",
+        cmd = "MarkdownPreview",
         config = function()
-            vim.g.nvim_markdown_preview_theme = "github"
+            -- https://github.com/wbthomason/packer.nvim/issues/620
+            vim.cmd("doautocmd mkdp_init BufEnter")
         end,
     })
 
@@ -187,22 +185,21 @@ return packer.startup(function()
     -- ------------------------------ Telescope ----------------------------- --
     use({
         "nvim-telescope/telescope.nvim",
+        requires = "nvim-lua/plenary.nvim",
         config = function()
             require("plugins.telescope")
         end,
-        requires = "nvim-lua/plenary.nvim",
     })
     use({
         "nvim-telescope/telescope-frecency.nvim",
+        requires = "tami5/sqlite.lua",
         config = function()
             vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
             require("telescope").load_extension("frecency")
         end,
-        requires = { "tami5/sqlite.lua" },
     })
     use({
         "fhill2/telescope-ultisnips.nvim",
-        cmd = "Telescope ultisnips",
     })
     use({
         "nvim-telescope/telescope-fzf-native.nvim",
@@ -258,22 +255,24 @@ return packer.startup(function()
     })
     use({
         "antoinemadec/FixCursorHold.nvim",
-        run = function()
+        event = "BufRead",
+        config = function()
             vim.g.curshold_updatime = 500
         end,
     })
     use({
         "Konfekt/FastFold",
+        event = "BufRead",
         config = function()
             require("plugins.others").fastfold()
         end,
     })
     -- use({
-    -- 	"honza/vim-snippets",
+    --     "honza/vim-snippets",
     -- })
 
     -- Automatic initial plugin installation
-    if vim.fn.len(vim.fn.globpath(PACKER_PATH, "*", 0, 1)) == 1 then
+    if vim.fn.len(vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1)) == 1 then
         vim.cmd([[PackerSync]])
     end
 end)
