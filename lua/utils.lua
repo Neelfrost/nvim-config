@@ -25,7 +25,7 @@ function _G.perform_cleanup()
     end
     if require("plugins.config.lualine").mixed_indent() ~= "" then
         vim.cmd([[
-            keeppatterns %s/\v^\t/    /e
+            keeppatterns %s/\v\t/    /e
         ]])
     end
     vim.fn.winrestview(view)
