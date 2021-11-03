@@ -84,7 +84,6 @@ augroup TEX_AUTOCOMMANDS
     " Cmp
     autocmd FileType tex lua require('cmp').setup.buffer {
     \   sources = {
-    \         { name = 'omni', keyword_pattern = vim.g['vimtex#re#neocomplete'] },
     \         { name = 'ultisnips' },
     \         { name = 'buffer' },
     \      },
