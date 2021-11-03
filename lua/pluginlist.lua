@@ -141,11 +141,9 @@ return packer.startup(function()
         end,
     })
     use({
-        "Neelfrost/dashboard-nvim",
-        event = "VimEnter",
-        cmd = { "Dashboard", "SessionSave", "SessionLoad" },
+        "goolord/alpha-nvim",
         config = function()
-            require("plugins.dashboard")
+            require("plugins.alpha")
         end,
     })
     use({
