@@ -49,11 +49,8 @@ return packer.startup(function()
     use({
         "lukas-reineke/indent-blankline.nvim",
         event = "BufRead",
-        setup = function()
-            require("plugins.indentline").setup()
-        end,
         config = function()
-            require("plugins.indentline").config()
+            require("plugins.indentline")
         end,
     })
     use({

@@ -88,9 +88,6 @@ function M.gruvbox_highlights() --{{{
     highlight("TelescopePromptBorder", palette.bg_blue[1], "NONE")
     highlight("TelescopeResultsBorder", palette.bg_blue[1], "NONE")
     highlight("TelescopePreviewBorder", palette.bg_blue[1], "NONE")
-    -- Dashboard
-    highlight("dashboardHeader", palette.bg_blue[1])
-    highlight("dashboardFooter", palette.red[1])
     -- Nvimtree
     highlight("NvimTreeFolderName", palette.bg_blue[1])
     highlight("NvimTreeFolderIcon", palette.bg_blue[1])
