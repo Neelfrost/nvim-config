@@ -41,11 +41,6 @@ function M.treesitter()
             enable = true,
             additional_vim_regex_highlighting = false,
         },
-    })
-end
-
-function M.ts_rainbow()
-    require("nvim-treesitter.configs").setup({
         rainbow = {
             enable = true,
             extended_mode = true, -- Highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
@@ -86,6 +81,14 @@ function M.lsp_signature()
             border = "single",
         },
     })
+end
+
+function M.hop()
+    require("hop").setup()
+
+    local opts = { noremap = true, silent = true }
+    vim.api.nvim_set_keymap("n", "S", "<cmd>HopChar2<CR>", opts)
+    vim.api.nvim_set_keymap("n", "f", "<cmd>HopChar1<CR>", opts)
 end
 
 return M

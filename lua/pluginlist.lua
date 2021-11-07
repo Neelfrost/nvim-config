@@ -27,17 +27,16 @@ return packer.startup(function()
     -- -------------------------------- Looks ------------------------------- --
     use({
         "nvim-treesitter/nvim-treesitter",
+        event = "BufRead",
         run = ":TSUpdate",
-        config = function()
-            require("plugins.others").treesitter()
-        end,
+        requires = "nvim-ts-rainbow",
     })
     use({
         "p00f/nvim-ts-rainbow",
-        event = "BufRead",
         after = "nvim-treesitter",
+        requires = "nvim-treesitter",
         config = function()
-            require("plugins.others").ts_rainbow()
+            require("plugins.others").treesitter()
         end,
     })
     use({
@@ -240,7 +239,7 @@ return packer.startup(function()
         "phaazon/hop.nvim",
         event = "BufRead",
         config = function()
-            require("plugins.hop")
+            require("plugins.others").hop()
         end,
     })
     use({
