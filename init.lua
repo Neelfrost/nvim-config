@@ -17,8 +17,9 @@ ICON_INFO = "I"
 ICON_HINT = "H"
 
 -- General config
+vim.cmd("source ~/AppData/Local/nvim/lua/utils.vim")
+vim.cmd("source ~/AppData/Local/nvim/lua/autocommands.vim")
 require("options")
 require("utils")
-require("autocommands")
 require("mappings")
 require("pluginlist")

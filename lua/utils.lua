@@ -45,8 +45,8 @@ function _G.auto_restore_win_view()
     local buf = vim.fn.bufnr("%")
     if vim.w.saved_buf_view and table_has_key(vim.w.saved_buf_view, buf) then
         local view = vim.fn.winsaveview()
-        local atStartOfFile = view.lnum == 1 and view.col == 0
-        if atStartOfFile and not vim.o.diff then
+        local start_of_file = view.lnum == 1 and view.col == 0
+        if start_of_file and not vim.o.diff then
             vim.fn.winrestview(vim.w.saved_buf_view[buf])
         end
         vim.api.nvim_win_del_var("saved_buf_view")
@@ -88,16 +88,6 @@ if pcall(require, "plenary") then
     end
 end
 
--- Setup neovim-remote
--- for inverse search in vimtex
--- https://github.com/lervag/vimtex/blob/master/doc/vimtex.txt
-function _G.set_servername()
-    local server_file = vim.fn.expand("$TEMP") .. "\\curnvimserver.txt"
-    local file = io.open(server_file, "w+")
-    file:write(vim.v.servername)
-    file:close()
-end
-
 -- Given a path "C:\Users\Neel\AppData\Local\nvim\lua\plugins\config\telescope.lua"
 -- Return "plugins.config.telescope"
 function _G.get_module_name(file_path)
@@ -133,5 +123,3 @@ function _G.save_reload_module()
         print(module .. " Reloaded.")
     end
 end
-
-vim.cmd("source ~/AppData/Local/nvim/lua/utils.vim")
