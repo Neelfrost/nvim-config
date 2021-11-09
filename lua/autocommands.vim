@@ -1,7 +1,9 @@
 " Set current file's dir to cwd
+" Set window title
 augroup SET_CWD
     autocmd!
-    autocmd BufEnter * silent! lcd %:p:h
+    autocmd BufEnter *.* silent! lcd %:p:h
+    autocmd BufEnter * lua set_title()
 augroup END
 
 " Remove trailing whitespace and newlines
@@ -21,12 +23,6 @@ augroup AUTO_READ
     autocmd!
     autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
     autocmd FileChangedShellPost * echohl WarningMsg | redraw | echo 'File changed on disk. Buffer reloaded!' | echohl None
-augroup END
-
-" Set window title
-augroup UPDATE_WINDOW_TITLE
-    autocmd!
-    autocmd BufEnter *.* set title | let &titlestring = expand('%') !=# '' ? expand('%') : 'Neovim'
 augroup END
 
 " Save and restore folds

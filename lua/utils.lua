@@ -60,8 +60,8 @@ function _G.qfix_toggle(forced)
         vim.cmd([[cclose]])
         vim.api.nvim_del_var("qfix_win")
     else
+        vim.api.nvim_set_var("qfix_win", vim.fn.bufnr("$"))
         vim.cmd([[copen 10]])
-        vim.g.qfix_win = vim.fn.bufnr("$")
     end
 end
 vim.cmd([[command! -bang -nargs=? QFix lua qfix_toggle(<bang>0)]])
@@ -121,5 +121,17 @@ function _G.save_reload_module()
         plenary_reload(module)
         -- Print
         print(module .. " Reloaded.")
+    end
+end
+
+-- Set window title
+function _G.set_title()
+    local file = vim.fn.expand("%")
+    local cwd = vim.fn.split(vim.fn.fnamemodify(file, ":p:h"):gsub("/", "\\"), "\\")
+    local is_plugin = require("plugins.config.lualine").buffer_is_plugin()
+    if file ~= "" and not is_plugin then
+        vim.opt.titlestring = cwd[#cwd] .. "/" .. file
+    else
+        vim.opt.titlestring = "Neovim"
     end
 end
