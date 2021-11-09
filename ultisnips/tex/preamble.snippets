@@ -6,42 +6,42 @@
 
 global !p
 def get_tex_prog(letter):
-	tex_prog = ""
-	if letter == "l":
-		tex_prog = "lua"
-	elif letter == "x":
-		tex_prog = "xe"
-	elif letter == "p":
-		tex_prog = "pdf"
-	return tex_prog
+    tex_prog = ""
+    if letter == "l":
+        tex_prog = "lua"
+    elif letter == "x":
+        tex_prog = "xe"
+    elif letter == "p":
+        tex_prog = "pdf"
+    return tex_prog
 endglobal
 
-# Inserts tex-prog and encoding
-# Usage: x-texprog: where x corresponds to first inital of texprog
-snippet '(\w)-texprog' "Set tex program" br
-`!p snip.rv = "%!TEX TS-program = " + get_tex_prog(match.group(0)[0]) + "latex"`
+# Inserts TS-program and utf-8 encoding
+# Usage: !x: where x corresponds to first inital of tex program
+snippet '!(\w)' "Set tex program" br
+`!p snip.rv = "%!TEX TS-program = " + get_tex_prog(match.group(1)[0]) + "latex"`
 %!TEX encoding = UTF-8 Unicode
-$0
 endsnippet
 
-snippet usep "Usepackage" b
-\usepackage[${1:Options}]{${2:Package}}
-$0
+snippet use "\usepackage" b
+\usepackage[${1:Options}]{${2:Package}}$0
 endsnippet
 
-snippet doc "Document class" b
-\documentclass[${1:Options}]{${2:Class}}
-$0
+snippet doc "\documentclass" b
+\documentclass[${1:Options}]{${2:Class}}$0
 endsnippet
 
-snippet input "Input" b
-\input{${1:File}}
-$0
+snippet input "\input" b
+\input{${1:File}}$0
 endsnippet
 
-snippet include "Include" b
-\include{${1:File}}
-$0
+snippet include "\include" b
+\include{${1:File}}$0
 endsnippet
 
-# vim:ft=snippets:
+snippet maketitle "Make title (with title, auth, date)" b
+\title{${1:Title}}
+\author{${2:Author}}
+\date{${3:Date}}
+\maketitle
+endsnippet

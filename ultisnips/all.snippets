@@ -29,13 +29,14 @@ def comment_divider(comment: str, comment_str: str):
     comment_len_is_odd = 2 if len(comment) % 2 != 0 else 0
     comment_str_padding = len(comment_str) * 2
     divider = (
-        comment_str
+		" " * (len(comment) - len(comment.strip()))
+        + comment_str
         + " "
-        + "-" * int((comment_len_is_odd + max_length - len(comment.strip()) - comment_str_padding - padding * 4) / 2)
+        + "-" * int((comment_len_is_odd + max_length - len(comment) - comment_str_padding - padding * 4) / 2)
         + " "
-        + comment
+        + comment.strip()
         + " "
-        + "-" * int((max_length - len(comment.strip()) - comment_str_padding - padding * 4) / 2)
+        + "-" * int((max_length - len(comment) - comment_str_padding - padding * 4) / 2)
         + " "
         + comment_str
     )

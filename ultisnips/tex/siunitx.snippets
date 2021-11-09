@@ -1,10 +1,9 @@
 # Author: Neel Basak
 # Github: https://github.com/Neelfrost
 # File: siunitx.snippets
+# Requires: siunitx package
 
 # ---------------------------------- siunitx --------------------------------- #
-
-# Requires siunitx package
 
 # Automatical angle
 # Usage: <num>angle -> \ang{<num>}
@@ -14,14 +13,14 @@ endsnippet
 
 # Automatic number
 # Usage: <num>num -> \num{<num>}, works with scientific notation eg., e5num -> \num{e5}
-snippet '(\d+\.\d+|\d+|[\w\d]+)num' "Number" rA
+snippet '(\d+\.\d+|\d+|e\d+)num' "Number" rA
 \num{`!p snip.rv = match.group(1)`}$0
 endsnippet
 
 # Automatic number range
 # Usage: <num>-<num>num -> \numrange{<num>}
 priority 10
-snippet '(\d+\.\d+|\d+|[\w\d]+)-(\d+\.\d+|\d+|[\w\d]+)num' "Number range" rA
+snippet '(\d+\.\d+|\d+|e\d+)-(\d+\.\d+|\d+|e\d+)num' "Number range" rA
 \numrange{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}$0
 endsnippet
 
@@ -30,9 +29,19 @@ snippet si "SI-Unit" w
 \SI{${1:${VISUAL}}}{${2:Unit}}$0
 endsnippet
 
+priority 10
+snippet '(\d+\.\d+|\d+|e\d+)si' "SI-Unit" rA
+\SI{`!p snip.rv = match.group(1)`}{${1:Unit}}$0
+endsnippet
+
 # SI range
 snippet sr "SI-Range" w
 \SIrange{$1}{$2}{${3:Unit}}$0
+endsnippet
+
+priority 10
+snippet '(\d+\.\d+|\d+|e\d+)-(\d+\.\d+|\d+|e\d+)sr' "SI-Range" rA
+\SI{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}{${1:Unit}}$0
 endsnippet
 
 # Automatic si unit
@@ -49,8 +58,13 @@ endsnippet
 
 # Degree celsius
 # Usage: <num>dc -> \SI{<num>}{\celsius}
-snippet '(\d+\.\d+|\d+|[\w\d]+);dc' "Degree celsius" rwA
+snippet '(\d+\.\d+|\d+|e\d+)dc' "Degree celsius" rwA
 \SI{`!p snip.rv = match.group(1)`}{\celsius}$0
+endsnippet
+
+priority 100
+snippet '(\d+\.\d+|\d+|e\d+)-(\d+\.\d+|\d+|e\d+)dc' "Degree celsius" rA
+\SIrange{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}{\celsius}$0
 endsnippet
 
 # Usage: visual select number, press tab, type ;dc

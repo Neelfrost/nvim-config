@@ -1,0 +1,97 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: font.snippets
+
+# --------------------------------- Contexts --------------------------------- #
+
+global !p
+def math():
+    return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
+
+def chem():
+    return vim.eval('VimtexCurrentSyntax("texCHArg")') == '1' or vim.eval('vimtex#syntax#in_mathzone()') == '1'
+
+def comment():
+    return vim.eval('vimtex#syntax#in_comment()') == '1'
+
+def env(name):
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+    return x != '0' and x != '0'
+endglobal
+
+# -------------------------------- Math fonts -------------------------------- #
+
+context "math()"
+snippet mcal "Caligraphy" i
+\mathcal{${1:${VISUAL}}}
+endsnippet
+
+context "math()"
+snippet mrm "Roman" i
+\mathrm{${1:${VISUAL}}}
+endsnippet
+
+context "math()"
+snippet mit "Italics" i
+\mathit{${1:${VISUAL}}}
+endsnippet
+
+context "math()"
+snippet mfr "Fraktur" i
+\mathfrak{${1:${VISUAL}}}
+endsnippet
+
+context "math()"
+snippet mbb "Blackboard bold" i
+\mathbb{${1:${VISUAL}}}
+endsnippet
+
+context "math()"
+snippet msc "Script" i
+\mathscr{${1:${VISUAL}}}
+endsnippet
+
+context "math()"
+snippet mbf "Bold" i
+\mathbf{${1:${VISUAL}}}
+endsnippet
+
+# ----------------------------------- Fonts ---------------------------------- #
+
+# Emph text
+snippet emph "Emphasize" i
+\emph{${1:${VISUAL}}}$0
+endsnippet
+
+# Bold text
+snippet bf "Bold" i
+\textbf{${1:${VISUAL}}}$0
+endsnippet
+
+# Italic text
+snippet ita "Italics" i
+\textit{${1:${VISUAL}}}$0
+endsnippet
+
+# Underlined text - Requires "soul" package
+snippet und "Underline" i
+\ul{${1:${VISUAL}}}$0
+endsnippet
+
+snippet sc "Shortcaps" i
+\textsc{${1:${VISUAL}}}$0
+endsnippet
+
+# Custom command
+# Bold - Italics Text
+snippet bi "Bold + Italics" i
+\textbi{${1:${VISUAL}}}$0
+endsnippet
+
+snippet tsup "Text superscript" i
+\textsuperscript{${1:${VISUAL}}}
+endsnippet
+
+snippet tsub "Text subscript" i
+\textsubscript{${1:${VISUAL}}}
+endsnippet

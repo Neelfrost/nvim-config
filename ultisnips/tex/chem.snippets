@@ -1,0 +1,133 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: chem.snippets
+# Requires: chemmacros, chemformula packages
+
+# --------------------------------- Contexts --------------------------------- #
+
+global !p
+def math():
+    return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
+
+def chem():
+    return vim.eval('vimtex#syntax#in("texCHArg")') == '1'
+
+def env(name):
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+    return x != '0' and x != '0'
+
+def delta_less(match):
+    return ", pre=" if match in ["e", "s"] else ""
+endglobal
+
+# Chemformula env
+snippet ilc "Chemformula env" wA
+\ch{${1:${VISUAL}}}$0
+endsnippet
+
+snippet \} "Chemformula escaped {}" iA
+\\{${1:${VISUAL}}\\}
+endsnippet
+
+context "chem()"
+snippet !us "Chemical reaction with underset" iA
+!( ${1:${VISUAL:Bottom}} )( ${2:${VISUAL:Top}} ) $0
+endsnippet
+
+# ----------------------------- Electrochemistry ----------------------------- #
+
+context "chem()"
+snippet e- "electron" A
+e^{-}
+endsnippet
+
+context "chem()"
+snippet ++ "1+ valency charge" iA
+^{+}$0
+endsnippet
+
+context "chem()"
+snippet -- "1- valency charge" iA
+^{-}$0
+endsnippet
+
+context "chem()"
+snippet ;+ "n+ valency charge" iA
+^{$1+}$0
+endsnippet
+
+context "chem()"
+snippet ;- "n- valency charge" iA
+^{$1-}$0
+endsnippet
+
+# ------------------------------ Reaction Arrows ----------------------------- #
+
+# Arrow
+context "env('gather') or chem() and not env('align')"
+snippet ;a "Arrow ->" wA
+-> $0
+endsnippet
+
+context "env('align')"
+snippet ;a "Arrow aligned &->" wA
+&-> $0
+endsnippet
+
+# Equilibrium arrow
+context "env('gather') or chem() and not env('align')"
+snippet ;e "Equilibrium <=>" wA
+<=> $0
+endsnippet
+
+context "env('align')"
+snippet ;e "Equilibrium aligned &<=>" wA
+&<=> $0
+endsnippet
+
+# ---------------------------------- States ---------------------------------- #
+
+snippet '!state(\w)' "Thermodynamic state" rA
+\state[superscript-right=`!p snip.rv = delta_less(match.group(1))`]{`!p snip.rv = match.group(1).upper()`}
+endsnippet
+
+snippet '!std(\w)' "Thermodynamic state at stp" rA
+\state[superscript-right=$\circ$`!p snip.rv = delta_less(match.group(1))`]{`!p snip.rv = match.group(1).upper()`}
+endsnippet
+
+# ---------------------------------- Phases ---------------------------------- #
+
+context "chem()"
+snippet '(?<!\\)(sld|lqd|gas|aq)' "Phases (s, l, g, aq)" wrA
+\\`!p snip.rv = match.group(1)`{} $0
+endsnippet
+
+# ------------------------------ Greek alphabets ----------------------------- #
+
+snippet #a "alpha" iA
+\chemalpha
+endsnippet
+
+snippet #b "beta" iA
+\chembeta
+endsnippet
+
+snippet #d "delta" iA
+\chemdelta
+endsnippet
+
+snippet #e "epsilon" iA
+\chemepsilon
+endsnippet
+
+snippet #g "gamma" iA
+\chemgamma
+endsnippet
+
+snippet #s "sigma" iA
+\chemsigma
+endsnippet
+
+snippet #q "theta" iA
+\chemtheta
+endsnippet

@@ -6,77 +6,44 @@
 
 global !p
 def math():
-    return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+    return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
+
+def chem():
+    return vim.eval('VimtexCurrentSyntax("texCHArg")') == '1' or vim.eval('vimtex#syntax#in_mathzone()') == '1'
 
 def comment():
-	return vim.eval('vimtex#syntax#in_comment()') == '1'
+    return vim.eval('vimtex#syntax#in_comment()') == '1'
 
 def env(name):
-	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
-	return x != '0' and x != '0'
+    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+    return x != '0' and x != '0'
 endglobal
-
-# -------------------------------- Math fonts -------------------------------- #
-
-snippet mcal "Caligraphy" i
-\mathcal{${1:${VISUAL}}}
-endsnippet
-
-snippet mrm "Roman" i
-\mathrm{${1:${VISUAL}}}
-endsnippet
-
-snippet mit "Italics" i
-\mathit{${1:${VISUAL}}}
-endsnippet
-
-snippet mfr "Fraktur" i
-\mathfrak{${1:${VISUAL}}}
-endsnippet
-
-snippet mbb "Blackboard bold" i
-\mathbb{${1:${VISUAL}}}
-endsnippet
-
-priority 10
-snippet msc "Script" i
-\mathscr{${1:${VISUAL}}}
-endsnippet
-
-priority 10
-snippet mbf "Bold" i
-\mathbf{${1:${VISUAL}}}
-endsnippet
 
 # ----------------------------- Math environments ---------------------------- #
 
-snippet ilc "Chemmacros environment" wA
-\ch{${1:${VISUAL}}}$0
-endsnippet
-
-snippet ilm "Inline math environment" wA
+snippet ilm "Inline math env" wA
 $ ${1:${VISUAL}} $$0
 endsnippet
 
-snippet beq "Equation environment" b
+snippet beq "Equation env" b
 \begin{equation}
-	${0:${VISUAL}}
+${0:${VISUAL}}
 \end{equation}
 endsnippet
 
-snippet bal "Align environment" b
+snippet bal "Align env" b
 \begin{align}
-	${0:${VISUAL}}
+${0:${VISUAL}}
 \end{align}
 endsnippet
 
-snippet bga "Gather environment" b
+snippet bga "Gather env" b
 \begin{gather}
-	${0:${VISUAL}}
+${0:${VISUAL}}
 \end{gather}
 endsnippet
 
-# ---------------------- Sized brackets and parenthesis ---------------------- #
+# ------------------------- Brackets and parenthesis ------------------------- #
 
 context "math()"
 snippet @) "long (" iA
@@ -92,12 +59,6 @@ context "math()"
 snippet @] "long [" iA
 \left[ ${1:${VISUAL}} \right]
 endsnippet
-
-snippet \} "Chemmacros escaped {}" iA
-\\{${1:${VISUAL}}\\}
-endsnippet
-
-# ------------------------------ Math functions ------------------------------ #
 
 # Trig, log functions
 context "math()"
@@ -116,7 +77,14 @@ snippet drac "Display fraction" iA
 \dfrac{ ${1:Num} }{ ${2:Den} } $0
 endsnippet
 
-# Sub and Superscripts
+# Underset
+context "math()"
+snippet ;us "underset" iA
+\underset{${1:${VISUAL:Bottom}}}{${2:${VISUAL:Top}}} $0
+endsnippet
+
+# --------------------------- Sub and Superscripts --------------------------- #
+
 context "math()"
 snippet < "Subscript" i
 _{$1}$0
@@ -128,66 +96,44 @@ snippet > "Superscript" i
 endsnippet
 
 context "math()"
-snippet '(\w)<(\S+) ' "Auto subscript" rA
+snippet '(\w)<([^\s]+) ' "Auto subscript" rA
 `!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
 endsnippet
 
 context "math()"
-snippet '(\w)>(\S+) ' "Auto superscript" rA
+snippet '(\w)>([^\s]+) ' "Auto superscript" rA
 `!p snip.rv = match.group(1)`^{`!p snip.rv = match.group(2)`}
 endsnippet
 
-# Math environment text
+# ------------------------------ Math env texts ------------------------------ #
+
 context "math()"
-snippet ;t "Text in math environment" iA
+snippet ;t "\text" iA
 \text{${1:${VISUAL:Text}}}$0
 endsnippet
 
 context "math()"
-snippet ;q "Text between quads" iA
+snippet ;q "\text between quads" iA
 \quad\text{${1:${VISUAL:Text}}}\quad$0
 endsnippet
 
 context "math()"
-snippet ;bt "Before text" iA
+snippet ;bt "\beforetext" iA
 \beforetext{${1:${VISUAL:Text}}}$0
 endsnippet
 
 context "math()"
-snippet ;it "Intertext" iA
+snippet ;it "\intertext" iA
 \intertext{${1:${VISUAL:Text}}}$0
 endsnippet
 
+# ------------------------------- Math symbols ------------------------------- #
+
 # Aligned =
 context "env('align')"
-snippet ;= "&=" wA
+snippet == "&=" wA
 &= $0
 endsnippet
-
-# Reaction arrows
-context "env('gather')"
-# arrow
-snippet ;a "Arrow ->" wA
--> $0
-endsnippet
-
-context "env('align')"
-snippet ;a "Arrow aligned &->" wA
-&-> $0
-endsnippet
-
-context "env('gather')"
-# equilibrium arrow
-snippet ;e "Equilibrium <=>" wA
-<=> $0
-endsnippet
-
-context "env('align')"
-snippet ;e "Equilibrium aligned &<=>" wA
-&<=> $0
-endsnippet
-
-# ------------------------------- Math symbols ------------------------------- #
 
 context "math()"
 snippet =e "equivalent" wA
@@ -205,22 +151,13 @@ snippet =p "proportional" wA
 endsnippet
 
 context "math()"
-snippet to "->" wA
+snippet '(?<![\\])to' "\rightarrow" wrA
 \to $0
 endsnippet
 
 context "math()"
 snippet ;x "times" iA
 \times $0
-endsnippet
-
-snippet ;cl "Chemical reaction with underset" iA
-!( ${1:${VISUAL:Bottom}} )( ${2:${VISUAL:Top}} ) $0
-endsnippet
-
-context "math()"
-snippet ;us "underset" iA
-\underset{${1:${VISUAL:Bottom}}}{${2:${VISUAL:Top}}} $0
 endsnippet
 
 context "math()"
@@ -444,5 +381,3 @@ context "math()"
 snippet @W "Omega" iA
 \Omega
 endsnippet
-
-# vim:ft=snippets:

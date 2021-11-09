@@ -2,40 +2,33 @@
 # Github: https://github.com/Neelfrost
 # File: general.snippets
 
-snippet begin "Begin environment" b
+snippet begin "Begin env" b
 \begin{${1:Env}}
-	${0:${VISUAL:Content}}
+    ${0:${VISUAL:Content}}
 \end{$1}
-endsnippet
-
-snippet maketitle "Make Title" b
-\title{${1:Title}}
-\author{${2:Author}}
-\date{${3:Date}}
-\maketitle
 endsnippet
 
 snippet resize "Resize box" b
 \resizebox{\linewidth}{!}{%
-	${1:${VISUAL}}
+    ${1:${VISUAL}}
 }$0
 endsnippet
 
-snippet mulc "Multicols" b
-\begin{multicols}{$1}
-${2:${VISUAL}}
+snippet 'mulc(\d+)' "Multicols env" br
+\begin{multicols}{`!p snip.rv = match.group(1)`}
+    ${2:${VISUAL}}
 \end{multicols}$0
 endsnippet
 
-snippet cb "Columnbreak for multicols"
+snippet cb "Multicols columnbreak"
 
 \columnbreak
 
 endsnippet
 
-snippet mini "Minipage environment" b
+snippet mini "Minipage env" b
 \begin{minipage}{0.5\linewidth}
-	${1:${VISUAL:Content}}
+    ${1:${VISUAL:Content}}
 \end{minipage}%$0
 endsnippet
 
@@ -43,16 +36,8 @@ snippet href "Hyperref" w
 \href{${1:Link}}{${2:${VISUAL:Text}}}$0
 endsnippet
 
-# ----------------------------------- Tikz ----------------------------------- #
-
-snippet node "Tikz node" b
-\node[
-	${1:Params}
-] (${2/(\w)/\l$1/g}) {${2:Text}};$0
-endsnippet
-
-snippet draw "Draw tikz node" b
-\draw[arrow] (${1:From}) ${2:Line} (${3:To});
+snippet noind "Non-indented paragraph" b
+\noindent$0
 endsnippet
 
 # -------------------------- References and labels -------------------------- #
@@ -89,274 +74,9 @@ snippet tlab "Reaction label" w
 \label{table:$1}
 endsnippet
 
-# ---------------------------- Table environments ---------------------------- #
-
-snippet tab "Table environment" b
-\begin{table}[ht]
-	\centering
-	\caption{${1:Caption}}
-	\begin{tabular}{$2}
-	$3
-	\end{tabular}
-\end{table}$0
-endsnippet
-
-snippet tabl "Table environment with label" b
-\begin{table}[ht]
-	\centering
-	\caption{${1:Caption}}%
-	\label{table:${4:Label}}
-	\begin{tabular}{$2}
-	$3
-	\end{tabular}
-\end{table}$0
-endsnippet
-
-snippet tabx "Tabularx environment" b
-\begin{table}[ht]
-	\centering
-	\caption{${1:Caption}}
-	\begin{tabularx}{\linewidth}{$2}
-	$3
-	\end{tabularx}
-\end{table}$0
-endsnippet
-
-snippet tabxl "Tabularx environment with label" b
-\begin{table}[ht]
-	\centering
-	\caption{${1:Caption}}%
-	\label{table:${4:Label}}
-	\begin{tabularx}{\linewidth}{$2}
-	$3
-	\end{tabularx}
-\end{table}$0
-endsnippet
-
-# To create: |x|x|x|x|x|x|
-# Usage: x*6, where x can be: l, c, r, p{<size>}, m{<size>}, X (tabularx)
-snippet '(\w+)\*(\d+)' "Non-centered tabular columns" r
-`!p
-col_str = "|" + str(match.group(1))
-col_cnt = int(match.group(2))
-snip.rv = col_str*col_cnt + "|"
-`
-endsnippet
-
-# Needs array package
-# To create: |>{\centering\arraybackslash}x|>{\centering\arraybackslash}x|
-# Usage: c-x*2, where x can be: l, c, r, p{<size>}, m{<size>}, X (tabularx)
-priority 10
-snippet 'c-(\S+)\*(\d+)' "Centered tabular columns" r
-`!p
-col_str = r"|>{\centering\arraybackslash}" + str(match.group(1))
-col_cnt = int(match.group(2))
-snip.rv = col_str*col_cnt + "|"
-`
-endsnippet
-
-# ---------------------------- Figure environments --------------------------- #
-
-snippet fig "Figure environment" b
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.45\linewidth]{${1:File}}
-	\caption{${2:Caption}}%
-\end{figure}$0
-endsnippet
-
-snippet figl "Figure environment with label" b
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.45\linewidth]{${1:File}}
-	\caption{${2:Caption}}%
-	\label{fig:${1/\.\w+//}}
-\end{figure}$0
-endsnippet
-
-# Needs subcaption package
-snippet subfig "Subfigure environment" b
-\begin{figure}[ht]
-    \centering
-    \begin{subfigure}{.5\linewidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{${1:File1}}
-        \caption{${2:Caption1}}
-    \end{subfigure}%
-    \begin{subfigure}{.5\linewidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{${3:File2}}
-        \caption{${4:Caption2}}
-    \end{subfigure}%
-    \caption{}%
-\end{figure}
-endsnippet
-
-snippet subfigl "Subfigure environment with label" b
-\begin{figure}[ht]
-    \centering
-    \begin{subfigure}{.5\linewidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{${1:File1}}
-        \caption{${2:Caption1}}%
-        \label{sfig:${1/\.\w+//}}
-    \end{subfigure}%
-    \begin{subfigure}{.5\linewidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{${4:File2}}
-        \caption{${5:Caption2}}%
-        \label{sfig:${4/\.\w+//}}
-    \end{subfigure}%
-    \caption{}%
-    %\label{fig:main_label}%
-\end{figure}
-endsnippet
-
-# Converts single figure to subfigure
-# Usage: visual-block select entire figure environment, press tab and type fts
-snippet fts "Figure to subfigure" bA
-\begin{figure}[ht]
-	\centering
-    \begin{subfigure}{.5\linewidth}
-        \centering
-`!p
-caption = re.search("caption{(.+)}", snip.v.text).group(1)
-file = re.search("linewidth\]{(.+)}", snip.v.text).group(1)
-if 'label' in snip.v.text:
-	label = re.search("label{(.+)}", snip.v.text).group(1)
-	snip.rv = r'\includegraphics[width=0.9\linewidth]{' + f'{file}' + '}\n' + r'\caption{' + f'{caption}' + '}%\n' + r'\label{s' + f'{label}' + '}\n' + r'\end{subfigure}%'
-else:
-	snip.rv = r'\includegraphics[width=0.9\linewidth]{' + f'{file}' + '}\n' + r'\caption{' + f'{caption}' + '}%\n' +  r'\end{subfigure}%'
-`
-    \begin{subfigure}{.5\linewidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{${1:File1}}
-        \caption{${2:Caption1}}%
-        \label{sfig:${1/\.\w+//}}
-    \end{subfigure}%
-    \caption{}%
-    %\label{fig:main_label}%
-\end{figure}
-endsnippet
-
-# ----------------------------- List environments ---------------------------- #
-
-snippet bde "Description" b
-\begin{description}
-	\item[$1] $0
-\end{description}
-endsnippet
-
-# Inserts new enumerate
-# Or if triggered after visual selection of items, surrounds them with enumerate
-snippet ben "Enumerate" b
-\begin{enumerate}
-`!p
-if snip.v.text:
-	snip.rv = snip.v.text.strip()
-else:
-	snip.rv = "\t\\item "
-`$0
-\end{enumerate}
-endsnippet
-
-# Inserts new itemize
-# Or if triggered after visual selection of items, surrounds them with itemize
-snippet bit "Itemize" b
-\begin{itemize}
-`!p
-if snip.v.text:
-	snip.rv = snip.v.text.strip()
-else:
-	snip.rv = "\t\\item "
-`$0
-\end{itemize}
-endsnippet
-
-# Requires tasks package
-# Inserts tasks
-# Or if triggered after visual selection of items, converts them into task and
-# surrounds them with tasks
-snippet 'bta(\d+)' "Task" br
-\begin{tasks}(`!p snip.rv = match.group(1)`)
-`!p
-if snip.v.text:
-	if r"\task" in snip.v.text:
-		snip.rv = snip.v.text.strip()
-	else:
-		snip.rv = snip.v.text.strip().replace(r"\item", r"\task")
-else:
-	snip.rv = "\t\\task "
-`$0
-\end{tasks}
-endsnippet
-
-snippet it "Individual item" b
-\item $0
-endsnippet
-
-snippet ta "Individual task" b
-\task $0
-endsnippet
-
-# Converts visual selected items into task
-snippet itt "Item to Task" bA
-`!p snip.rv = snip.v.text.strip().replace(r"\item", r"\task")`$0
-endsnippet
-
-# Converts visual selected task into items
-snippet tti "Task to Item" bA
-`!p snip.rv = snip.v.text.strip().replace(r"\task", r"\item")`$0
-endsnippet
-
-snippet nosep "noitemsep" i
-[noitemsep]$0
-endsnippet
-
-snippet itemfont "enumerate bold labels" i
-[font=\bfseries]$0
-endsnippet
-
-snippet noind "Non-indented paragraph" b
-\noindent
-$0
-endsnippet
-
-# ----------------------------------- Fonts ---------------------------------- #
-
-# Emph text
-snippet emph "Emphasize" i
-\emph{${1:${VISUAL}}}$0
-endsnippet
-
-# Bold text
-snippet bf "Bold" i
-\textbf{${1:${VISUAL}}}$0
-endsnippet
-
-# Italic text
-snippet ita "Italics" i
-\textit{${1:${VISUAL}}}$0
-endsnippet
-
-# Underlined text - Requires "soul" package
-snippet und "Underline" i
-\ul{${1:${VISUAL}}}$0
-endsnippet
-
-snippet sc "Shortcaps" i
-\textsc{${1:${VISUAL}}}$0
-endsnippet
-
-# Custom command
-# Bold - Italics Text
-snippet bi "Bold - Italics" i
-\textbi{${1:${VISUAL}}}$0
-endsnippet
-
 # ----------------------------------- Misc ----------------------------------- #
 
-snippet '(?<!\\|}|{)%' "Escaped %" rA
+snippet '(?<![\\\{\}])%' "Escaped %" rA
 \%
 endsnippet
 
@@ -371,5 +91,3 @@ endsnippet
 snippet Eg "E.g.," w
 E.g.,
 endsnippet
-
-# vim:ft=snippets:
