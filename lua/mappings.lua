@@ -6,10 +6,10 @@ local nse_opts = { noremap = true, silent = true, expr = true }
 
 -- Open windows terminal terminal at cwd
 map(
-	"n",
-	"<Leader><Leader>t",
-	"<cmd>lua launch_ext_prog('wt.exe -d', string.format('\"%s\"', vim.fn.expand('%:p:h')))<CR>",
-	ns_opts
+    "n",
+    "<Leader><Leader>t",
+    "<cmd>lua launch_ext_prog('wt.exe -d', string.format('\"%s\"', vim.fn.expand('%:p:h')))<CR>",
+    ns_opts
 )
 
 -- Open explorer at cwd
@@ -17,6 +17,9 @@ map("n", "<Leader><Leader>e", "<cmd>lua launch_ext_prog('explorer.exe', vim.fn.e
 
 -- Open current file in vscode
 map("n", "<Leader><Leader>c", "<cmd>lua launch_ext_prog('code', '%')<CR>", ns_opts)
+
+-- Open current file in notepad
+map("n", "<Leader><Leader>n", "<cmd>lua launch_ext_prog('notepad', '%')<CR>", ns_opts)
 
 -- Replace word under cursor
 map("n", "<F2>", [[:%s/\<<C-r><C-w>\>/]], n_opts)
@@ -33,7 +36,7 @@ map("n", "<C-S-s>", "<cmd>lua save_reload_module()<CR>", ns_opts)
 map("n", "<Leader>q", "<cmd>QFix<CR>", ns_opts)
 
 -- Format entire document
-map("n", "<C-f>", "gg=G<C-o>zz<Esc>", ns_opts)
+map("n", "<C-f>", "gg=G''zz<Esc>", ns_opts)
 
 -- Toggle spell
 map("n", "<F1>", "<cmd>setlocal spell!<CR>", ns_opts)
@@ -133,5 +136,5 @@ map("n", "N", "Nzz", n_opts)
 -- Undo break points
 local break_points = { ".", ",", "!", "?", "=", "-", "_" }
 for _, v in pairs(break_points) do
-	map("i", tostring(v), v .. "<C-g>u", n_opts)
+    map("i", tostring(v), v .. "<C-g>u", n_opts)
 end

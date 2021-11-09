@@ -2,10 +2,11 @@ vim.cmd([[syntax on]])
 vim.cmd([[filetype plugin indent on]])
 
 -- File encoding
-vim.opt.encoding = "utf-8"
-vim.opt.fileencoding = "utf-8 "
+vim.opt.fileencoding = "utf-8"
+
 -- DOS fileformat
 vim.opt.fileformat = "dos"
+vim.opt.fileformats = "dos"
 
 -- Enable dark background colorschemes
 vim.opt.background = "dark"
@@ -59,7 +60,7 @@ vim.opt.foldmethod = "marker"
 vim.opt.list = true
 
 -- Display chars
-vim.opt.fillchars = { eob = "-", fold = " ", vert = "│", foldsep = " ", foldclose = "", foldopen = "" }
+vim.opt.fillchars = { eob = "–", fold = " ", vert = "│", foldsep = " ", foldclose = "", foldopen = "" }
 vim.opt.listchars = vim.opt.listchars + { tab = "··", lead = "·", eol = "﬋" }
 
 -- Use en_us to spellcheck
@@ -72,7 +73,7 @@ vim.opt.hidden = true
 vim.opt.laststatus = 2
 
 -- Fold column
-vim.opt.foldcolumn = "auto:3"
+vim.opt.foldcolumn = "auto:9"
 
 -- No redraw during macro, regex execution
 vim.opt.lazyredraw = true
@@ -95,40 +96,46 @@ vim.opt.showmode = false
 -- No swap file
 vim.opt.swapfile = false
 
+-- Real-time substitute
+vim.opt.inccommand = "split"
+
+-- Enable title
+vim.opt.title = true
+
 vim.opt.startofline = false
 
 -- Ignore LaTeX aux files
 vim.opt.wildignore = {
-	"*.aux",
-	"*.lof",
-	"*.lot",
-	"*.fls",
-	"*.out",
-	"*.toc",
-	"*.fmt",
-	"*.fot",
-	"*.cb",
-	"*.cb2",
-	".*.lb",
-	"__latex*",
-	"*.fdb_latexmk",
-	"*.synctex",
-	"*.synctex(busy)",
-	"*.synctex.gz",
-	"*.synctex.gz(busy)",
-	"*.pdfsync",
-	"*.bbl",
-	"*.bcf",
-	"*.blg",
-	"*.run.xml",
-	"indent.log",
-	"*.pdf",
+    "*.aux",
+    "*.lof",
+    "*.lot",
+    "*.fls",
+    "*.out",
+    "*.toc",
+    "*.fmt",
+    "*.fot",
+    "*.cb",
+    "*.cb2",
+    ".*.lb",
+    "__latex*",
+    "*.fdb_latexmk",
+    "*.synctex",
+    "*.synctex(busy)",
+    "*.synctex.gz",
+    "*.synctex.gz(busy)",
+    "*.pdfsync",
+    "*.bbl",
+    "*.bcf",
+    "*.blg",
+    "*.run.xml",
+    "indent.log",
+    "*.pdf",
 }
 
 -- Undo dir (persistent undo's)
 local undo_dir = HOME_PATH .. [[\.cache\vim\undo]]
 if not vim.fn.isdirectory(undo_dir) then
-	vim.fn.mkdir(undo_dir)
+    vim.fn.mkdir(undo_dir)
 end
 vim.opt.undodir = undo_dir
 vim.opt.undofile = true
@@ -138,27 +145,27 @@ vim.g.python3_host_prog = vim.fn.trim(vim.fn.system("which python"))
 
 -- Disable builtin vim plugins
 local disabled_built_ins = {
-	"netrw",
-	"netrwPlugin",
-	"netrwSettings",
-	"netrwFileHandlers",
-	"gzip",
-	"zip",
-	"zipPlugin",
-	"tar",
-	"tarPlugin",
-	"getscript",
-	"getscriptPlugin",
-	"vimball",
-	"vimballPlugin",
-	"2html_plugin",
-	"logipat",
-	"rrhelper",
-	"matchit",
+    "netrw",
+    "netrwPlugin",
+    "netrwSettings",
+    "netrwFileHandlers",
+    "gzip",
+    "zip",
+    "zipPlugin",
+    "tar",
+    "tarPlugin",
+    "getscript",
+    "getscriptPlugin",
+    "vimball",
+    "vimballPlugin",
+    "2html_plugin",
+    "logipat",
+    "rrhelper",
+    "matchit",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
-	vim.g["loaded_" .. plugin] = 1
+    vim.g["loaded_" .. plugin] = 1
 end
 
 -- Disable Python2 support
