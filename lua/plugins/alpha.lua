@@ -7,8 +7,8 @@ vim.cmd([[
 ]])
 
 local dashboard = require("alpha.themes.dashboard")
-local plugins_loaded = vim.fn.len(vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1))
-local plugins_waiting = vim.fn.len(vim.fn.globpath(PACKER_PATH .. "\\opt", "*", 0, 1))
+local plugins_loaded = #vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1)
+local plugins_waiting = #vim.fn.globpath(PACKER_PATH .. "\\opt", "*", 0, 1)
 
 local function set_button(sc, txt, keybind, keybind_opts)
     local button = dashboard.button(sc, txt, keybind, keybind_opts)

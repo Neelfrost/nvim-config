@@ -225,7 +225,12 @@ return packer.startup(function()
         "tpope/vim-surround",
     })
     use({
-        "kevinhwang91/nvim-bqf",
+        "https://gitlab.com/yorickpeterse/nvim-pqf",
+        event = "BufRead",
+        as = "nvim-pqf",
+        config = function()
+            require("pqf").setup()
+        end,
     })
     use({
         "christoomey/vim-titlecase",
@@ -268,7 +273,7 @@ return packer.startup(function()
     -- })
 
     -- Automatic initial plugin installation
-    if vim.fn.len(vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1)) == 1 then
+    if #vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1) == 1 then
         vim.cmd([[PackerSync]])
     end
 end)
