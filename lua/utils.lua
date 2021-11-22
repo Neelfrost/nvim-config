@@ -14,7 +14,7 @@ function _G.perform_cleanup()
     vim.cmd([[
         keeppatterns %s/$\n\+\%$//e " removes trailing lines
         keeppatterns %s/\s\+$//e " removes trailing spaces
-        keeppatterns %s/\r//e " removes linux line endings
+        keeppatterns %s/\r\+//e " removes linux line endings
     ]])
     if vim.bo.filetype == "tex" then
         vim.cmd([[

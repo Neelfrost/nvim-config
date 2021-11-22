@@ -11,7 +11,7 @@ local latexindent = helper.make_builtin({
     generator_opts = {
         command = "latexindent.exe",
         args = {
-            "-d",
+            "-l",
         },
         to_stdin = true,
     },
@@ -30,11 +30,14 @@ local sources = {
     null_ls.builtins.diagnostics.flake8,
     null_ls.builtins.diagnostics.chktex.with({
         from_stderr = true,
-        extra_args = { "-I" },
+        args = { "-I", "-q", "-f%l:%c:%d:%k:%m\r\n" },
     }),
+    todos,
 }
 
 null_ls.config({
+    debounce = 500,
+    default_timeout = 5000,
     diagnostics_format = "#{m} (#{s})",
     sources = sources,
 })
