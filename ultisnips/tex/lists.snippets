@@ -1,0 +1,103 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: lists.snippets
+# Requires: enumitem, tasks packages
+
+# ----------------------------- List environments ---------------------------- #
+
+snippet bde "Description env" b
+\begin{description}
+    \item[$1] $0
+\end{description}
+endsnippet
+
+snippet bddi "Description with itemize" b
+\begin{description}[style=unboxed, labelindent=\parindent, leftmargin=*]
+    \descitem{$1}
+\end{description}
+endsnippet
+
+# Inserts new enumerate
+# Or if triggered after visual selection of items, surrounds them with enumerate
+snippet ben "Enumerate env" b
+\begin{enumerate}
+`!p
+if snip.v.text:
+    snip.rv = snip.v.text.strip()
+else:
+    snip.rv = "\t\\item "
+`$0
+\end{enumerate}
+endsnippet
+
+snippet benb "Enumerate env with bold labels" b
+\begin{enumerate}[font=\bfseries]
+`!p
+if snip.v.text:
+    snip.rv = snip.v.text.strip()
+else:
+    snip.rv = "\t\\item "
+`$0
+\end{enumerate}
+endsnippet
+
+# Inserts new itemize
+# Or if triggered after visual selection of items, surrounds them with itemize
+snippet bit "Itemize env" b
+\begin{itemize}
+`!p
+if snip.v.text:
+    snip.rv = snip.v.text.strip()
+else:
+    snip.rv = "\t\\item "
+`$0
+\end{itemize}
+endsnippet
+
+# Inserts tasks
+# Or if triggered after visual selection of items, converts them into task and
+# surrounds them with tasks
+snippet 'bta(\d+)' "Tasks env" br
+\begin{tasks}(`!p snip.rv = match.group(1)`)
+`!p
+if snip.v.text:
+    if r"\task" in snip.v.text:
+        snip.rv = snip.v.text.strip()
+    else:
+        snip.rv = snip.v.text.strip().replace(r"\item", r"\task")
+else:
+    snip.rv = "\t\\task "
+`$0
+\end{tasks}
+endsnippet
+
+snippet it "\item" b
+\item $0
+endsnippet
+
+snippet ta "\task" b
+\task $0
+endsnippet
+
+snippet di "\descitem" b
+\descitem{$1}
+$0
+endsnippet
+
+# Converts visual selected items into task
+snippet itt "\item to \task" bA
+`!p snip.rv = snip.v.text.strip().replace(r"\item", r"\task")`$0
+endsnippet
+
+# Converts visual selected task into items
+snippet tti "\task to \item" bA
+`!p snip.rv = snip.v.text.strip().replace(r"\task", r"\item")`$0
+endsnippet
+
+snippet nosep "No list item sep" i
+[noitemsep]$0
+endsnippet
+
+snippet fontbf "Bold list labels" i
+[font=\bfseries]$0
+endsnippet

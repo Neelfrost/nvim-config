@@ -1,0 +1,101 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: tables.snippets
+# Requires: tabularx, tabulary, array packages
+
+# ---------------------------- Table environments ---------------------------- #
+
+snippet tab "Table env" b
+\begin{table}[htbp]
+    \centering
+    \caption{${1:Caption}}
+    \begin{tabular}{$2}
+    $3
+    \end{tabular}
+\end{table}$0
+endsnippet
+
+snippet tabl "Table env with label" b
+\begin{table}[htbp]
+    \centering
+    \caption{${1:Caption}}%
+    \label{table:${4:Label}}
+    \begin{tabular}{$2}
+    $3
+    \end{tabular}
+\end{table}$0
+endsnippet
+
+snippet tabx "Tabularx env" b
+\begin{table}[htbp]
+    \centering
+    \caption{${1:Caption}}
+    \begin{tabularx}{\linewidth}{$2}
+    $3
+    \end{tabularx}
+\end{table}$0
+endsnippet
+
+snippet tabxl "Tabularx env with label" b
+\begin{table}[htbp]
+    \centering
+    \caption{${1:Caption}}%
+    \label{table:${4:Label}}
+    \begin{tabularx}{\linewidth}{$2}
+    $3
+    \end{tabularx}
+\end{table}$0
+endsnippet
+
+snippet taby "Tabulary env" b
+\begin{table}[htbp]
+    \centering
+    \caption{${1:Caption}}
+    \begin{tabulary}{\linewidth}{$2}
+    $3
+    \end{tabulary}
+\end{table}$0
+endsnippet
+
+snippet tabyl "Tabulary env with label" b
+\begin{table}[htbp]
+    \centering
+    \caption{${1:Caption}}%
+    \label{table:${4:Label}}
+    \begin{tabulary}{\linewidth}{$2}
+    $3
+    \end{tabulary}
+\end{table}$0
+endsnippet
+
+# Creates: x x x x x x
+# Usage: x*6, where x can be: l, c, r, p{<size>}, m{<size>}, X (tabularx), CLRJ (tabulary)
+snippet '(\w+)\*(\d+)' "Non-centered tabular columns" r
+`!p
+col_str = str(match.group(1))
+col_count = int(match.group(2))
+snip.rv = col_str*col_count
+`
+endsnippet
+
+# Creates: |x|x|x|x|x|x|
+# Usage: x*6, where x can be: l, c, r, p{<size>}, m{<size>}, X (tabularx), CLRJ (tabulary)
+snippet '\|(\w+)\*(\d+)' "Non-centered tabular columns" r
+`!p
+col_str = "|" + str(match.group(1))
+col_count = int(match.group(2))
+snip.rv = col_str*col_count + "|"
+`
+endsnippet
+
+# Needs array package
+# Creates: |>{\centering\arraybackslash}x|>{\centering\arraybackslash}x|
+# Usage: c-x*2, where x can be: l, c, r, p{<size>}, m{<size>}, X (tabularx), CLRJ (tabulary)
+priority 10
+snippet '\|c-(\S+)\*(\d+)' "Centered tabular columns" r
+`!p
+col_str = r"|>{\centering\arraybackslash}" + str(match.group(1))
+col_count = int(match.group(2))
+snip.rv = col_str*col_count + "|"
+`
+endsnippet

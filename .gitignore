@@ -1,6 +1,8 @@
 tags
 ginit.vim
-ultisnips/vim.snippets
-ultisnips/tex/boilerplate.snippets
 plugin
 spell
+
+ultisnips/vim.snippets
+ultisnips/lua.snippets
+ultisnips/tex/temp.snippets

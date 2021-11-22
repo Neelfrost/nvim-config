@@ -1,0 +1,87 @@
+# Author: Neel Basak
+# Github: https://github.com/Neelfrost
+# File: figures.snippets
+# Requires: subcaption package
+
+# ---------------------------- Figure environments --------------------------- #
+
+snippet fig "Figure env" b
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{${1:File}}
+    \caption{${2:Caption}}%
+\end{figure}$0
+endsnippet
+
+snippet figl "Figure env with label" b
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{${1:File}}
+    \caption{${2:Caption}}%
+    \label{fig:${1/\.\w+//}}
+\end{figure}$0
+endsnippet
+
+snippet subfig "Subfigure env" b
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{.5\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{${1:File1}}
+        \caption{${2:Caption1}}
+    \end{subfigure}%
+    \begin{subfigure}{.5\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{${3:File2}}
+        \caption{${4:Caption2}}
+    \end{subfigure}%
+    \caption{}%
+\end{figure}
+endsnippet
+
+snippet subfigl "Subfigure env with label" b
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{.5\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{${1:File1}}
+        \caption{${2:Caption1}}%
+        \label{sfig:${1/\.\w+//}}
+    \end{subfigure}%
+    \begin{subfigure}{.5\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{${4:File2}}
+        \caption{${5:Caption2}}%
+        \label{sfig:${4/\.\w+//}}
+    \end{subfigure}%
+    \caption{}%
+    % \label{fig:main_label}%
+\end{figure}
+endsnippet
+
+# Converts single figure to subfigure
+# Usage: visual-block select entire figure env, press tab and type fts
+snippet fts "Figure to subfigure" bA
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{.5\linewidth}
+        \centering
+`!p
+caption = re.search("caption{(.+)}", snip.v.text).group(1)
+file = re.search("linewidth\]{(.+)}", snip.v.text).group(1)
+if 'label' in snip.v.text:
+    label = re.search("label{(.+)}", snip.v.text).group(1)
+    snip.rv = r'\includegraphics[width=0.9\linewidth]{' + f'{file}' + '}\n' + r'\caption{' + f'{caption}' + '}%\n' + r'\label{s' + f'{label}' + '}\n' + r'\end{subfigure}%'
+else:
+    snip.rv = r'\includegraphics[width=0.9\linewidth]{' + f'{file}' + '}\n' + r'\caption{' + f'{caption}' + '}%\n' +  r'\end{subfigure}%'
+`
+    \begin{subfigure}{.5\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{${1:File1}}
+        \caption{${2:Caption1}}%
+        \label{sfig:${1/\.\w+//}}
+    \end{subfigure}%
+    \caption{}%
+    % \label{fig:main_label}%
+\end{figure}
+endsnippet
