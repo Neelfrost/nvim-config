@@ -39,7 +39,7 @@ map("n", "<Leader>q", "<cmd>QFix<CR>", ns_opts)
 map("n", "<C-f>", "gg=G''zz<Esc>", ns_opts)
 
 -- Toggle spell
-map("n", "<F1>", "<cmd>setlocal spell!<CR>", ns_opts)
+map("n", "<F10>", "<cmd>setlocal spell!<CR>", ns_opts)
 
 -- Remove highlight
 map("n", "<Leader>h", "<cmd>nohl<CR>", ns_opts)

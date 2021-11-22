@@ -3,22 +3,30 @@
 
 # Table of Contents <!-- omit in toc -->
 
--   [Screenshots 📷](#screenshots-)
--   [Installation ⚡](#installation-)
-    -   [LaTeX](#latex)
-        -   [Auto Format](#auto-format)
-        -   [Pdf Preview](#pdf-preview)
-        -   [Inverse Search](#inverse-search)
-    -   [Language Servers](#language-servers)
-        -   [Python (pyright)](#python-pyright)
-        -   [Lua (sumneko_lua)](#lua-sumneko_lua)
-        -   [C# (omnisharp)](#c-omnisharp)
--   [Update 🚀](#update-)
--   [Features 📃](#features-)
-    -   [Plugins Used ⚓](#plugins-used-)
-    -   [Themes 🍭](#themes-)
-    -   [Mappings ⌨](#mappings-)
--   [Todo ✔](#todo-)
+- [Screenshots 📷](#screenshots-)
+- [Installation ⚡](#installation-)
+  - [LaTeX](#latex)
+    - [Auto Format](#auto-format)
+    - [Pdf Preview](#pdf-preview)
+    - [Inverse Search](#inverse-search)
+  - [Language Servers](#language-servers)
+    - [Python (pyright)](#python-pyright)
+    - [Lua (sumneko_lua)](#lua-sumneko_lua)
+    - [C# (omnisharp)](#c-omnisharp)
+- [Update 🚀](#update-)
+- [Features 📃](#features-)
+  - [General](#general)
+  - [LaTeX](#latex-1)
+  - [Plugins Used ⚓](#plugins-used-)
+    - [LSP](#lsp)
+    - [File navigation, explorer](#file-navigation-explorer)
+    - [Code completion](#code-completion)
+    - [LaTeX](#latex-2)
+    - [Looks](#looks)
+    - [Buffer, Status](#buffer-status)
+    - [QOL](#qol)
+  - [Mappings ⌨](#mappings-)
+- [Todo ✔](#todo-)
 
 # Screenshots 📷
 
@@ -102,7 +110,7 @@ Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Co
 For inverse search, open sumatrapdf then go to Settings -> Options and set inverse search command-line to:
 
 ```cmd
-cmd /c for /F %i in ('type C:\Users\ADMINI~1\AppData\Local\Temp\curnvimserver.txt') do nvr --servername %i -c "normal! zzzv" +"%l" "%f"
+nvim --headless -c "PackerLoad vimtex" -c "VimtexInverseSearch %l '%f'"
 ```
 
 Use `:checkhealth` to check for errors if any.
@@ -147,7 +155,7 @@ Use `:checkhealth` to check for errors if any.
 
 4. Use `:checkhealth` to check for errors if any.
 
-### C# ([omnisharp](https://github.com/sumneko/lua-language-server))
+### C# ([omnisharp](https://github.com/omnisharp/omnisharp-roslyn))
 
 1. Install dependencies.
 
@@ -173,7 +181,7 @@ Use `:checkhealth` to check for errors if any.
 
 # Features 📃
 
-General
+## General
 
 -   Clean folds.
 -   Smart display line movement.
@@ -187,11 +195,12 @@ General
 -   Automatically trim trailing whitespaces and newlines on save.
 -   Open windows terminal, vscode, explorer at current directory using <kbd>\\\\t</kbd>, <kbd>\\\\c</kbd>, <kbd>\\\\e</kbd> respectively.
 
-LaTeX
+## LaTeX
 
 -   Extensive snippets for LaTeX.
 -   Better auxiliary file cleaner.
 -   Sectional folding.
+-   Null-ls latexindent support.
 -   Automatically substitute `\` in imports (include, input) with `/` on save.
 -   Start newline with \item (or \task) if inside a list environment when pressing <kbd>Enter</kbd>, <kbd>o</kbd> or <kbd>O</kbd>.
 
@@ -199,74 +208,98 @@ LaTeX
 
 ## Plugins Used ⚓
 
+-   Plugin manager: [packer.nvim](https://github.com/wbthomason/packer.nvim)
+
+### LSP
+
+-   LSP: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+    -   Diagnostics, formatting LSP: [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
+    -   Python language server: [pyright](https://github.com/microsoft/pyright)
+    -   C# language server: [omnisharp](https://github.com/omnisharp/omnisharp-roslyn)
+    -   Lua language server: [sumneko_lua](https://github.com/sumneko/lua-language-server)
+    -   Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
+    -   Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
+
+### File navigation, explorer
+
+-   File explorer: [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
+-   Fuzzy finder: [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+    -   Telescope frecency picker: [telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim)
+    -   Telescope fzf sorter: [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
+    -   Telescope ultisnips viewer: [telescope-ultisnips.nvim](https://github.com/fhill2/telescope-ultisnips.nvim)
+
+### Code completion
+
+-   Code completion: [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+    -   Ultisnips source: [cmp-nvim-ultisnips](https://github.com/quangnguyen30192/cmp-nvim-ultisnips)
+    -   LSP source: [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
+    -   Buffer source: [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
+
+### LaTeX
+
 -   LaTeX support: [vimtex](https://github.com/lervag/vimtex)
--   Python support: [pyright](https://github.com/microsoft/pyright)
 -   Snippet engine: [ultisnips](https://github.com/SirVer/ultisnips)
+-   Tag management: [vim-gutentags](https://github.com/ludovicchabant/vim-gutentags)
+
+### Looks
+
+-   Gruvbox theme: [gruvbox-material](https://github.com/sainnhe/gruvbox-material)
+-   Indent lines: [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
+-   Icons support: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
+-   Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+-   Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
+-   Colorizer: [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
+
+### Buffer, Status
+
+-   Bufferline: [cokeline.nvim](https://github.com/noib3/cokeline.nvim)
+-   Statusline: [lualine.nvim](https://github.com/shadmansaleh/lualine.nvim)
+
+### QOL
+
 -   Repeat actions: [vim-repeat](https://github.com/tpope/vim-repeat)
 -   Faster navigation: [hop.nvim](https://github.com/phaazon/hop.nvim)
--   Code completion: [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
--   Better quickfix: [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf)
+-   Better quickfix: [nvim-pqf](https://gitlab.com/yorickpeterse/nvim-pqf)
 -   Aligning: [vim-easy-align](https://github.com/junegunn/vim-easy-align)
 -   Commenting: [nvim-comment](https://github.com/terrortylor/nvim-comment)
--   Plugin manager: [packer.nvim](https://github.com/wbthomason/packer.nvim)
--   Statusline: [lualine.nvim](https://github.com/shadmansaleh/lualine.nvim)
--   Title case: [vim-titlecase](https://github.com/christoomey/vim-titlecase)
--   Start screen: [dashboard-nvim](https://github.com/glepnir/dashboard-nvim)
+-   Title Case: [vim-titlecase](https://github.com/christoomey/vim-titlecase)
+-   Start screen: [alpha-nvim](goolord/alpha-nvim)
 -   Auto pair brackets: [auto-pairs](https://github.com/jiangmiao/auto-pairs)
 -   Bracket operations: [vim-surround](https://github.com/tpope/vim-surround)
--   Lua support: [sumneko_lua](https://github.com/sumneko/lua-language-server)
--   Language server: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
--   Syntax checking and formatting: [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
 -   Startup time: [vim-startuptime](https://github.com/dstein64/vim-startuptime)
 -   Open URLs and more: [vim-open-url](https://github.com/dhruvasagar/vim-open-url)
--   Colorizer: [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
--   Tag management: [vim-gutentags](https://github.com/ludovicchabant/vim-gutentags)
--   Bufferline and navigation: [cokeline.nvim](https://github.com/noib3/cokeline.nvim)
--   Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
--   Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
--   Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
--   Indent lines: [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 -   Fix cursorhold autocmd: [FixCursorHold.nvim](https://github.com/antoinemadec/FixCursorHold.nvim)
--   Fast folds: [FastFold](https://github.com/antoinemadec/Konfekt/FastFold)
--   Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
--   Snippet collection: [vim-snippets](https://github.com/honza/vim-snippets) _(disabled by default)_
+-   Fast expr folds: [FastFold](https://github.com/antoinemadec/Konfekt/FastFold)
 -   Markdown preview: [nvim-markdown-preview](https://github.com/davidgranstrom/nvim-markdown-preview)
--   Telescope frecency picker: [telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim)
--   Telescope fzf sorter: [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
--   Icons for nvim-tree, dashboard, telescope, bufferline, and statusline: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
--   File navigation: [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua), [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
 -   Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
-
-## Themes 🍭
-
--   [gruvbox-material](https://github.com/sainnhe/gruvbox-material)
+-   Snippet collection: [vim-snippets](https://github.com/honza/vim-snippets) _(disabled by default)_
 
 ## Mappings ⌨
 
 | Shortcut                  | Mode                 | Description                                        |
 | ------------------------- | -------------------- | -------------------------------------------------- |
-| <kbd>F1</kbd>             | Normal               | Toggle spellcheck                                  |
 | <kbd>F2</kbd>             | Normal               | Replace word under cursor                          |
 | <kbd>F2</kbd>             | Visual               | Rename selection                                   |
-| <kbd>F4</kbd>             | Normal               | Format using ALE fixers                            |
 | <kbd>F5</kbd>             | Normal               | Open telescope.nvim module reloader                |
+| <kbd>F10</kbd>            | Normal               | Toggle spellcheck                                  |
 | <kbd>F11</kbd>            | Normal               | Toggle warp                                        |
 | <kbd>F12</kbd>            | Normal               | Toggle paste mode                                  |
 | <kbd>\\\\t</kbd>          | Normal               | Open windows terminal at cwd                       |
 | <kbd>\\\\e</kbd>          | Normal               | Open explorer at cwd                               |
 | <kbd>\\\\c</kbd>          | Normal               | Open current file in VSCode                        |
-| <kbd>tf</kbd>             | Normal               | Open telescope.nvim files browser                  |
-| <kbd>tr</kbd>             | Normal               | Open telescope.nvim recent files browser           |
+| <kbd>\\\\n</kbd>          | Normal               | Open current file in notepad                       |
+| <kbd>tf</kbd>             | Normal               | Open telescope.nvim find files                     |
+| <kbd>tr</kbd>             | Normal               | Open telescope.nvim recent files                   |
 | <kbd>ts</kbd>             | Normal               | Open telescope.nvim session browser                |
 | <kbd>\q</kbd>             | Normal               | Toggle quickfix                                    |
 | <kbd>\h</kbd>             | Normal               | Disable search highlight                           |
-| <kbd>\v</kbd>             | Normal/Insert        | Paste from system clipboard in paste mode          |
+| <kbd>\v</kbd>             | Normal/Insert        | Paste from system clipboard in **paste** mode      |
 | <kbd>\w</kbd>             | Normal               | Close buffer _(will discard changes if not saved)_ |
 | <kbd>\u</kbd>             | Normal               | Open URL under cursor in browser                   |
 | <kbd>\s</kbd>             | Normal               | Search word under cursor in browser                |
 | <kbd>\n</kbd>             | Normal               | Open dashboard                                     |
 | <kbd>f</kbd>              | Normal               | Search buffer using 1 chars                        |
-| <kbd>s</kbd>              | Normal               | Search buffer using 2 chars                        |
+| <kbd>S</kbd>              | Normal               | Search buffer using 2 chars                        |
 | <kbd>Tab</kbd>            | Normal               | Move to next buffer                                |
 | <kbd>Shift Tab</kbd>      | Normal               | Move to previous buffer                            |
 | <kbd>Tab</kbd>            | Insert               | Expand trigger or jump to next tab stop            |
@@ -280,7 +313,9 @@ LaTeX
 | <kbd>Ctrl /</kbd>         | Normal/Visual/Insert | Comment current (selected) line(s)                 |
 | <kbd>Enter</kbd>          | Insert               | Select completion item                             |
 | <kbd>Ctrl Space</kbd>     | Insert               | Force completion menu to open                      |
-| <kbd>Ctrl e</kbd>         | Insert               | Force completion menu to close                     |
+| <kbd>Ctrl c</kbd>         | Insert               | Force completion menu to close                     |
+| <kbd>Ctrl e</kbd>         | Insert               | Select first completion item                       |
+| <kbd>Ctrl t</kbd>         | Insert               | Open omni-func completion                          |
 | <kbd>Ctrl Backspace</kbd> | Insert               | Delete previous word                               |
 | <kbd>Ctrl Delete</kbd>    | Insert               | Delete next word                                   |
 | <kbd>Ctrl b</kbd>         | Normal               | Toggle nvim-tree                                   |
@@ -318,11 +353,7 @@ LaTeX
 
 # Todo ✔
 
--   [x] Add lua support
--   [x] Add mappings list
--   [x] Automatic plugin install
--   [x] Improve install instructions
--   [x] Slowly move to lua config
--   [x] Add C# support
+-   [ ] Improve mappings table
+-   [ ] Document snippets
 -   [ ] Automatic install script
 -   [ ] Create video to showcase snippets
