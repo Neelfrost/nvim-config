@@ -11,7 +11,7 @@ local latexindent = helper.make_builtin({
     generator_opts = {
         command = "latexindent.exe",
         args = {
-            "-l",
+            "-d",
         },
         to_stdin = true,
     },
