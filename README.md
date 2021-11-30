@@ -1,48 +1,47 @@
-<p align="center">Just another visually appealing, opinionated Neovim IDE.</p>
-<p align="center">Currently supports LaTeX, Python, Lua, and C#.</p>
+<h1 align="center">neovim dotfiles</h1>
+<p align="center">
+<b>Just another opinionated, visually appealing Neovim IDE.</b>
+<br>
+<b>Currently supports LaTeX, Python, Lua, and C#.</b>
+<br>
+<br>
+<a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Neelfrost/dotfiles?color=A270BA&logoColor=151515&style=for-the-badge"></a>
+<a href="https://github.com/Neelfrost/dotfiles/stargazers"><img src="https://img.shields.io/github/stars/Neelfrost/dotfiles?colorA=151515&colorB=6A9FB5&style=for-the-badge&logo=starship"></a>
+<a href="https://github.com/Neelfrost/dotfiles/network/members"><img src="https://img.shields.io/github/forks/Neelfrost/dotfiles?colorA=151515&colorB=788C4C&style=for-the-badge&logo=github"></a>
+</p>
 
-# Table of Contents <!-- omit in toc -->
+## Table of Contents <!-- omit in toc -->
 
 - [Screenshots 📷](#screenshots-)
 - [Installation ⚡](#installation-)
-  - [LaTeX](#latex)
-    - [Auto Format](#auto-format)
-    - [Pdf Preview](#pdf-preview)
-    - [Inverse Search](#inverse-search)
-  - [Language Servers](#language-servers)
-    - [Python (pyright)](#python-pyright)
-    - [Lua (sumneko_lua)](#lua-sumneko_lua)
-    - [C# (omnisharp)](#c-omnisharp)
+    - [LaTeX](#latex)
+    - [Language Servers](#language-servers)
 - [Update 🚀](#update-)
 - [Features 📃](#features-)
-  - [General](#general)
-  - [LaTeX](#latex-1)
-  - [Plugins Used ⚓](#plugins-used-)
-    - [LSP](#lsp)
-    - [File navigation, explorer](#file-navigation-explorer)
-    - [Code completion](#code-completion)
-    - [LaTeX](#latex-2)
-    - [Looks](#looks)
-    - [Buffer, Status](#buffer-status)
-    - [QOL](#qol)
-  - [Mappings ⌨](#mappings-)
+    - [General](#general)
+    - [LaTeX](#latex-1)
+    - [Plugins Used](#plugins-used)
+    - [Mappings](#mappings)
 - [Todo ✔](#todo-)
 
-# Screenshots 📷
+## Screenshots 📷
 
-Using [Neovide](https://github.com/neovide/neovide) + [Gruvbox Material](https://github.com/sainnhe/gruvbox-material) + [Caskaydia Cove NF](https://www.nerdfonts.com/font-downloads)
+<p align="center">
+UI: <a href="https://github.com/Microsoft/Terminal" target="_blank">Windows Terminal</a> | Font: <a href="https://www.nerdfonts.com/font-downloads" target="_blank">Nerdfont</a> | Theme: <a href="https://github.com/sainnhe/gruvbox-material" target="_blank">Gruvbox Material</a>
+</p>
 
-![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.png "Dashboard Start Screen")
-![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.png "NvimTree File Explorer")
-![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.png "Telescope Fuzzy Finder")
-![statusline](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/statusline.png "Lualine statusline")
+![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.webp "Alpha Startscreen")
+![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.webp "NvimTree File Explorer")
+![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.webp "Telescope Fuzzy Finder")
+![statusline](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/statusline.webp "Lualine statusline")
 
 > From left to right: Mode, Wrap, Paste, File Name, Language Server, File Encoding, File Format, Mixed Indent, Line, Column Number, Total Lines, Git Branch
 
-![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.png "LaTeX Preview")
-![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/py.png "Python Preview")
+![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.webp "LaTeX Preview")
+![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/snippets.webp "Snippet List")
+![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/py.webp "Python Preview")
 
-# Installation ⚡
+## Installation ⚡
 
 The following instructions are for Windows (powershell). **An admin prompt is required.**
 
@@ -52,14 +51,14 @@ The following instructions are for Windows (powershell). **An admin prompt is re
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     ```
 
-2. Install dependencies.
+2. Install main dependencies.
 
     ```powershell
     choco install git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration" -y;
     choco install neovim python universal-ctags sumatrapdf.install miktex.install which strawberryperl make -y; RefreshEnv.cmd; exit
     ```
 
-3. Configure python.
+3. Install python dependencies.
 
     ```powershell
     pip install pynvim neovim-remote
@@ -73,11 +72,9 @@ The following instructions are for Windows (powershell). **An admin prompt is re
     rm "$HOME\Appdata\Local\nvim" -Recurse; git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
     ```
 
-## LaTeX
+### LaTeX
 
-### Auto Format
-
-For auto format, install [latexindent](https://github.com/cmhughes/latexindent.pl).
+#### Auto Format ([latexindent](https://github.com/cmhughes/latexindent.pl))
 
 1. cd into install directory. _Example:_
 
@@ -97,7 +94,7 @@ For auto format, install [latexindent](https://github.com/cmhughes/latexindent.p
     Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "C:\tools\latexindent" + ";"); RefreshEnv.cmd; exit
     ```
 
-### Pdf Preview
+#### Pdf Viewer
 
 To launch sumatrapdf using VimTeX (<kbd>\lv</kbd>), ensure `sumatrapdf.exe` is added to environment path.
 
@@ -105,19 +102,19 @@ To launch sumatrapdf using VimTeX (<kbd>\lv</kbd>), ensure `sumatrapdf.exe` is a
 Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "$HOME\AppData\Local\SumatraPDF" + ";"); RefreshEnv.cmd; exit
 ```
 
-### Inverse Search
+#### Inverse Search
 
 For inverse search, open sumatrapdf then go to Settings -> Options and set inverse search command-line to:
 
 ```cmd
-nvim --headless -c "PackerLoad vimtex" -c "VimtexInverseSearch %l '%f'"
+cmd /c start /min '' nvim --headless -c 'PackerLoad vimtex' -c 'VimtexInverseSearch %l '%f''
 ```
 
 Use `:checkhealth` to check for errors if any.
 
-## Language Servers
+### Language Servers
 
-### Python ([pyright](https://github.com/microsoft/pyright))
+#### Python ([pyright](https://github.com/microsoft/pyright))
 
 1. Install npm.
 
@@ -133,7 +130,7 @@ Use `:checkhealth` to check for errors if any.
 
 3. Use `:checkhealth` to check for errors if any.
 
-### Lua ([sumneko_lua](https://github.com/sumneko/lua-language-server))
+#### Lua ([sumneko_lua](https://github.com/sumneko/lua-language-server))
 
 1. Install dependencies.
 
@@ -155,7 +152,7 @@ Use `:checkhealth` to check for errors if any.
 
 4. Use `:checkhealth` to check for errors if any.
 
-### C# ([omnisharp](https://github.com/omnisharp/omnisharp-roslyn))
+#### C# ([omnisharp](https://github.com/omnisharp/omnisharp-roslyn))
 
 1. Install dependencies.
 
@@ -165,7 +162,7 @@ Use `:checkhealth` to check for errors if any.
 
 2. Use `:checkhealth` to check for errors if any.
 
-# Update 🚀
+## Update 🚀
 
 1. Pull changes.
 
@@ -179,9 +176,9 @@ Use `:checkhealth` to check for errors if any.
     :PackerSync
     ```
 
-# Features 📃
+## Features 📃
 
-## General
+### General
 
 -   Clean folds.
 -   Smart display line movement.
@@ -195,7 +192,7 @@ Use `:checkhealth` to check for errors if any.
 -   Automatically trim trailing whitespaces and newlines on save.
 -   Open windows terminal, vscode, explorer at current directory using <kbd>\\\\t</kbd>, <kbd>\\\\c</kbd>, <kbd>\\\\e</kbd> respectively.
 
-## LaTeX
+### LaTeX
 
 -   Extensive snippets for LaTeX.
 -   Better auxiliary file cleaner.
@@ -206,11 +203,11 @@ Use `:checkhealth` to check for errors if any.
 
 > Note: nvim-cmp's omni source is broken, use <kbd>Ctrl O</kbd> to trigger completion of ref, cite, figure etc.
 
-## Plugins Used ⚓
+### Plugins Used
 
 -   Plugin manager: [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
-### LSP
+#### LSP
 
 -   LSP: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
     -   Diagnostics, formatting LSP: [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
@@ -220,7 +217,7 @@ Use `:checkhealth` to check for errors if any.
     -   Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
     -   Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
 
-### File navigation, explorer
+#### File navigation, explorer
 
 -   File explorer: [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
 -   Fuzzy finder: [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
@@ -228,20 +225,20 @@ Use `:checkhealth` to check for errors if any.
     -   Telescope fzf sorter: [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
     -   Telescope ultisnips viewer: [telescope-ultisnips.nvim](https://github.com/fhill2/telescope-ultisnips.nvim)
 
-### Code completion
+#### Code completion
 
 -   Code completion: [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
     -   Ultisnips source: [cmp-nvim-ultisnips](https://github.com/quangnguyen30192/cmp-nvim-ultisnips)
     -   LSP source: [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
     -   Buffer source: [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
 
-### LaTeX
+#### LaTeX
 
 -   LaTeX support: [vimtex](https://github.com/lervag/vimtex)
 -   Snippet engine: [ultisnips](https://github.com/SirVer/ultisnips)
 -   Tag management: [vim-gutentags](https://github.com/ludovicchabant/vim-gutentags)
 
-### Looks
+#### Looks
 
 -   Gruvbox theme: [gruvbox-material](https://github.com/sainnhe/gruvbox-material)
 -   Indent lines: [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
@@ -250,12 +247,12 @@ Use `:checkhealth` to check for errors if any.
 -   Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
 -   Colorizer: [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
 
-### Buffer, Status
+#### Buffer, Status
 
 -   Bufferline: [cokeline.nvim](https://github.com/noib3/cokeline.nvim)
 -   Statusline: [lualine.nvim](https://github.com/shadmansaleh/lualine.nvim)
 
-### QOL
+#### QOL
 
 -   Repeat actions: [vim-repeat](https://github.com/tpope/vim-repeat)
 -   Faster navigation: [hop.nvim](https://github.com/phaazon/hop.nvim)
@@ -274,7 +271,7 @@ Use `:checkhealth` to check for errors if any.
 -   Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
 -   Snippet collection: [vim-snippets](https://github.com/honza/vim-snippets) _(disabled by default)_
 
-## Mappings ⌨
+### Mappings
 
 | Shortcut                  | Mode                 | Description                                        |
 | ------------------------- | -------------------- | -------------------------------------------------- |
@@ -351,7 +348,7 @@ Use `:checkhealth` to check for errors if any.
 | <kbd>\lt</kbd>            | Normal               | Lua (LÖVE2D): Run game in external terminal        |
 | <kbd>\lr</kbd>            | Normal               | Lua (LÖVE2D): Run game without terminal output     |
 
-# Todo ✔
+## Todo ✔
 
 -   [ ] Improve mappings table
 -   [ ] Document snippets
