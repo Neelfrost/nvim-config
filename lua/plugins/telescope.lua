@@ -79,7 +79,7 @@ telescope.setup({
 })
 
 -- Load extensions
-local extensions = { "ultisnips", "fzf" }
+local extensions = { "ultisnips", "fzf", "sessions" }
 pcall(function()
     for _, ext in ipairs(extensions) do
         telescope.load_extension(ext)
@@ -92,5 +92,5 @@ vim.api.nvim_set_keymap("n", "tf", "<cmd>lua require('telescope.builtin').find_f
 vim.api.nvim_set_keymap("n", "tp", "<cmd>lua require('plugins.config.telescope').dir_python()<CR>", opts)
 vim.api.nvim_set_keymap("n", "tn", "<cmd>lua require('plugins.config.telescope').dir_nvim()<CR>", opts)
 vim.api.nvim_set_keymap("n", "tl", "<cmd>lua require('plugins.config.telescope').dir_latex()<CR>", opts)
-vim.api.nvim_set_keymap("n", "ts", "<cmd>lua require('plugins.config.telescope').list_sessions()<CR>", opts)
+vim.api.nvim_set_keymap("n", "ts", "<cmd>lua require('plugins.config.telescope').sessions()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('plugins.config.telescope').reload_modules()<CR>", opts)

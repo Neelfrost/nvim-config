@@ -12,8 +12,8 @@ local plugins_waiting = #vim.fn.globpath(PACKER_PATH .. "\\opt", "*", 0, 1)
 
 local function set_button(sc, txt, keybind, keybind_opts)
     local button = dashboard.button(sc, txt, keybind, keybind_opts)
-    button.opts.hl = "Title"
-    button.opts.hl_shortcut = "Title"
+    button.opts.hl = "DevIconJl"
+    button.opts.hl_shortcut = "DevIconJl"
     return button
 end
 
@@ -35,25 +35,26 @@ local header = {
         "         ░    ░  ░    ░ ░        ░   ░         ░",
         "                                ░",
     },
-    opts = { position = "center", hl = "TelescopeBorder" },
+    opts = { position = "center", hl = "DevIconJl" },
 }
 
 local footer = {
     type = "text",
     val = {
-        " " .. "Plugins: " .. plugins_loaded .. "(L), " .. plugins_waiting .. "(LL) ",
+        plugins_loaded + plugins_waiting .. " plugins installed",
     },
-    opts = { position = "center", hl = "TelescopeBorder" },
+    opts = { position = "center", hl = "DevIconJl" },
 }
 
 local buttons = {
     type = "group",
     val = {
-        set_button("1", "  Recent Files", ":lua require('plugins.config.telescope').frecency()<CR>"),
-        set_button("2", "  Find Files", ":Telescope find_files<CR>"),
-        set_button("3", "  New File", ":enew<CR>"),
-        set_button("4", "  Neovim Config", ":lua require('plugins.config.telescope').dir_nvim()<CR>"),
-        set_button("5", "  Quit", ":qa<CR>"),
+        set_button("1", "  Load Last Session", ":LoadLastSession<CR>"),
+        set_button("2", "  Browse Sessions", ":lua require('plugins.config.telescope').sessions()<CR>"),
+        set_button("3", "  Recent Files", ":lua require('plugins.config.telescope').frecency()<CR>"),
+        set_button("4", "  Find Files", ":Telescope find_files<CR>"),
+        set_button("5", "  New File", ":enew<CR>"),
+        set_button("6", "  Quit", ":qa<CR>"),
     },
     opts = {
         spacing = 1,
