@@ -268,6 +268,12 @@ return packer.startup(function()
             require("plugins.others").fastfold()
         end,
     })
+    use({
+        "Shatur/neovim-session-manager",
+        config = function()
+            require("plugins.others").session()
+        end,
+    })
     -- use({
     --     "honza/vim-snippets",
     -- })

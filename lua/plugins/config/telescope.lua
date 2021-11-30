@@ -137,58 +137,15 @@ M.reload_modules = function() --{{{
     require("telescope.builtin").find_files(opts)
 end --}}}
 
--- Load/delete vim sessions using Telescope
-M.list_sessions = function() --{{{
-    local function load_session(file_path)
-        vim.lsp.stop_client(vim.lsp.get_active_clients())
-        vim.api.nvim_command("silent! source " .. file_path)
-        vim.cmd(string.format('echomsg "Loaded" "\'%s\'" "session"', file_path:gsub("\\", "\\\\")))
-    end
-
-    local function delete_sesssion(file_path)
-        local session = vim.fn.fnamemodify(file_path, ":t:r")
-        vim.cmd("echohl MoreMsg")
-        vim.cmd(string.format('echomsg "Session" "\'%s\'" "removed"', session))
-        vim.cmd("echohl None")
-        vim.cmd("silent !del " .. file_path)
-    end
-
-    local actions_state = require("telescope.actions.state")
-
-    local opts = {
-        initial_mode = "insert",
-        cwd = vim.g.session_directory,
-        prompt_title = "Sessions",
-        attach_mappings = function(prompt_bufnr, map)
-            -- Load session
-            local load_session_map = function()
-                local entry = actions_state.get_selected_entry()
-                require("telescope.actions").close(prompt_bufnr)
-                load_session(entry.value)
-            end
-
-            -- Delete session
-            local delete_session_map = function()
-                local entry = actions_state.get_selected_entry()
-                delete_sesssion(entry.value)
-            end
-
-            -- Map <Enter> to load session
-            require("telescope.actions.set").select:replace(load_session_map)
-            -- Map <C-d> to delete session
-            map("i", "<C-d>", delete_session_map)
-
-            return true
-        end,
-    }
-
-    require("telescope.builtin").find_files(opts)
-end --}}}
-
 -- Use dropdown theme with Frecency
 M.frecency = function() --{{{
-    local frecency_opts = M.dropdown({ prompt_title = "Recent Files" })
+    local frecency_opts = M.dropdown({ prompt_title = "Recent Files", path_display = { "absolute" } })
     require("telescope").extensions.frecency.frecency(frecency_opts)
 end --}}}
+
+M.sessions = function()
+    local session_opts = M.dropdown({ path_display = { "absolute" } })
+    require("telescope").extensions.sessions.sessions(session_opts)
+end
 
 return M
