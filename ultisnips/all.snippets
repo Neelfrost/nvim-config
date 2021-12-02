@@ -6,41 +6,41 @@ global !p
 # from: vim-snippets\pythonx\vimsnippets.py
 import vim
 def get_comment_format():
-    """ Returns a 4-element tuple (first_line, middle_lines, end_line, indent)
-    representing the comment format for the current file.
+	""" Returns a 4-element tuple (first_line, middle_lines, end_line, indent)
+	representing the comment format for the current file.
 
-    It first looks at the 'commentstring', if that ends with %s, it uses that.
-    Otherwise it parses '&comments' and prefers single character comment
-    markers if there are any.
-    """
-    commentstring = vim.eval("&commentstring")
-    if commentstring.endswith("%s"):
-        c = commentstring[:-2]
-        return (c.rstrip(), c.rstrip(), c.rstrip(), "")
-    comments = _parse_comments(vim.eval("&comments"))
-    for c in comments:
-        if c[0] == "SINGLE_CHAR":
-            return c[1:]
-    return comments[0][1:]
+	It first looks at the 'commentstring', if that ends with %s, it uses that.
+	Otherwise it parses '&comments' and prefers single character comment
+	markers if there are any.
+	"""
+	commentstring = vim.eval("&commentstring")
+	if commentstring.endswith("%s"):
+		c = commentstring[:-2]
+		return (c.rstrip(), c.rstrip(), c.rstrip(), "")
+	comments = _parse_comments(vim.eval("&comments"))
+	for c in comments:
+		if c[0] == "SINGLE_CHAR":
+			return c[1:]
+	return comments[0][1:]
 
 def comment_divider(comment: str, comment_str: str):
-    max_length = 80
-    padding = 1
-    comment_len_is_odd = 2 if len(comment) % 2 != 0 else 0
-    comment_str_padding = len(comment_str) * 2
-    divider = (
+	max_length = 80
+	padding = 1
+	comment_len_is_odd = 2 if len(comment) % 2 != 0 else 0
+	comment_str_padding = len(comment_str) * 2
+	divider = (
 		" " * (len(comment) - len(comment.strip()))
-        + comment_str
-        + " "
-        + "-" * int((comment_len_is_odd + max_length - len(comment) - comment_str_padding - padding * 4) / 2)
-        + " "
-        + comment.strip()
-        + " "
-        + "-" * int((max_length - len(comment) - comment_str_padding - padding * 4) / 2)
-        + " "
-        + comment_str
-    )
-    return divider
+		+ comment_str
+		+ " "
+		+ "-" * int((comment_len_is_odd + max_length - len(comment) - comment_str_padding - padding * 4) / 2)
+		+ " "
+		+ comment.strip()
+		+ " "
+		+ "-" * int((max_length - len(comment) - comment_str_padding - padding * 4) / 2)
+		+ " "
+		+ comment_str
+	)
+	return divider
 
 endglobal
 
@@ -61,4 +61,4 @@ snippet auth "Author" b
 `!p snip.rv = get_comment_format()[0] + " File: " + snip.fn`
 endsnippet
 
-# vim:ft=snippets:
+# vim:ts=4 sw=4 noexpandtab
