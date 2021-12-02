@@ -6,10 +6,12 @@
 
 snippet node "Tikz node" b
 \node[
-    ${1:Params}
+	${1:Params}
 ] (${2/(\w)/\l$1/g}) {${2:Text}};$0
 endsnippet
 
 snippet draw "Draw tikz node" b
 \draw[arrow] (${1:From}) ${2:Line} (${3:To});
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab

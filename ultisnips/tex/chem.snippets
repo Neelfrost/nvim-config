@@ -7,17 +7,17 @@
 
 global !p
 def math():
-    return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
 
 def chem():
-    return vim.eval('vimtex#syntax#in("texCHArg")') == '1'
+	return vim.eval('vimtex#syntax#in("texCHArg")') == '1'
 
 def env(name):
-    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
-    return x != '0' and x != '0'
+	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+	return x != '0' and x != '0'
 
 def delta_less(match):
-    return ", pre=" if match in ["e", "s"] else ""
+	return ", pre=" if match in ["e", "s"] else ""
 endglobal
 
 # Chemformula env
@@ -131,3 +131,5 @@ endsnippet
 snippet #q "theta" iA
 \chemtheta
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab

@@ -4,19 +4,19 @@
 
 snippet begin "Begin env" b
 \begin{${1:Env}}
-    ${0:${VISUAL:Content}}
+	${0:${VISUAL:Content}}
 \end{$1}
 endsnippet
 
 snippet resize "Resize box" b
 \resizebox{\linewidth}{!}{%
-    ${1:${VISUAL}}
+	${1:${VISUAL}}
 }$0
 endsnippet
 
 snippet 'mulc(\d+)' "Multicols env" br
 \begin{multicols}{`!p snip.rv = match.group(1)`}
-    ${2:${VISUAL}}
+	${2:${VISUAL}}
 \end{multicols}$0
 endsnippet
 
@@ -28,7 +28,7 @@ endsnippet
 
 snippet mini "Minipage env" b
 \begin{minipage}{0.5\linewidth}
-    ${1:${VISUAL:Content}}
+	${1:${VISUAL:Content}}
 \end{minipage}%$0
 endsnippet
 
@@ -91,3 +91,5 @@ endsnippet
 snippet Eg "E.g.," w
 E.g.,
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab

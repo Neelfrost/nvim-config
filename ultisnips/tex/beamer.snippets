@@ -6,7 +6,7 @@
 
 global !p
 def beamer():
-    return vim.eval('b:vimtex["documentclass"]') == 'beamer'
+	return vim.eval('b:vimtex["documentclass"]') == 'beamer'
 endglobal
 
 # ---------------------------------- Beamer ---------------------------------- #
@@ -14,39 +14,39 @@ endglobal
 context "beamer()"
 snippet frame "BEAMER: frame" b
 \begin{frame}[allowframebreaks]{$1}
-    $0
+	$0
 \end{frame}
 endsnippet
 
 context "beamer()"
 snippet split "BEAMER: 50-50 split frame" b
 \begin{columns}
-    \begin{column}{0.5\textwidth}
-        ${1:${VISUAL}}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-        $2
-    \end{column}
+	\begin{column}{0.5\textwidth}
+		${1:${VISUAL}}
+	\end{column}
+	\begin{column}{0.5\textwidth}
+		$2
+	\end{column}
 \end{columns}$0
 endsnippet
 
 context "beamer()"
 snippet imgsplit "BEAMER: 50-50 split frame of images" b
 \begin{columns}
-    \begin{column}{0.5\textwidth}
-            \begin{figure}[htbp]
-                \centering
-                \includegraphics[width=\linewidth]{${1:File}}
-                \caption{${2:Caption}}%
-            \end{figure}
-        \end{column}
-    \begin{column}{0.5\textwidth}
-        \begin{figure}[htbp]
-            \centering
-            \includegraphics[width=\linewidth]{${3:File}}
-            \caption{${4:Caption}}%
-        \end{figure}
-    \end{column}
+	\begin{column}{0.5\textwidth}
+		\begin{figure}[htbp]
+			\centering
+			\includegraphics[width=\linewidth]{${1:File}}
+			\caption{${2:Caption}}%
+		\end{figure}
+	\end{column}
+	\begin{column}{0.5\textwidth}
+		\begin{figure}[htbp]
+			\centering
+			\includegraphics[width=\linewidth]{${3:File}}
+			\caption{${4:Caption}}%
+		\end{figure}
+	\end{column}
 \end{columns}$0
 endsnippet
 
@@ -68,8 +68,10 @@ endsnippet
 context "beamer()"
 snippet titleframe "BEAMER: centered titleframe" b
 \begin{frame}
-    \begin{center}
-        \LARGE{\textbf{$1}}
-    \end{center}$0
+	\begin{center}
+		\LARGE{\textbf{$1}}
+	\end{center}$0
 \end{frame}
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab

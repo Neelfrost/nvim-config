@@ -7,13 +7,13 @@
 
 snippet bde "Description env" b
 \begin{description}
-    \item[$1] $0
+	\item[$1] $0
 \end{description}
 endsnippet
 
 snippet bddi "Description with itemize" b
 \begin{description}[style=unboxed, labelindent=\parindent, leftmargin=*]
-    \descitem{$1}
+	\descitem{$1}
 \end{description}
 endsnippet
 
@@ -23,9 +23,9 @@ snippet ben "Enumerate env" b
 \begin{enumerate}
 `!p
 if snip.v.text:
-    snip.rv = snip.v.text.strip()
+	snip.rv = snip.v.text.strip()
 else:
-    snip.rv = "\t\\item "
+	snip.rv = "\t\\item "
 `$0
 \end{enumerate}
 endsnippet
@@ -34,9 +34,9 @@ snippet benb "Enumerate env with bold labels" b
 \begin{enumerate}[font=\bfseries]
 `!p
 if snip.v.text:
-    snip.rv = snip.v.text.strip()
+	snip.rv = snip.v.text.strip()
 else:
-    snip.rv = "\t\\item "
+	snip.rv = "\t\\item "
 `$0
 \end{enumerate}
 endsnippet
@@ -47,9 +47,9 @@ snippet bit "Itemize env" b
 \begin{itemize}
 `!p
 if snip.v.text:
-    snip.rv = snip.v.text.strip()
+	snip.rv = snip.v.text.strip()
 else:
-    snip.rv = "\t\\item "
+	snip.rv = "\t\\item "
 `$0
 \end{itemize}
 endsnippet
@@ -61,12 +61,12 @@ snippet 'bta(\d+)' "Tasks env" br
 \begin{tasks}(`!p snip.rv = match.group(1)`)
 `!p
 if snip.v.text:
-    if r"\task" in snip.v.text:
-        snip.rv = snip.v.text.strip()
-    else:
-        snip.rv = snip.v.text.strip().replace(r"\item", r"\task")
+	if r"\task" in snip.v.text:
+		snip.rv = snip.v.text.strip()
+	else:
+		snip.rv = snip.v.text.strip().replace(r"\item", r"\task")
 else:
-    snip.rv = "\t\\task "
+	snip.rv = "\t\\task "
 `$0
 \end{tasks}
 endsnippet
@@ -82,6 +82,10 @@ endsnippet
 snippet di "\descitem" b
 \descitem{$1}
 $0
+endsnippet
+
+snippet imt "\item[$ x = $]" b
+\item[$ $1 = $] $0,
 endsnippet
 
 # Converts visual selected items into task
@@ -101,3 +105,5 @@ endsnippet
 snippet fontbf "Bold list labels" i
 [font=\bfseries]$0
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab
