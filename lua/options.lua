@@ -66,9 +66,6 @@ vim.opt.listchars = vim.opt.listchars + { tab = "··", lead = "·", eol = "﬋"
 -- Use en_us to spellcheck
 vim.opt.spelllang = "en_us"
 
--- Enable moving between unsaved buffers
-vim.opt.hidden = true
-
 -- Statusline
 vim.opt.laststatus = 2
 
