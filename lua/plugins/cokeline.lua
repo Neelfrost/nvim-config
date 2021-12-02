@@ -1,7 +1,7 @@
 local get_hex = require("cokeline.utils").get_hex
 
 local space = {
-    text = " ",
+    text = "  ",
 }
 
 require("cokeline").setup({
@@ -17,26 +17,20 @@ require("cokeline").setup({
     default_hl = {
         focused = {
             fg = get_hex("TelescopeBorder", "fg"),
-            bg = get_hex("ColorColumn", "bg"),
+            bg = get_hex("Normal", "bg"),
         },
         unfocused = {
             fg = get_hex("folded", "fg"),
-            bg = get_hex("ColorColumn", "bg"),
+            bg = get_hex("TabLineFill", "bg"),
         },
     },
 
     rendering = {
+        min_line_width = 12,
         max_line_width = 24,
     },
 
     components = {
-        {
-            text = "|",
-            hl = {
-                fg = get_hex("folded", "fg"),
-                style = "bold",
-            },
-        },
         space,
         {
             text = function(buffer)
@@ -83,16 +77,6 @@ require("cokeline").setup({
             },
         },
         space,
-        {
-            text = function(buffer)
-                local no_of_buffers = #vim.fn.getbufinfo({ buflisted = 1 })
-                return buffer.index == no_of_buffers and "|" or ""
-            end,
-            hl = {
-                fg = get_hex("folded", "fg"),
-                style = "bold",
-            },
-        },
     },
 })
 

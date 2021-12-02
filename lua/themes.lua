@@ -20,7 +20,7 @@ function M.gruvbox() --{{{
     vim.g.gruvbox_material_show_eob = 1
     vim.g.gruvbox_material_palette = "mix"
     vim.g.gruvbox_material_background = "hard"
-    -- vim.g.gruvbox_material_better_performance = 1
+    vim.g.gruvbox_material_better_performance = 1
     vim.g.gruvbox_material_sign_column_background = "none"
     vim.g.gruvbox_material_enable_italic = 1
     -- Color overrides
