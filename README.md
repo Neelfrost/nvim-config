@@ -5,24 +5,24 @@
 <b>Currently supports LaTeX, Python, Lua, and C#.</b>
 <br>
 <br>
-<a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/Neelfrost/dotfiles?color=A270BA&logoColor=151515&style=for-the-badge"></a>
-<a href="https://github.com/Neelfrost/dotfiles/stargazers"><img src="https://img.shields.io/github/stars/Neelfrost/dotfiles?colorA=151515&colorB=6A9FB5&style=for-the-badge&logo=starship"></a>
-<a href="https://github.com/Neelfrost/dotfiles/network/members"><img src="https://img.shields.io/github/forks/Neelfrost/dotfiles?colorA=151515&colorB=788C4C&style=for-the-badge&logo=github"></a>
+<a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/github/license/Neelfrost/dotfiles?labelColor=151515&color=A270BA&style=for-the-badge"></a>
+<a href="https://github.com/Neelfrost/dotfiles/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Neelfrost/dotfiles?colorA=151515&colorB=6A9FB5&style=for-the-badge&logo=starship"></a>
+<a href="https://github.com/Neelfrost/dotfiles/network/members"><img alt="forks" src="https://img.shields.io/github/forks/Neelfrost/dotfiles?colorA=151515&colorB=788C4C&style=for-the-badge&logo=github"></a>
 </p>
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Screenshots 📷](#screenshots-)
-- [Installation ⚡](#installation-)
-    - [LaTeX](#latex)
-    - [Language Servers](#language-servers)
-- [Update 🚀](#update-)
-- [Features 📃](#features-)
-    - [General](#general)
-    - [LaTeX](#latex-1)
-    - [Plugins Used](#plugins-used)
-    - [Mappings](#mappings)
-- [Todo ✔](#todo-)
+-   [Screenshots 📷](#screenshots-)
+-   [Installation ⚡](#installation-)
+    -   [LaTeX](#latex)
+    -   [Language Servers](#language-servers)
+-   [Update 🚀](#update-)
+-   [Features 📃](#features-)
+    -   [General](#general)
+    -   [LaTeX](#latex-1)
+    -   [Plugins Used](#plugins-used)
+    -   [Mappings](#mappings)
+-   [Todo ✔](#todo-)
 
 ## Screenshots 📷
 
@@ -67,6 +67,14 @@ The following instructions are for Windows (powershell). **An admin prompt is re
     ```
 
 4. Clone the repository and open nvim-qt or nvim.
+
+    If fresh installation:
+
+    ```powershell
+    git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
+    ```
+
+    If nvim directory exists:
 
     ```powershell
     rm "$HOME\Appdata\Local\nvim" -Recurse; git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
