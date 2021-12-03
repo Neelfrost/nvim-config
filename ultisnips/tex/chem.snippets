@@ -7,18 +7,20 @@
 
 global !p
 def math():
-    return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
 
 def chem():
-    return vim.eval('vimtex#syntax#in("texCHArg")') == '1'
+	return vim.eval('vimtex#syntax#in("texCHArg")') == '1'
 
 def env(name):
-    [x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
-    return x != '0' and x != '0'
+	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')")
+	return x != '0' and x != '0'
 
 def delta_less(match):
-    return ", pre=" if match in ["e", "s"] else ""
+	return ", pre=" if match in ["e", "s"] else ""
 endglobal
+
+# ----------------------------------- Main ----------------------------------- #
 
 # Chemformula env
 snippet ilc "Chemformula env" wA
@@ -31,7 +33,7 @@ endsnippet
 
 context "chem()"
 snippet !us "Chemical reaction with underset" iA
-!( ${1:${VISUAL:Bottom}} )( ${2:${VISUAL:Top}} ) $0
+!( ${1:Bottom} )( ${2:${VISUAL:Top}} )$0
 endsnippet
 
 # ----------------------------- Electrochemistry ----------------------------- #
@@ -52,13 +54,8 @@ snippet -- "1- valency charge" iA
 endsnippet
 
 context "chem()"
-snippet ;+ "n+ valency charge" iA
-^{$1+}$0
-endsnippet
-
-context "chem()"
-snippet ;- "n- valency charge" iA
-^{$1-}$0
+snippet '(\d)([-+])' "n+(-) valency charge" irA
+^{`!p snip.rv = match.group(1) + match.group(2)`}$0
 endsnippet
 
 # ------------------------------ Reaction Arrows ----------------------------- #
@@ -131,3 +128,5 @@ endsnippet
 snippet #q "theta" iA
 \chemtheta
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab

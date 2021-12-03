@@ -6,14 +6,14 @@
 
 global !p
 def get_tex_prog(letter):
-    tex_prog = ""
-    if letter == "l":
-        tex_prog = "lua"
-    elif letter == "x":
-        tex_prog = "xe"
-    elif letter == "p":
-        tex_prog = "pdf"
-    return tex_prog
+	tex_prog = ""
+	if letter == "l":
+		tex_prog = "lua"
+	elif letter == "x":
+		tex_prog = "xe"
+	elif letter == "p":
+		tex_prog = "pdf"
+	return tex_prog
 endglobal
 
 # Inserts TS-program and utf-8 encoding
@@ -45,3 +45,5 @@ snippet maketitle "Make title (with title, auth, date)" b
 \date{${3:Date}}
 \maketitle
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab

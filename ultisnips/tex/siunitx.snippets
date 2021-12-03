@@ -41,7 +41,7 @@ endsnippet
 
 priority 10
 snippet '(\d+\.\d+|\d+|e\d+)-(\d+\.\d+|\d+|e\d+)sr' "SI-Range" rA
-\SI{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}{${1:Unit}}$0
+\SIrange{`!p snip.rv = match.group(1)`}{`!p snip.rv = match.group(2)`}{${1:Unit}}$0
 endsnippet
 
 # Automatic si unit
@@ -73,4 +73,4 @@ snippet adc "Degree celsius" wA
 \SI{`!p snip.rv = re.search("(\d+\.\d+|\d+)", snip.v.text).group()`}{\celsius}$0
 endsnippet
 
-# vim:ft=snippets:
+# vim:ts=2 sw=2 noexpandtab

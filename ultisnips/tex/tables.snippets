@@ -7,64 +7,64 @@
 
 snippet tab "Table env" b
 \begin{table}[htbp]
-    \centering
-    \caption{${1:Caption}}
-    \begin{tabular}{$2}
-    $3
-    \end{tabular}
+	\centering
+	\caption{${1:Caption}}
+	\begin{tabular}{$2}
+	$3
+	\end{tabular}
 \end{table}$0
 endsnippet
 
 snippet tabl "Table env with label" b
 \begin{table}[htbp]
-    \centering
-    \caption{${1:Caption}}%
-    \label{table:${4:Label}}
-    \begin{tabular}{$2}
-    $3
-    \end{tabular}
+	\centering
+	\caption{${1:Caption}}%
+	\label{table:${4:Label}}
+	\begin{tabular}{$2}
+	$3
+	\end{tabular}
 \end{table}$0
 endsnippet
 
 snippet tabx "Tabularx env" b
 \begin{table}[htbp]
-    \centering
-    \caption{${1:Caption}}
-    \begin{tabularx}{\linewidth}{$2}
-    $3
-    \end{tabularx}
+	\centering
+	\caption{${1:Caption}}
+	\begin{tabularx}{\linewidth}{$2}
+	$3
+	\end{tabularx}
 \end{table}$0
 endsnippet
 
 snippet tabxl "Tabularx env with label" b
 \begin{table}[htbp]
-    \centering
-    \caption{${1:Caption}}%
-    \label{table:${4:Label}}
-    \begin{tabularx}{\linewidth}{$2}
-    $3
-    \end{tabularx}
+	\centering
+	\caption{${1:Caption}}%
+	\label{table:${4:Label}}
+	\begin{tabularx}{\linewidth}{$2}
+	$3
+	\end{tabularx}
 \end{table}$0
 endsnippet
 
 snippet taby "Tabulary env" b
 \begin{table}[htbp]
-    \centering
-    \caption{${1:Caption}}
-    \begin{tabulary}{\linewidth}{$2}
-    $3
-    \end{tabulary}
+	\centering
+	\caption{${1:Caption}}
+	\begin{tabulary}{\linewidth}{$2}
+	$3
+	\end{tabulary}
 \end{table}$0
 endsnippet
 
 snippet tabyl "Tabulary env with label" b
 \begin{table}[htbp]
-    \centering
-    \caption{${1:Caption}}%
-    \label{table:${4:Label}}
-    \begin{tabulary}{\linewidth}{$2}
-    $3
-    \end{tabulary}
+	\centering
+	\caption{${1:Caption}}%
+	\label{table:${4:Label}}
+	\begin{tabulary}{\linewidth}{$2}
+	$3
+	\end{tabulary}
 \end{table}$0
 endsnippet
 
@@ -99,3 +99,5 @@ col_count = int(match.group(2))
 snip.rv = col_str*col_count + "|"
 `
 endsnippet
+
+# vim:ts=2 sw=2 noexpandtab
