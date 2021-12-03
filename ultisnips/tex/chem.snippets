@@ -20,6 +20,8 @@ def delta_less(match):
 	return ", pre=" if match in ["e", "s"] else ""
 endglobal
 
+# ----------------------------------- Main ----------------------------------- #
+
 # Chemformula env
 snippet ilc "Chemformula env" wA
 \ch{${1:${VISUAL}}}$0
@@ -31,7 +33,7 @@ endsnippet
 
 context "chem()"
 snippet !us "Chemical reaction with underset" iA
-!( ${1:${VISUAL:Bottom}} )( ${2:${VISUAL:Top}} ) $0
+!( ${1:Bottom} )( ${2:${VISUAL:Top}} )$0
 endsnippet
 
 # ----------------------------- Electrochemistry ----------------------------- #
@@ -52,13 +54,8 @@ snippet -- "1- valency charge" iA
 endsnippet
 
 context "chem()"
-snippet ;+ "n+ valency charge" iA
-^{$1+}$0
-endsnippet
-
-context "chem()"
-snippet ;- "n- valency charge" iA
-^{$1-}$0
+snippet '(\d)([-+])' "n+(-) valency charge" irA
+^{`!p snip.rv = match.group(1) + match.group(2)`}$0
 endsnippet
 
 # ------------------------------ Reaction Arrows ----------------------------- #
