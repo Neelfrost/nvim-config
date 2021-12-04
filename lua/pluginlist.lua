@@ -93,11 +93,14 @@ return packer.startup(function()
             require("plugins.cmp")
         end,
         requires = {
-            { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
+            {
+                "quangnguyen30192/cmp-nvim-ultisnips",
+                after = "nvim-cmp",
+                commit = "4e8bf8e6c7f213bb2f8b66bdb4b35d0e515ac0ec",
+            },
             { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", requires = "neovim/nvim-lspconfig" },
             { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-            -- Wait for fix
-            -- { "hrsh7th/cmp-omni", after="nvim-cmp"},
+            { "hrsh7th/cmp-omni", after = "nvim-cmp" },
         },
     })
 

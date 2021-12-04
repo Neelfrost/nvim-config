@@ -81,13 +81,13 @@ endfunction
 
 augroup TEX_AUTOCOMMANDS
     autocmd!
-    " Cmp
-    autocmd FileType tex lua require('cmp').setup.buffer {
-    \   sources = {
-    \         { name = 'ultisnips' },
-    \         { name = 'buffer' },
-    \      },
-    \   }
+    autocmd BufRead *.tex lua require("cmp").setup.buffer({
+    \     sources = {
+    \        { name = "omni" },
+    \        { name = "ultisnips" },
+    \        { name = "buffer" },
+    \    },
+    \ })
     " Fix inputs
     autocmd BufWritePre *.tex :call FixInputs()
     " Set and Restore indent
