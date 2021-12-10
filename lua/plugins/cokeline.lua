@@ -1,17 +1,25 @@
 local get_hex = require("cokeline.utils").get_hex
 
-local space = {
-    text = "  ",
-}
+local function space(n)
+    return { text = string.rep(" ", n) }
+end
 
 require("cokeline").setup({
     show_if_buffers_are_at_least = 1,
-    cycle_prev_next_mappings = true,
 
     buffers = {
-        filter = function(buffer)
+        filter_valid = function(buffer)
             return buffer.type ~= "terminal"
         end,
+        new_buffers_position = "last",
+    },
+
+    mappings = {
+        cycle_prev_next = true,
+    },
+
+    rendering = {
+        max_buffer_width = 24,
     },
 
     default_hl = {
@@ -25,13 +33,8 @@ require("cokeline").setup({
         },
     },
 
-    rendering = {
-        min_line_width = 12,
-        max_line_width = 24,
-    },
-
     components = {
-        space,
+        space(2),
         {
             text = function(buffer)
                 return buffer.index .. ":"
@@ -40,7 +43,7 @@ require("cokeline").setup({
                 style = "bold",
             },
         },
-        space,
+        space(1),
         {
             text = function(buffer)
                 return buffer.unique_prefix
@@ -61,7 +64,7 @@ require("cokeline").setup({
                 direcion = "left",
             },
         },
-        space,
+        space(1),
         {
             text = function(buffer)
                 return buffer.is_modified and "" or ""
@@ -76,7 +79,7 @@ require("cokeline").setup({
                 style = "bold",
             },
         },
-        space,
+        space(2),
     },
 })
 
