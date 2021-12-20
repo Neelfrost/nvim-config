@@ -31,18 +31,7 @@ local borders = {
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
 
--- Snippet, autocompletion support
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-        "documentation",
-        "detail",
-        "additionalTextEdits",
-    },
-}
-
 local lspconfig = require("lspconfig")
 
 -- Setup language servers
-require("plugins.config.lspconfig").setup_ls(lspconfig, capabilities)
+require("plugins.config.lspconfig").setup_ls(lspconfig)

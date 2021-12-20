@@ -22,8 +22,19 @@ function M.show_line_diagnostics()
     vim.diagnostic.open_float(nil, opts)
 end
 
+-- Snippet, autocompletion support
+M.capabilities = vim.lsp.protocol.make_client_capabilities()
+M.capabilities.textDocument.completion.completionItem.snippetSupport = true
+M.capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+        "documentation",
+        "detail",
+        "additionalTextEdits",
+    },
+}
+
 -- Use the following when ls attches to a buffer
-local on_attach = function(client, bufnr)
+function M.on_attach(client, bufnr)
     local opts = { noremap = true, silent = true }
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -50,9 +61,9 @@ end
 
 -- Setup language servers
 -- https://www.reddit.com/r/neovim/comments/r6gouy/migrating_from_nvim_051_to_nvim_060/hmvzsps/?context=3
-function M.setup_ls(lspconfig, capabilities)
+function M.setup_ls(lspconfig)
     -- Language servers to be setup:
-    local servers = { "pyright", "sumneko_lua", "omnisharp", "null-ls" }
+    local servers = { "pyright", "sumneko_lua", "omnisharp" }
 
     -- Sumneko_lua vars
     local sumneko_root_path = "C:\\tools\\lua-language-server"
@@ -101,8 +112,8 @@ function M.setup_ls(lspconfig, capabilities)
 
     -- Common config for all servers
     local default_config = {
-        on_attach = on_attach,
-        capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities),
+        on_attach = M.on_attach,
+        capabilities = require("cmp_nvim_lsp").update_capabilities(M.capabilities),
         flags = {
             debounce_text_changes = 500,
         },
