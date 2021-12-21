@@ -15,7 +15,7 @@ augroup END
 " Highlight on yank
 augroup HL_ON_YANK
     autocmd!
-    autocmd TextYankPost * lua vim.highlight.on_yank { higroup = 'Visual', timeout = 500, on_visual = true, on_macro = true }
+    autocmd TextYankPost * lua vim.highlight.on_yank({ higroup = 'Visual', timeout = 500, on_visual = true, on_macro = true })
 augroup END
 
 " Automatically reload the file if it is changed outside of nvim
@@ -23,20 +23,6 @@ augroup AUTO_READ
     autocmd!
     autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
     autocmd FileChangedShellPost * echohl WarningMsg | redraw | echo 'File changed on disk. Buffer reloaded!' | echohl None
-augroup END
-
-" Save and restore folds
-" Also resumes edit position
-augroup SAVE_VIEW
-    autocmd!
-    autocmd BufWinLeave *.* if expand('%') != '' | mkview | endif
-    autocmd BufWinEnter *.* if expand('%') != '' | silent! loadview | endif
-augroup END
-
-augroup RESTORE_WIN_VIEW
-    autocmd!
-    autocmd BufLeave * lua auto_save_win_view()
-    autocmd BufEnter * lua auto_restore_win_view()
 augroup END
 
 " Update lualine on lsp progress
