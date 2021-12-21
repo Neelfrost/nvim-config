@@ -207,7 +207,7 @@ return packer.startup(function()
 
     -- ------------------------- Buffer, Statusline ------------------------- --
     use({
-        "noib3/cokeline.nvim",
+        "noib3/nvim-cokeline",
         after = "telescope.nvim", -- Load after telescope so that highlights are defined
         config = function()
             require("plugins.cokeline")
@@ -277,6 +277,13 @@ return packer.startup(function()
             require("plugins.others").session()
         end,
     })
+    use({
+        "ethanholz/nvim-lastplace",
+        config = function()
+            require("nvim-lastplace").setup()
+        end,
+    })
+
     -- use({
     --     "honza/vim-snippets",
     -- })
