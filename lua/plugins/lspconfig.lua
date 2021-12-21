@@ -31,7 +31,10 @@ local borders = {
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
 
-local lspconfig = require("lspconfig")
+local present, lspconfig = pcall(require, "lspconfig")
+if not present then
+    return
+end
 
 -- Setup language servers
 require("plugins.config.lspconfig").setup_ls(lspconfig)

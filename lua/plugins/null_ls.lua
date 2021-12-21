@@ -1,4 +1,16 @@
-local null_ls = require("null-ls")
+local null_present, null_ls
+local lsp_present, _ = pcall(require, "lspconfig")
+if lsp_present then
+    null_present, null_ls = pcall(require, "null-ls")
+    if not null_present then
+        vim.cmd("PackerCompile")
+        return
+    end
+else
+    vim.cmd("PackerCompile")
+    return
+end
+
 local lspconfig = require("plugins.config.lspconfig")
 local helper = require("null-ls.helpers")
 local methods = require("null-ls.methods")
