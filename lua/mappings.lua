@@ -105,8 +105,6 @@ map("", "<S-LeftMouse>", "<nop>", {})
 map("", "<S-LeftDrag>", "<nop>", {})
 
 -- Command mode movement
-map("c", "<C-j>", "<C-n>", n_opts)
-map("c", "<C-k>", "<C-p>", n_opts)
 map("c", "<C-h>", "<Left>", n_opts)
 map("c", "<C-l>", "<Right>", n_opts)
 

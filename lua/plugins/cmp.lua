@@ -118,6 +118,7 @@ cmp.setup({
                 return vim.tbl_keys(bufs)
             end,
         },
+        { name = "path" },
     }),
     documentation = {
         winhighlight = "NormalFloat:CmpDocumentation,FloatBorder:CmpDocumentationBorder",
@@ -125,4 +126,69 @@ cmp.setup({
     experimental = {
         ghost_text = true,
     },
+})
+
+local cmdline_formatting = {
+    format = function(entry, vim_item)
+        vim_item.kind = ""
+        vim_item.menu = ""
+        return vim_item
+    end,
+}
+
+local cmdline_mapping = {
+    ["<C-j>"] = cmp.mapping({
+        c = function()
+            if cmp.visible() then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+            else
+                feedkey("<Down>")
+            end
+        end,
+    }),
+    ["<C-k>"] = cmp.mapping({
+        c = function()
+            if cmp.visible() then
+                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+            else
+                feedkey("<Up>")
+            end
+        end,
+    }),
+    ["<Tab>"] = cmp.mapping({
+        c = function(fallback)
+            if cmp.visible() then
+                cmp.confirm({ select = true })
+            else
+                fallback()
+            end
+        end,
+    }),
+    ["<CR>"] = cmp.mapping({
+        c = function(fallback)
+            if cmp.visible() then
+                cmp.confirm({ select = true })
+                feedkey("<CR>")
+            else
+                fallback()
+            end
+        end,
+    }),
+}
+
+cmp.setup.cmdline("/", {
+    formatting = cmdline_formatting,
+    mapping = cmdline_mapping,
+    sources = {
+        { name = "buffer" },
+    },
+})
+
+cmp.setup.cmdline(":", {
+    formatting = cmdline_formatting,
+    mapping = cmdline_mapping,
+    sources = cmp.config.sources({
+        { name = "path" },
+        { name = "cmdline" },
+    }),
 })
