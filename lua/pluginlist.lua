@@ -3,7 +3,6 @@ vim.cmd([[
     augroup PACKER_COMPILE_ONCHANGE
         autocmd!
         autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile
-        autocmd User PackerCompileDone colorscheme gruvbox-material
     augroup END
 ]])
 

@@ -164,16 +164,6 @@ local cmdline_mapping = {
             end
         end,
     }),
-    ["<CR>"] = cmp.mapping({
-        c = function(fallback)
-            if cmp.visible() then
-                cmp.confirm({ select = true })
-                feedkey("<CR>")
-            else
-                fallback()
-            end
-        end,
-    }),
 }
 
 cmp.setup.cmdline("/", {

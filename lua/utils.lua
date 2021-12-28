@@ -31,11 +31,9 @@ end
 --- Quickfix toggle
 --- https://vim.fandom.com/wiki/Toggle_to_open_or_close_the_quickfix_window
 function _G.qfix_toggle(forced)
-    if vim.g.qfix_win and forced then
+    if vim.fn.getqflist({ winid = 0 }).winid ~= 0 and forced then
         vim.cmd("cclose")
-        vim.api.nvim_del_var("qfix_win")
     else
-        vim.api.nvim_set_var("qfix_win", vim.fn.bufnr("$"))
         vim.cmd("copen 10")
     end
 end

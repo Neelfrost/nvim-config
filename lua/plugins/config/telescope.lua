@@ -65,6 +65,7 @@ M.dir_nvim = function() --{{{
         cwd = CONFIG_PATH,
         file_ignore_patterns = { ".git", "tags" },
         prompt_title = "Neovim",
+        no_ignore = true,
     }
 
     require("telescope.builtin").find_files(opts)
@@ -76,6 +77,7 @@ M.dir_latex = function() --{{{
         file_ignore_patterns = { ".git", "tags" },
         prompt_title = "LaTeX",
         sorter = file_sorter({ "%.tex$", "%.sty$", "%.cls$" }),
+        no_ignore = true,
     }
 
     require("telescope.builtin").find_files(opts)
@@ -143,9 +145,9 @@ M.frecency = function() --{{{
     require("telescope").extensions.frecency.frecency(frecency_opts)
 end --}}}
 
-M.sessions = function()
+M.sessions = function() --{{{
     local session_opts = M.dropdown({ path_display = { "absolute" } })
     require("telescope").extensions.sessions.sessions(session_opts)
-end
+end --}}}
 
 return M
