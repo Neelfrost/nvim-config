@@ -21,11 +21,8 @@ vim.g.vimtex_quickfix_ignore_mode = 0
 -- PDF viewer settings
 vim.g.vimtex_view_general_viewer = "SumatraPDF"
 vim.g.vimtex_view_general_options = "-reuse-instance -forward-search @tex @line @pdf"
-vim.g.vimtex_view_general_options_latexmk = "-reuse-instance"
 -- Do not auto open quickfix on compile erros
 vim.g.vimtex_quickfix_mode = 0
--- Setup neovim remote
-vim.g.vimtex_compiler_progname = "nvr"
 -- Latex warnings to ignore
 vim.g.vimtex_quickfix_ignore_filters = {
     "Command terminated with space",
