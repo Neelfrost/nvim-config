@@ -15,7 +15,7 @@ local function highlight(group, guifg, guibg, style) --{{{
     vim.api.nvim_command("highlight " .. table.concat(list, " "))
 end --}}}
 
-function M.gruvbox() --{{{
+M.gruvbox = function() --{{{
     -- Setup
     vim.g.gruvbox_material_show_eob = 1
     vim.g.gruvbox_material_palette = "mix"
@@ -67,11 +67,9 @@ function M.gruvbox() --{{{
             autocmd ColorScheme gruvbox-material lua require("themes").gruvbox_highlights()
         augroup END
     ]])
-    -- Set theme
-    vim.cmd([[colorscheme gruvbox-material]])
 end --}}}
 
-function M.gruvbox_highlights() --{{{
+M.gruvbox_highlights = function() --{{{
     local palette = vim.g.gruvbox_material_palette
     -- Remove float background, fix compe background
     highlight("Normalfloat", "NONE", "NONE")

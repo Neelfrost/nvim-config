@@ -2,7 +2,7 @@ local M = {}
 
 local util = require("lspconfig.util")
 
-function M.show_line_diagnostics()
+M.show_line_diagnostics = function()
     local opts = {
         focusable = false,
         close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },

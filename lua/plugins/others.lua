@@ -1,7 +1,7 @@
 -- Contains configs for plugins which require < 10 lines
 local M = {}
 
-function M.autopairs()
+M.autopairs = function()
     vim.g.AutoPairsShortcutToggle = ""
     vim.api.nvim_set_keymap("i", "<C-l>", "<Esc><cmd>call AutoPairsJump()<CR>a", { noremap = true })
     vim.cmd([[
@@ -12,20 +12,20 @@ function M.autopairs()
     ]])
 end
 
-function M.gutentags()
+M.gutentags = function()
     vim.g.gutentags_generate_on_new = 1
     vim.g.gutentags_generate_on_write = 1
     vim.g.gutentags_generate_on_missing = 1
     vim.g.gutentags_generate_on_empty_buffer = 0
 end
 
-function M.openurl()
+M.openurl = function()
     vim.g.open_url_default_mappings = 0
     vim.api.nvim_set_keymap("n", "<Leader>u", "<Plug>(open-url-browser)", {})
     vim.api.nvim_set_keymap("n", "<Leader>s", "<Plug>(open-url-search)", {})
 end
 
-function M.ultisnips()
+M.ultisnips = function()
     -- Disable snipmate plugins to avoid duplicate snippets
     vim.g.UltiSnipsEnableSnipMate = 0
     vim.g.UltiSnipsRemoveSelectModeMappings = 0
@@ -34,7 +34,7 @@ function M.ultisnips()
     vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 end
 
-function M.treesitter()
+M.treesitter = function()
     require("nvim-treesitter.configs").setup({
         ensure_installed = { "python", "comment", "lua", "c_sharp" },
         highlight = {
@@ -49,7 +49,7 @@ function M.treesitter()
     })
 end
 
-function M.nvim_comment()
+M.nvim_comment = function()
     require("nvim_comment").setup({
         comment_empty = false,
     })
@@ -62,14 +62,14 @@ function M.nvim_comment()
     )
 end
 
-function M.fastfold()
+M.fastfold = function()
     vim.g.fastfold_savehook = 1
     vim.g.fastfold_fold_command_suffixes = { "x", "X", "a", "A", "o", "O", "c", "C", "m" }
     vim.g.fastfold_fold_movement_commands = { "]z", "[z", "zj", "zk" }
     vim.g.tex_fold_enabled = 1
 end
 
-function M.lsp_signature()
+M.lsp_signature = function()
     require("lsp_signature").setup({
         bind = true,
         hint_enable = false,
@@ -83,7 +83,7 @@ function M.lsp_signature()
     })
 end
 
-function M.hop()
+M.hop = function()
     require("hop").setup()
 
     local opts = { noremap = true, silent = true }
@@ -91,7 +91,7 @@ function M.hop()
     vim.api.nvim_set_keymap("n", "f", "<cmd>HopChar1<CR>", opts)
 end
 
-function M.session()
+M.session = function()
     local path = require("plenary.path")
     require("session_manager").setup({
         sessions_dir = path:new(vim.fn.stdpath("data"), "sessions"),
