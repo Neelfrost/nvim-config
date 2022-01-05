@@ -152,11 +152,11 @@ return packer.startup(function()
     })
     use({
         "iamcco/markdown-preview.nvim",
+        ft = "markdown",
         run = "cd app && yarn install",
         cmd = "MarkdownPreview",
         config = function()
-            -- https://github.com/wbthomason/packer.nvim/issues/620
-            vim.cmd("doautocmd mkdp_init BufEnter")
+            require("plugins.others").markdown_preview()
         end,
     })
 

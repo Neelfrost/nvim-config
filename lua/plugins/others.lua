@@ -63,10 +63,10 @@ M.nvim_comment = function()
 end
 
 M.fastfold = function()
-    vim.g.fastfold_savehook = 1
+    vim.g.fastfold_minlines = 0
+    vim.g.fastfold_savehook = 0
     vim.g.fastfold_fold_command_suffixes = { "x", "X", "a", "A", "o", "O", "c", "C", "m" }
     vim.g.fastfold_fold_movement_commands = { "]z", "[z", "zj", "zk" }
-    vim.g.tex_fold_enabled = 1
 end
 
 M.lsp_signature = function()
@@ -101,6 +101,13 @@ M.session = function()
         autosave_last_session = false,
         autosave_ignore_not_normal = true,
     })
+end
+
+M.markdown_preview = function()
+    -- https://github.com/wbthomason/packer.nvim/issues/620
+    vim.cmd("doautocmd mkdp_init BufEnter")
+    vim.g.mkdp_auto_close = 0
+    vim.g.mkdp_page_title = "${name}"
 end
 
 return M
