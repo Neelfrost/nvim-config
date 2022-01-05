@@ -88,7 +88,7 @@ end)
 
 local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "tr", "<cmd>lua require('plugins.config.telescope').frecency()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tf", "<cmd>lua require('telescope.builtin').find_files()<CR>", opts)
+vim.api.nvim_set_keymap("n", "tf", "<cmd>lua require('plugins.config.telescope').git_or_find()<CR>", opts)
 vim.api.nvim_set_keymap("n", "tp", "<cmd>lua require('plugins.config.telescope').dir_python()<CR>", opts)
 vim.api.nvim_set_keymap("n", "tn", "<cmd>lua require('plugins.config.telescope').dir_nvim()<CR>", opts)
 vim.api.nvim_set_keymap("n", "tl", "<cmd>lua require('plugins.config.telescope').dir_latex()<CR>", opts)

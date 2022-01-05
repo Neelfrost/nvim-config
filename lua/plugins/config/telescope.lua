@@ -145,9 +145,19 @@ M.frecency = function() --{{{
     require("telescope").extensions.frecency.frecency(frecency_opts)
 end --}}}
 
+-- Use dropdown theme with Sessions
 M.sessions = function() --{{{
     local session_opts = M.dropdown({ path_display = { "absolute" } })
     require("telescope").extensions.sessions.sessions(session_opts)
+end --}}}
+
+-- Fall back to find_files if not a git directory
+M.git_or_find = function() --{{{
+    local opts = M.dropdown({ prompt_title = "Find Files" })
+    local ok = pcall(require("telescope.builtin").git_files, opts)
+    if not ok then
+        require("telescope.builtin").find_files(opts)
+    end
 end --}}}
 
 return M
