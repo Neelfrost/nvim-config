@@ -55,7 +55,12 @@ function M.on_attach(client, bufnr)
 
     -- Format on save if formatting is available
     if client.resolved_capabilities.document_formatting then
-        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+        vim.cmd([[
+        augroup LSP_FORMAT
+            autocmd! * <buffer>
+            autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+        augroup END
+        ]])
     end
 end
 
