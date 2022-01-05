@@ -1,5 +1,7 @@
 local get_hex = require("cokeline.utils").get_hex
 
+local buffer_ignore_types = { "terminal", "quickfix" }
+
 local function space(n)
     return { text = string.rep(" ", n) }
 end
@@ -9,7 +11,7 @@ require("cokeline").setup({
 
     buffers = {
         filter_valid = function(buffer)
-            return buffer.type ~= "terminal"
+            return not vim.tbl_contains(buffer_ignore_types, buffer.type)
         end,
         new_buffers_position = "last",
     },
@@ -20,15 +22,28 @@ require("cokeline").setup({
 
     rendering = {
         max_buffer_width = 24,
+        left_sidebar = {
+            filetype = "NvimTree",
+            components = {
+                {
+                    text = "  NvimTree",
+                    hl = {
+                        fg = get_hex("DevIconC", "fg"),
+                        bg = get_hex("Normal", "bg"),
+                        style = "bold",
+                    },
+                },
+            },
+        },
     },
 
     default_hl = {
         focused = {
-            fg = get_hex("TelescopeBorder", "fg"),
+            fg = get_hex("DevIconC", "fg"),
             bg = get_hex("Normal", "bg"),
         },
         unfocused = {
-            fg = get_hex("folded", "fg"),
+            fg = get_hex("DevIconSh", "fg"),
             bg = get_hex("TabLineFill", "bg"),
         },
     },
@@ -73,7 +88,7 @@ require("cokeline").setup({
             hl = {
                 fg = function(buffer)
                     if buffer.is_modified then
-                        return get_hex("SpellBad", "fg")
+                        return get_hex("DevIconHtm", "fg")
                     end
                 end,
                 style = "bold",
