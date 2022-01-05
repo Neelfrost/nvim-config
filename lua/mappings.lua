@@ -8,7 +8,7 @@ local nse_opts = { noremap = true, silent = true, expr = true }
 map(
     "n",
     "<Leader><Leader>t",
-    "<cmd>lua launch_ext_prog('wt.exe -d', string.format('\"%s\"', vim.fn.expand('%:p:h')))<CR>",
+    "<cmd>lua launch_ext_prog('wt.exe', '-d', string.format('\"%s\"', vim.fn.expand('%:p:h')))<CR>",
     ns_opts
 )
 
@@ -122,7 +122,7 @@ map("v", "<A-k>", ":m '<-2<CR>gv-gv", n_opts)
 map("n", "<F11>", "<cmd>set wrap!<CR>", ns_opts)
 
 -- Close buffer
-map("n", "<Leader>w", "winnr('$') >= 2 ? ':close<CR>' : ':bd!<CR>'", nse_opts)
+map("n", "<Leader>w", "winnr('$') >= 2 ? '<cmd>close<CR>' : '<cmd>bd!<CR>'", nse_opts)
 
 -- Enter normal mode in terminal
 map("t", "<Esc>", "<C-\\><C-n>", ns_opts)
@@ -130,6 +130,13 @@ map("t", "<Esc>", "<C-\\><C-n>", ns_opts)
 -- Center cursor after traversing search
 map("n", "n", "nzz", n_opts)
 map("n", "N", "Nzz", n_opts)
+
+-- map("n", "<Space>", "@=(foldlevel('.')?'zA':'<Space>')<CR>", nse_opts)
+map("n", "<Space>", "foldlevel('.') ? 'za' : '<Space>'", nse_opts)
+
+-- Handle save & close, force close when multiple buffers are active
+map("n", "ZZ", "len(getbufinfo({'buflisted':1})) > 1 ? '<cmd>wqall<CR>' : '<cmd>wq<CR>'", nse_opts)
+map("n", "ZQ", "len(getbufinfo({'buflisted':1})) > 1 ? '<cmd>qall!<CR>' : '<cmd>q!<CR>'", nse_opts)
 
 -- Undo break points
 local break_points = { ".", ",", "!", "?", "=", "-", "_" }
