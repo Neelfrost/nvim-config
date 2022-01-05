@@ -2,7 +2,7 @@ local components = require("plugins.config.lualine")
 
 require("lualine").setup({
     options = {
-        theme = components.theme_transparent(),
+        theme = components.theme(),
         section_separators = { left = "", right = "" },
         component_separators = { left = "│", right = "│" },
     },

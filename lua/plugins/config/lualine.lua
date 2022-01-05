@@ -2,11 +2,12 @@ local M = {}
 
 local fn = vim.fn
 local half_winwidth = 91
+local max_file_name_width = 12
 
 M.buffer_is_plugin = function() --{{{
-    local filename = fn.expand("%:t")
+    local file_name = fn.expand("%:t")
     for _, v in pairs(PLUGINS) do
-        if filename == v or vim.bo.filetype == v then
+        if file_name == v or vim.bo.filetype == v then
             return true
         end
     end
@@ -28,42 +29,39 @@ M.file_icon = function(file_name, file_type) --{{{
 end --}}}
 
 M.file_name = function() --{{{
-    local file_name = fn.expand("%:r")
+    local file_name = fn.expand("%:t")
     local file_type = fn.expand("%:e")
 
     -- Truncate file_name if too big
     -- Set file name to [No Name] on empty buffers
-    if #file_name > 15 then
-        file_name = string.sub(file_name, 1, 8) .. "⋯"
-    elseif file_name == "" then
+    if file_name == "" then
         file_name = "[No Name]"
+    elseif #file_name > max_file_name_width then
+        file_name = string.sub(file_name, 1, max_file_name_width) .. "…"
     end
-
-    -- Join file_name and file_type if file_type exists
-    local final_name = file_type ~= "" and file_name .. "." .. file_type or file_name
 
     -- Empty file_name for plugin releated buffers
     for _, v in pairs(PLUGINS) do
         if v == vim.bo.filetype then
-            final_name = "⋯"
+            file_name = "…"
         end
     end
 
-    return M.readonly() .. M.file_icon(final_name, file_type)
+    return M.readonly() .. M.file_icon(file_name, file_type) .. M.compile_status()
 end --}}}
 
 M.readonly = function() --{{{
-    local readonly = vim.api.nvim_exec([[echo &readonly || !&modifiable ? ' ' : '']], true)
-    return readonly
+    return (vim.bo.readonly or not vim.bo.modifiable) and " " or ""
 end --}}}
 
 M.current_mode = function() --{{{
-    local buffer_name = fn.expand("%:t")
+    -- Get current mode
     local mode = require("lualine.utils.mode").get_mode()
+
+    -- Plugin name to be shown in mode section
     local mode_plugins = {
         NvimTree = "NVIMTREE",
         packer = "PACKER",
-        dashboard = "DASHBOARD",
         alpha = "ALPHA",
     }
 
@@ -73,8 +71,9 @@ M.current_mode = function() --{{{
     end
 
     -- Return plugin name
+    local file_name = fn.expand("%:t")
     for k, v in pairs(mode_plugins) do
-        if vim.bo.filetype == k or buffer_name == k then
+        if vim.bo.filetype == k or file_name == k then
             return v
         end
     end
@@ -111,14 +110,6 @@ M.file_encoding = function() --{{{
     end
 end --}}}
 
-M.buffer_percent = function() --{{{
-    return fn.winwidth(0) > half_winwidth and string.format(
-        "並%d%% of %d",
-        (100 * fn.line(".") / fn.line("$")),
-        fn.line("$")
-    ) or ""
-end --}}}
-
 M.line_info = function() --{{{
     if not M.buffer_is_plugin() then
         if fn.winwidth(0) > half_winwidth then
@@ -151,10 +142,8 @@ M.lsp_client_names = function() --{{{
         for _, client in pairs(clients) do
             if #clients == 1 then
                 return client.name
-            else
-                if client.name ~= "null-ls" then
-                    return client.name
-                end
+            elseif client.name ~= "null-ls" then
+                return client.name
             end
         end
     end
@@ -183,51 +172,87 @@ M.mixed_indent = function() --{{{
     return mixed and "" or ""
 end --}}}
 
-M.theme_transparent = function() --{{{
+M.theme = function() --{{{
     local colors = {
-        darkgray = "#1d1f21",
-        gray = "#3f4b59",
-        innerbg = nil,
-        outerbg = nil,
-        outerfg = "#14191f",
-        normal = "#4f9cfe",
-        insert = "#a9b665",
-        visual = "#e78a4e",
-        replace = "#ea6962",
-        command = "#d8a657",
+        ["gruvbox-material"] = {
+            darkgray = "#1d1f21",
+            gray = "#3f4b59",
+            innerbg = nil,
+            outerbg = nil,
+            outerfg = "#14191f",
+            normal = "#4f9cfe",
+            insert = "#a9b665",
+            visual = "#e78a4e",
+            replace = "#ea6962",
+            command = "#d8a657",
+        },
+        ["kanagawa"] = {
+            darkgray = "#16161d",
+            gray = "#727169",
+            innerbg = nil,
+            outerbg = nil,
+            outerfg = "#16161D",
+            normal = "#7e9cd8",
+            insert = "#98bb6c",
+            visual = "#ffa066",
+            replace = "#e46876",
+            command = "#e6c384",
+        },
     }
     return {
         inactive = {
-            a = { fg = colors.gray, bg = colors.outerbg, gui = "bold" },
-            b = { fg = colors.gray, bg = colors.outerfg },
-            c = { fg = colors.gray, bg = colors.innerbg },
+            a = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerbg, gui = "bold" },
+            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
+            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
         },
         visual = {
-            a = { fg = colors.darkgray, bg = colors.visual, gui = "bold" },
-            b = { fg = colors.gray, bg = colors.outerfg },
-            c = { fg = colors.gray, bg = colors.innerbg },
+            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].visual, gui = "bold" },
+            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
+            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
         },
         replace = {
-            a = { fg = colors.darkgray, bg = colors.replace, gui = "bold" },
-            b = { fg = colors.gray, bg = colors.outerfg },
-            c = { fg = colors.gray, bg = colors.innerbg },
+            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].replace, gui = "bold" },
+            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
+            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
         },
         normal = {
-            a = { fg = colors.darkgray, bg = colors.normal, gui = "bold" },
-            b = { fg = colors.gray, bg = colors.outerfg },
-            c = { fg = colors.gray, bg = colors.innerbg },
+            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].normal, gui = "bold" },
+            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
+            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
         },
         insert = {
-            a = { fg = colors.darkgray, bg = colors.insert, gui = "bold" },
-            b = { fg = colors.gray, bg = colors.outerfg },
-            c = { fg = colors.gray, bg = colors.innerbg },
+            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].insert, gui = "bold" },
+            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
+            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
         },
         command = {
-            a = { fg = colors.darkgray, bg = colors.command, gui = "bold" },
-            b = { fg = colors.gray, bg = colors.outerfg },
-            c = { fg = colors.gray, bg = colors.innerbg },
+            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].command, gui = "bold" },
+            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
+            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
         },
     }
+end --}}}
+
+M.compile_status = function() --{{{
+    if vim.bo.filetype == "tex" then
+        -- Status: not started or stopped
+        if vim.b.vimtex["compiler"]["status"] == -1 or vim.b.vimtex["compiler"]["status"] == 0 then
+            return ""
+        end
+
+        -- Status: running
+        if vim.b.vimtex["compiler"]["status"] == 1 then
+            return " (⋯)"
+            -- Status: compile success
+        elseif vim.b.vimtex["compiler"]["status"] == 2 then
+            return " ()"
+            -- Status: compile failed
+        elseif vim.b.vimtex["compiler"]["status"] == 3 then
+            return " ()"
+        end
+    else
+        return ""
+    end
 end --}}}
 
 return M
