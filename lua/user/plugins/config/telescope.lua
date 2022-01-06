@@ -1,5 +1,5 @@
 local actions = require("telescope.actions")
-local custom_config = require("plugins.config.telescope")
+local custom_config = require("user.plugins.custom.telescope")
 local telescope = require("telescope")
 
 telescope.setup({
@@ -87,10 +87,10 @@ pcall(function()
 end)
 
 local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "tr", "<cmd>lua require('plugins.config.telescope').frecency()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tf", "<cmd>lua require('plugins.config.telescope').git_or_find()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tp", "<cmd>lua require('plugins.config.telescope').dir_python()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tn", "<cmd>lua require('plugins.config.telescope').dir_nvim()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tl", "<cmd>lua require('plugins.config.telescope').dir_latex()<CR>", opts)
-vim.api.nvim_set_keymap("n", "ts", "<cmd>lua require('plugins.config.telescope').sessions()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('plugins.config.telescope').reload_modules()<CR>", opts)
+vim.api.nvim_set_keymap("n", "tr", "<cmd>lua require('user.plugins.custom.telescope').frecency()<CR>", opts)
+vim.api.nvim_set_keymap("n", "tf", "<cmd>lua require('user.plugins.custom.telescope').git_or_find()<CR>", opts)
+vim.api.nvim_set_keymap("n", "tp", "<cmd>lua require('user.plugins.custom.telescope').dir_python()<CR>", opts)
+vim.api.nvim_set_keymap("n", "tn", "<cmd>lua require('user.plugins.custom.telescope').dir_nvim()<CR>", opts)
+vim.api.nvim_set_keymap("n", "tl", "<cmd>lua require('user.plugins.custom.telescope').dir_latex()<CR>", opts)
+vim.api.nvim_set_keymap("n", "ts", "<cmd>lua require('user.plugins.custom.telescope').sessions()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('user.plugins.custom.telescope').reload_modules()<CR>", opts)

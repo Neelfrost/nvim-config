@@ -37,4 +37,4 @@ if not present then
 end
 
 -- Setup language servers
-require("plugins.config.lspconfig").setup_ls(lspconfig)
+require("user.plugins.custom.lspconfig").setup_ls(lspconfig)

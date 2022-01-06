@@ -16,10 +16,10 @@ ICON_WARN = "W"
 ICON_INFO = "I"
 ICON_HINT = "H"
 
--- General config
-vim.cmd("source ~/AppData/Local/nvim/lua/utils.vim")
-vim.cmd("source ~/AppData/Local/nvim/lua/autocommands.vim")
-require("options")
-require("utils")
-require("mappings")
-require("plugins")
+-- Configuration files
+vim.cmd("source ~/AppData/Local/nvim/viml/utils.vim")
+vim.cmd("source ~/AppData/Local/nvim/viml/autocommands.vim")
+require("user.options")
+require("user.utils")
+require("user.mappings")
+require("user.plugins")

@@ -11,12 +11,11 @@ else
     return
 end
 
-local lspconfig = require("plugins.config.lspconfig")
+local lspconfig = require("user.plugins.custom.lspconfig")
 local helper = require("null-ls.helpers")
 local methods = require("null-ls.methods")
 
 local FORMATTING = methods.internal.FORMATTING
-local DIAGNOSTICS = methods.internal.DIAGNOSTICS
 
 local latexindent = helper.make_builtin({
     method = FORMATTING,
@@ -50,7 +49,6 @@ local sources = {
         from_stderr = true,
         args = { "-I", "-q", "-f%l:%c:%d:%k:%m\r\n" },
     }),
-    todos,
 }
 
 null_ls.setup({

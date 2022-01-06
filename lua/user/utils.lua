@@ -13,7 +13,7 @@ function _G.perform_cleanup()
             keeppatterns %s/^\s*\\item\s*\\item/\\item/e " remove duplicate \items on sameline
         ]])
     end
-    if require("plugins.config.lualine").mixed_indent() ~= "" then
+    if require("user.plugins.custom.lualine").mixed_indent() ~= "" then
         vim.cmd([[
             keeppatterns %s/\v\t/    /e
         ]])
@@ -63,16 +63,14 @@ if pcall(require, "plenary") then
     local reload = require("plenary.reload").reload_module
     --- Reload module using plenary
     --- @param name string module
-    --- @return module module
     function _G.plenary_reload(name)
         reload(name)
-        return require(name)
     end
 end
 
 --- Get module from file path
---- @param file_path string path to file e.g., "C:\Users\Neel\AppData\Local\nvim\lua\plugins\config\telescope.lua"
---- @return string module_name module representation of file "plugins.config.telescope"
+--- @param file_path string path to file e.g., "C:\Users\Neel\AppData\Local\nvim\user\lua\plugins\custom\telescope.lua"
+--- @return string module_name module representation of file "user.plugins.custom.telescope"
 function _G.get_module_name(file_path)
     -- Path to the lua folder
     local path_to_lua = CONFIG_PATH .. "\\lua\\"
@@ -93,9 +91,12 @@ end
 --- Save and reload a module
 function _G.save_reload_module()
     local file_path = vim.fn.expand("%:p")
+    
+    -- Handle weird behavior (multiple separators)
     if string.match(file_path, "\\\\") then
         file_path = file_path:gsub("\\\\", "\\")
     end
+
     local module = get_module_name(file_path)
 
     -- Only reload if current file is a valid module
@@ -113,7 +114,7 @@ end
 function _G.set_title()
     local file = vim.fn.expand("%:p:t")
     local cwd = vim.fn.split(vim.fn.fnamemodify(file, ":p:h"):gsub("/", "\\"), "\\")
-    local is_plugin = require("plugins.config.lualine").buffer_is_plugin()
+    local is_plugin = require("user.plugins.custom.lualine").buffer_is_plugin()
 
     if file ~= "" and not is_plugin then
         vim.opt.titlestring = cwd[#cwd] .. "/" .. file

@@ -52,8 +52,8 @@ local buttons = {
     type = "group",
     val = {
         set_button("1", "  Load Last Session", "<cmd>LoadLastSession<CR>"),
-        set_button("2", "  Browse Sessions", "<cmd>lua require('plugins.config.telescope').sessions()<CR>"),
-        set_button("3", "  Recent Files", "<cmd>lua require('plugins.config.telescope').frecency()<CR>"),
+        set_button("2", "  Browse Sessions", "<cmd>lua require('user.plugins.custom.telescope').sessions()<CR>"),
+        set_button("3", "  Recent Files", "<cmd>lua require('user.plugins.custom.telescope').frecency()<CR>"),
         set_button("4", "  Find Files", "<cmd>Telescope find_files<CR>"),
         set_button("5", "  New File", "<cmd>enew<CR>"),
         set_button("u", "  Update", "<cmd>PackerSync<CR>"),

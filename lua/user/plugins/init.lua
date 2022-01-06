@@ -2,7 +2,7 @@
 vim.cmd([[
     augroup PACKER_COMPILE_ONCHANGE
         autocmd!
-        autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+        autocmd BufWritePost init.lua source <afile> | PackerCompile
     augroup END
 ]])
 
@@ -63,15 +63,9 @@ return packer.startup(function()
     use({
         "sainnhe/gruvbox-material",
         config = function()
-            require("themes").gruvbox()
-        end,
-    })
-    use({
-        "rebelot/kanagawa.nvim",
-        config = function()
-            require("themes").kanagawa()
+            require("user.themes").gruvbox()
             -- Set theme
-            vim.cmd("colorscheme kanagawa")
+            vim.cmd("colorscheme gruvbox-material")
         end,
     })
 
@@ -87,20 +81,20 @@ return packer.startup(function()
         after = "nvim-treesitter",
         requires = "nvim-treesitter",
         config = function()
-            require("plugins.others").treesitter()
+            require("user.plugins.config.others").treesitter()
         end,
     })
     use({
         "kyazdani42/nvim-web-devicons",
         config = function()
-            require("plugins.devicons")
+            require("user.plugins.config.devicons")
         end,
     })
     use({
         "lukas-reineke/indent-blankline.nvim",
         event = "BufRead",
         config = function()
-            require("plugins.indentline")
+            require("user.plugins.config.indentline")
         end,
     })
     use({
@@ -121,15 +115,15 @@ return packer.startup(function()
         after = "nvim-cmp",
         requires = { "hrsh7th/cmp-nvim-lsp" },
         config = function()
-            require("plugins.null_ls")
-            require("plugins.lspconfig")
+            require("user.plugins.config.null_ls")
+            require("user.plugins.config.lspconfig")
         end,
     })
     use({
         "ray-x/lsp_signature.nvim",
         after = "nvim-lspconfig",
         config = function()
-            require("plugins.others").lsp_signature()
+            require("user.plugins.config.others").lsp_signature()
         end,
     })
     use({
@@ -141,7 +135,7 @@ return packer.startup(function()
     use({
         "hrsh7th/nvim-cmp",
         config = function()
-            require("plugins.cmp")
+            require("user.plugins.config.cmp")
         end,
         requires = {
             {
@@ -178,21 +172,21 @@ return packer.startup(function()
         cmd = "CommentToggle",
         keys = { { "n", "<C-/>" }, { "v", "<C-/>" }, { "i", "<C-/>" }, { "n", "gc" }, { "v", "gc" } },
         config = function()
-            require("plugins.others").nvim_comment()
+            require("user.plugins.config.others").nvim_comment()
         end,
     })
     use({
         "jiangmiao/auto-pairs",
         event = "InsertEnter",
         config = function()
-            require("plugins.others").autopairs()
+            require("user.plugins.config.others").autopairs()
         end,
     })
     use({
         "goolord/alpha-nvim",
-        after = "kanagawa.nvim",
+        after = "gruvbox-material",
         config = function()
-            require("plugins.alpha")
+            require("user.plugins.config.alpha")
         end,
     })
     use({
@@ -200,7 +194,7 @@ return packer.startup(function()
         cmd = { "NvimTreeToggle", "NvimTreeRefresh" },
         keys = { { "n", "<C-b>" } },
         config = function()
-            require("plugins.nvimtree")
+            require("user.plugins.config.nvimtree")
         end,
     })
     use({
@@ -209,22 +203,8 @@ return packer.startup(function()
         run = "cd app && yarn install",
         cmd = "MarkdownPreview",
         config = function()
-            require("plugins.others").markdown_preview()
+            require("user.plugins.config.others").markdown_preview()
         end,
-    })
-    use({
-        "plasticboy/vim-markdown",
-        ft = "markdown",
-    })
-    use({
-        "danymat/neogen",
-        config = function()
-            require("neogen").setup({
-                enabled = true,
-            })
-        end,
-        after = "nvim-treesitter",
-        requires = "nvim-treesitter/nvim-treesitter",
     })
 
     -- -------------------------------- LaTeX ------------------------------- --
@@ -232,20 +212,20 @@ return packer.startup(function()
         "lervag/vimtex",
         ft = { "tex", "bib" },
         config = function()
-            require("plugins.vimtex")
+            require("user.plugins.config.vimtex")
         end,
     })
     use({
         "ludovicchabant/vim-gutentags",
         ft = { "tex" },
         config = function()
-            require("plugins.others").gutentags()
+            require("user.plugins.config.others").gutentags()
         end,
     })
     use({
         "SirVer/ultisnips",
         config = function()
-            require("plugins.others").ultisnips()
+            require("user.plugins.config.others").ultisnips()
         end,
     })
 
@@ -254,7 +234,7 @@ return packer.startup(function()
         "nvim-telescope/telescope.nvim",
         requires = "nvim-lua/plenary.nvim",
         config = function()
-            require("plugins.telescope")
+            require("user.plugins.config.telescope")
         end,
     })
     use({
@@ -276,16 +256,16 @@ return packer.startup(function()
     -- ------------------------- Buffer, Statusline ------------------------- --
     use({
         "noib3/nvim-cokeline",
-        after = "kanagawa.nvim",
+        after = "gruvbox-material",
         config = function()
-            require("plugins.cokeline")
+            require("user.plugins.config.cokeline")
         end,
     })
     use({
         "nvim-lualine/lualine.nvim",
-        after = "kanagawa.nvim",
+        after = "gruvbox-material",
         config = function()
-            require("plugins.lualine")
+            require("user.plugins.config.lualine")
         end,
     })
 
@@ -316,14 +296,14 @@ return packer.startup(function()
         "phaazon/hop.nvim",
         event = "BufRead",
         config = function()
-            require("plugins.others").hop()
+            require("user.plugins.config.others").hop()
         end,
     })
     use({
         "dhruvasagar/vim-open-url",
         keys = { { "n", "<Leader>u" }, { "n", "<Leader>s" } },
         config = function()
-            require("plugins.others").openurl()
+            require("user.plugins.config.others").openurl()
         end,
     })
     use({
@@ -337,13 +317,13 @@ return packer.startup(function()
         "Konfekt/FastFold",
         event = "BufRead",
         config = function()
-            require("plugins.others").fastfold()
+            require("user.plugins.config.others").fastfold()
         end,
     })
     use({
         "Shatur/neovim-session-manager",
         config = function()
-            require("plugins.others").session()
+            require("user.plugins.config.others").session()
         end,
     })
     use({
