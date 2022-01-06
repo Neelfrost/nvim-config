@@ -53,6 +53,7 @@ M.nvim_comment = function()
     require("nvim_comment").setup({
         comment_empty = false,
     })
+    vim.api.nvim_set_keymap("i", "<C-/>", "<C-o><cmd>CommentToggle<CR><C-o>A", { silent = true, noremap = true })
     vim.api.nvim_set_keymap("n", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
     vim.api.nvim_set_keymap(
         "v",

@@ -124,7 +124,7 @@ return packer.startup(function()
     use({
         "terrortylor/nvim-comment",
         cmd = "CommentToggle",
-        keys = { { "n", "<C-/>" }, { "v", "<C-/>" }, { "n", "gc" }, { "v", "gc" } },
+        keys = { { "n", "<C-/>" }, { "v", "<C-/>" }, { "i", "<C-/>" }, { "n", "gc" }, { "v", "gc" } },
         config = function()
             require("plugins.others").nvim_comment()
         end,
