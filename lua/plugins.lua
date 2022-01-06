@@ -1,14 +1,58 @@
--- Compile packer when pluginlist file changes
+-- Run ":PackerCompile" when this file changes
 vim.cmd([[
     augroup PACKER_COMPILE_ONCHANGE
         autocmd!
-        autocmd BufWritePost pluginlist.lua source <afile> | PackerCompile
+        autocmd BufWritePost plugins.lua source <afile> | PackerCompile
     augroup END
 ]])
 
-local packer = require("packerinit")
-local use = packer.use
+-- Install packer.nvim in "start" folder i.e., not lazy loaded {{{
+local install_path = PACKER_PATH .. "\\start\\packer.nvim"
+local packer_bootstrap
 
+-- Check if packer.nvim is already installed
+local present, packer = pcall(require, "packer")
+if not present and vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+    -- Install packer.nvim
+    packer_bootstrap = vim.fn.system({
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "https://github.com/wbthomason/packer.nvim",
+        install_path,
+    })
+
+    -- Check for installation success
+    vim.cmd("packadd packer.nvim")
+
+    present, packer = pcall(require, "packer")
+    if present then
+        vim.notify("packer.nvim installation successful.", vim.log.levels.INFO)
+    else
+        vim.notify("packer.nvim installation failed.", vim.log.levels.ERROR)
+        return
+    end
+end --}}}
+
+-- Initialize packer.nvim {{{
+packer.init({
+    display = {
+        open_fn = function()
+            return require("packer.util").float({ border = "single" })
+        end,
+        prompt_border = "single",
+        working_sym = "",
+        error_sym = "",
+        done_sym = "",
+    },
+    auto_clean = true,
+    compile_on_sync = true,
+    max_jobs = 5,
+}) --}}}
+
+-- Plugin list
+local use = packer.use
 return packer.startup(function()
     -- ------------------------------- Packer ------------------------------- --
     use({
@@ -20,6 +64,14 @@ return packer.startup(function()
         "sainnhe/gruvbox-material",
         config = function()
             require("themes").gruvbox()
+        end,
+    })
+    use({
+        "rebelot/kanagawa.nvim",
+        config = function()
+            require("themes").kanagawa()
+            -- Set theme
+            vim.cmd("colorscheme kanagawa")
         end,
     })
 
@@ -138,6 +190,7 @@ return packer.startup(function()
     })
     use({
         "goolord/alpha-nvim",
+        after = "kanagawa.nvim",
         config = function()
             require("plugins.alpha")
         end,
@@ -158,6 +211,20 @@ return packer.startup(function()
         config = function()
             require("plugins.others").markdown_preview()
         end,
+    })
+    use({
+        "plasticboy/vim-markdown",
+        ft = "markdown",
+    })
+    use({
+        "danymat/neogen",
+        config = function()
+            require("neogen").setup({
+                enabled = true,
+            })
+        end,
+        after = "nvim-treesitter",
+        requires = "nvim-treesitter/nvim-treesitter",
     })
 
     -- -------------------------------- LaTeX ------------------------------- --
@@ -209,13 +276,14 @@ return packer.startup(function()
     -- ------------------------- Buffer, Statusline ------------------------- --
     use({
         "noib3/nvim-cokeline",
-        after = "telescope.nvim", -- Load after telescope so that highlights are defined
+        after = "kanagawa.nvim",
         config = function()
             require("plugins.cokeline")
         end,
     })
     use({
         "nvim-lualine/lualine.nvim",
+        after = "kanagawa.nvim",
         config = function()
             require("plugins.lualine")
         end,
@@ -290,7 +358,7 @@ return packer.startup(function()
     -- })
 
     -- Automatic initial plugin installation
-    if #vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1) == 1 then
-        vim.cmd([[PackerSync]])
+    if packer_bootstrap then
+        packer.sync()
     end
 end)
