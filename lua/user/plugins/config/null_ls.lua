@@ -3,11 +3,11 @@ local lsp_present, _ = pcall(require, "lspconfig")
 if lsp_present then
     null_present, null_ls = pcall(require, "null-ls")
     if not null_present then
-        vim.cmd("PackerCompile")
+        require("packer").compile()
         return
     end
 else
-    vim.cmd("PackerCompile")
+    require("packer").compile()
     return
 end
 
