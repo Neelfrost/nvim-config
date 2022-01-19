@@ -1,13 +1,19 @@
+local map = vim.api.nvim_set_keymap
+local n_opts = { noremap = true }
+local ne_opts = { noremap = true, expr = true }
+local ns_opts = { noremap = true, silent = true }
+local nse_opts = { noremap = true, silent = true, expr = true }
+
 -- Contains configs for plugins which require < 10 lines
 local M = {}
 
 M.autopairs = function()
     vim.g.AutoPairsShortcutToggle = ""
-    vim.api.nvim_set_keymap("i", "<C-l>", "<Esc><cmd>call AutoPairsJump()<CR>a", { noremap = true })
+    map("i", "<C-l>", "<Esc><cmd>call AutoPairsJump()<CR>a", ns_opts)
     vim.cmd([[
         augroup DEFINE_AUTOPAIRS
             autocmd!
-            autocmd FileType lua,vim,md let b:AutoPairs = AutoPairsDefine({'<' : '>'})
+            autocmd FileType lua,vim,md,html,xml let b:AutoPairs = AutoPairsDefine({'<' : '>'})
         augroup END
     ]])
 end
@@ -21,8 +27,8 @@ end
 
 M.openurl = function()
     vim.g.open_url_default_mappings = 0
-    vim.api.nvim_set_keymap("n", "<Leader>u", "<Plug>(open-url-browser)", {})
-    vim.api.nvim_set_keymap("n", "<Leader>s", "<Plug>(open-url-search)", {})
+    map("n", "<Leader>u", "<Plug>(open-url-browser)", {})
+    map("n", "<Leader>s", "<Plug>(open-url-search)", {})
 end
 
 M.ultisnips = function()
@@ -53,14 +59,9 @@ M.nvim_comment = function()
     require("nvim_comment").setup({
         comment_empty = false,
     })
-    vim.api.nvim_set_keymap("i", "<C-/>", "<C-o><cmd>CommentToggle<CR><C-o>A", { silent = true, noremap = true })
-    vim.api.nvim_set_keymap("n", "<C-/>", "<cmd>CommentToggle<CR>", { silent = true, noremap = true })
-    vim.api.nvim_set_keymap(
-        "v",
-        "<C-/>",
-        ":<C-u>call CommentOperator(visualmode())<CR>",
-        { silent = true, noremap = true }
-    )
+    map("i", "<C-/>", "<C-o><cmd>CommentToggle<CR><C-o>A", ns_opts)
+    map("n", "<C-/>", "<cmd>CommentToggle<CR>", ns_opts)
+    map("v", "<C-/>", ":<C-u>call CommentOperator(visualmode())<CR>", ns_opts)
 end
 
 M.fastfold = function()
@@ -86,10 +87,8 @@ end
 
 M.hop = function()
     require("hop").setup()
-
-    local opts = { noremap = true, silent = true }
-    vim.api.nvim_set_keymap("n", "S", "<cmd>HopChar2<CR>", opts)
-    vim.api.nvim_set_keymap("n", "f", "<cmd>HopChar1<CR>", opts)
+    map("n", "S", "<cmd>HopChar2<CR>", ns_opts)
+    map("n", "f", "<cmd>HopChar1<CR>", ns_opts)
 end
 
 M.session = function()
@@ -101,7 +100,10 @@ M.session = function()
         autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
         autosave_last_session = false,
         autosave_ignore_not_normal = true,
+        autosave_only_in_session = true,
     })
+    map("n", "<Leader>ss", "<cmd>SessionManager save_current_session<CR>", ns_opts)
+    map("n", "<Leader>ls", "<cmd>SessionManager load_session<CR>", ns_opts)
 end
 
 M.markdown_preview = function()
