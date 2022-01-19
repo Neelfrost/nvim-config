@@ -322,6 +322,7 @@ return packer.startup(function()
     })
     use({
         "Shatur/neovim-session-manager",
+        cmd = "SessionManager",
         config = function()
             require("user.plugins.config.others").session()
         end,
