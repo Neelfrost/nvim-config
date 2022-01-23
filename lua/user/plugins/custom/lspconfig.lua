@@ -1,6 +1,6 @@
 local M = {}
 
-local util = require("lspconfig.util")
+local util = pcall(require, "lspconfig.util")
 
 M.show_line_diagnostics = function()
     local opts = {
@@ -58,7 +58,7 @@ function M.on_attach(client, bufnr)
         vim.cmd([[
         augroup LSP_FORMAT
             autocmd! * <buffer>
-            autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+            autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync(nil, 5000)
         augroup END
         ]])
     end

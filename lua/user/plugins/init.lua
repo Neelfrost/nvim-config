@@ -108,7 +108,10 @@ return packer.startup(function()
     use({
         "neovim/nvim-lspconfig",
         after = "nvim-cmp",
-        requires = { "hrsh7th/cmp-nvim-lsp", "jose-elias-alvarez/null-ls.nvim" },
+        requires = { "hrsh7th/cmp-nvim-lsp" },
+        config = function()
+            require("user.plugins.config.lspconfig")
+        end,
     })
     use({
         "jose-elias-alvarez/null-ls.nvim",
@@ -116,7 +119,6 @@ return packer.startup(function()
         requires = { "hrsh7th/cmp-nvim-lsp" },
         config = function()
             require("user.plugins.config.null_ls")
-            require("user.plugins.config.lspconfig")
         end,
     })
     use({
