@@ -79,7 +79,7 @@ if pcall(require, "plenary") then
 end
 
 --- Get module from file path
---- @param file_path string path to file e.g., "C:\Users\Neel\AppData\Local\nvim\user\lua\plugins\custom\telescope.lua"
+--- @param file_path string path to file e.g., "C:\Users\Neel\AppData\Local\nvim\user\lua\user\plugins\custom\telescope.lua"
 --- @return string module_name module representation of file "user.plugins.custom.telescope"
 function _G.get_module_name(file_path)
     -- Path to the lua folder
@@ -88,8 +88,8 @@ function _G.get_module_name(file_path)
 
     -- In the case that current file is not within "lua" folder
     if module_name == file_path then
-        print("Not a valid module.")
-        return nil
+        print("Not a valid module.", module_name)
+        return
     end
 
     module_name = module_name:gsub("%.lua", "")
@@ -101,12 +101,29 @@ end
 --- Save and reload a module
 function _G.save_reload_module()
     local file_path = vim.fn.expand("%:p")
-    
+
+    -- Handle lowercase drive names
+    file_path = file_path:gsub("^%l", string.upper)
+
     -- Handle weird behavior (multiple separators)
     if string.match(file_path, "\\\\") then
         file_path = file_path:gsub("\\\\", "\\")
     end
 
+    -- Reload (source) vim files
+    if file_path:find("%.vim$") then
+        file_path = vim.fn.fnameescape(file_path)
+        -- Save
+        vim.cmd("update!")
+        -- Source
+        vim.cmd(("source %s"):format(file_path))
+        -- Print
+        print(("%s Sourced."):format(file_path))
+        return
+    end
+
+    -- Reload lua files
+    -- Get module
     local module = get_module_name(file_path)
 
     -- Only reload if current file is a valid module
@@ -116,14 +133,14 @@ function _G.save_reload_module()
         -- Reload
         plenary_reload(module)
         -- Print
-        print(module .. " Reloaded.")
+        print(("%s Reloaded."):format(module))
     end
 end
 
 --- Set window title
 function _G.set_title()
     local file = vim.fn.expand("%:p:t")
-    local cwd = vim.fn.split(vim.fn.fnamemodify(file, ":p:h"):gsub("/", "\\"), "\\")
+    local cwd = vim.fn.split(vim.fn.expand("%:p:h"):gsub("/", "\\"), "\\")
     local is_plugin = require("user.plugins.custom.lualine").buffer_is_plugin()
 
     if file ~= "" and not is_plugin then

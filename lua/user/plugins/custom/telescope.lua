@@ -111,7 +111,8 @@ M.reload_modules = function() --{{{
             local reload_module_map = function(should_close)
                 local entry = actions_state.get_selected_entry()
                 -- Append cwd to entry value (due to smart display mode)
-                local name = get_module_name(cwd .. entry.value)
+                -- Remove leading ".\"
+                local name = get_module_name(cwd .. entry.value:gsub("^%.\\", ""))
 
                 if should_close then
                     require("telescope.actions").close(prompt_bufnr)
