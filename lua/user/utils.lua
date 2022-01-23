@@ -1,22 +1,32 @@
+-- https://www.reddit.com/r/neovim/comments/rw4imi/what_is_the_most_interesting_part_of_your_lua/
+function _G.each(z)
+    return (function(x)
+        return x(x)
+    end)(function(x)
+        return function(...)
+            z(...)
+            return x(x)
+        end
+    end)
+end
+
 --- Trim newline at eof, trailing whitespace.
 function _G.perform_cleanup()
     local pos = vim.api.nvim_win_get_cursor(0)
-    vim.cmd([[
-        keeppatterns %s/$\n\+\%$//e                      " removes trailing lines
-        keeppatterns %s/\s\+$//e                         " removes trailing spaces
-        keeppatterns %s/\r\+//e                          " removes linux line endings
-    ]])
-    if vim.bo.filetype == "tex" then
-        vim.cmd([[
-            keeppatterns %s/\\item$/\\item /e            " do not remove trailing space after LaTeX \item
-            keeppatterns %s/\\task$/\\task /e            " do not remove trailing space after LaTeX \task
-            keeppatterns %s/^\s*\\item\s*\\item/\\item/e " remove duplicate \items on sameline
-        ]])
+    do
+        each(vim.cmd)(
+            -- remove leading empty lines
+            [[keeppatterns %s/\%^\n//e]]
+        )( -- remove trailing empty lines
+            [[keeppatterns %s/$\n\+\%$//e]]
+        )( -- remove trailing spaces
+            [[keeppatterns %s/\s\+$//e]]
+        )( -- remove trailing "\r"
+            [[keeppatterns %s/\r\+//e]]
+        )
     end
     if require("user.plugins.custom.lualine").mixed_indent() ~= "" then
-        vim.cmd([[
-            keeppatterns %s/\v\t/    /e
-        ]])
+        vim.cmd([[keeppatterns %s/\v\t/    /e]])
     end
 
     local end_row = vim.api.nvim_buf_line_count(0)
