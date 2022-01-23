@@ -132,6 +132,22 @@ return packer.startup(function()
         "fvictorio/vim-extract-variable",
         keys = "<Leader>ev",
     })
+    use({
+        "sbdchd/neoformat",
+        cmd = "Neoformat",
+        setup = function()
+            vim.cmd([[
+                augroup NEOFORMAT
+                  autocmd!
+                  autocmd BufWritePre * silent! undojoin | Neoformat
+                augroup END
+            ]])
+        end,
+        config = function()
+            require("user.plugins.config.neoformat")
+        end,
+        disable = true,
+    })
 
     -- ----------------------------- Completion ----------------------------- --
     use({
