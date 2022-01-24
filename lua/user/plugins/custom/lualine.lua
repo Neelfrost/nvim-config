@@ -173,62 +173,51 @@ M.mixed_indent = function() --{{{
 end --}}}
 
 M.theme = function() --{{{
+    local scheme_colors = require("themer.modules.core.api").get_cp(SCHEME)
+    local lighten = require("themer.utils.colors").lighten
+
     local colors = {
-        ["gruvbox-material"] = {
-            darkgray = "#1d1f21",
-            gray = "#3f4b59",
-            innerbg = nil,
-            outerbg = nil,
-            outerfg = "#14191f",
-            normal = "#4f9cfe",
-            insert = "#a9b665",
-            visual = "#e78a4e",
-            replace = "#ea6962",
-            command = "#d8a657",
-        },
-        ["kanagawa"] = {
-            darkgray = "#16161d",
-            gray = "#727169",
-            innerbg = nil,
-            outerbg = nil,
-            outerfg = "#16161D",
-            normal = "#7e9cd8",
-            insert = "#98bb6c",
-            visual = "#ffa066",
-            replace = "#e46876",
-            command = "#e6c384",
-        },
+        innerbg = nil,
+        outerbg = lighten(scheme_colors.bg.base, 0.9, "#4C4C4C"),
+        lightgray = lighten(scheme_colors.fg, 0.5, "#000000"),
+        darkgray = scheme_colors.bg.base,
+        normal = scheme_colors.blue,
+        insert = scheme_colors.green,
+        visual = scheme_colors.orange,
+        replace = scheme_colors.red,
+        command = scheme_colors.yellow,
     }
+
     return {
         inactive = {
-            a = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerbg, gui = "bold" },
-            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
-            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
+            a = { fg = colors.lightgray, bg = colors.outerbg, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.outerbg },
+            c = { fg = colors.lightgray, bg = colors.innerbg },
         },
         visual = {
-            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].visual, gui = "bold" },
-            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
-            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
+            a = { fg = colors.darkgray, bg = colors.visual, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.outerbg },
+            c = { fg = colors.lightgray, bg = colors.innerbg },
         },
         replace = {
-            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].replace, gui = "bold" },
-            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
-            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
+            a = { fg = colors.darkgray, bg = colors.replace, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.outerbg },
+            c = { fg = colors.lightgray, bg = colors.innerbg },
         },
         normal = {
-            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].normal, gui = "bold" },
-            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
-            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
+            a = { fg = colors.darkgray, bg = colors.normal, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.outerbg },
+            c = { fg = colors.lightgray, bg = colors.innerbg },
         },
         insert = {
-            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].insert, gui = "bold" },
-            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
-            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
+            a = { fg = colors.darkgray, bg = colors.insert, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.outerbg },
+            c = { fg = colors.lightgray, bg = colors.innerbg },
         },
         command = {
-            a = { fg = colors[vim.g.colors_name].darkgray, bg = colors[vim.g.colors_name].command, gui = "bold" },
-            b = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].outerfg },
-            c = { fg = colors[vim.g.colors_name].gray, bg = colors[vim.g.colors_name].innerbg },
+            a = { fg = colors.darkgray, bg = colors.command, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.outerbg },
+            c = { fg = colors.lightgray, bg = colors.innerbg },
         },
     }
 end --}}}

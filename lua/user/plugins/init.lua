@@ -61,11 +61,9 @@ return packer.startup(function()
 
     -- ------------------------------- Themes ------------------------------- --
     use({
-        "sainnhe/gruvbox-material",
+        "themercorp/themer.lua",
         config = function()
-            require("user.themes").gruvbox()
-            -- Set theme
-            vim.cmd("colorscheme gruvbox-material")
+            require("user.plugins.config.themer")
         end,
     })
 
@@ -202,7 +200,7 @@ return packer.startup(function()
     })
     use({
         "goolord/alpha-nvim",
-        after = "gruvbox-material",
+        after = "themer.lua",
         config = function()
             require("user.plugins.config.alpha")
         end,
@@ -274,14 +272,14 @@ return packer.startup(function()
     -- ------------------------- Buffer, Statusline ------------------------- --
     use({
         "noib3/nvim-cokeline",
-        after = "gruvbox-material",
+        after = "themer.lua",
         config = function()
             require("user.plugins.config.cokeline")
         end,
     })
     use({
         "nvim-lualine/lualine.nvim",
-        after = "gruvbox-material",
+        after = "themer.lua",
         config = function()
             require("user.plugins.config.lualine")
         end,

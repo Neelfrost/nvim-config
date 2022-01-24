@@ -2,6 +2,9 @@
 -- Github: https:/github.com/Neelfrost
 -- File: init.lua
 
+-- Colorscheme
+SCHEME = "javacafe"
+
 -- Paths
 HOME_PATH = vim.fn.expand("$HOME")
 CONFIG_PATH = vim.fn.stdpath("config")
