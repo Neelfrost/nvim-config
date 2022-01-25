@@ -79,7 +79,7 @@ telescope.setup({
 })
 
 -- Load extensions
-local extensions = { "ultisnips", "fzf", "sessions" }
+local extensions = { "ultisnips", "fzf", "sessions", "frecency" }
 pcall(function()
     for _, ext in ipairs(extensions) do
         telescope.load_extension(ext)

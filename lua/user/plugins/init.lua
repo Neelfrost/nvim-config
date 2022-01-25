@@ -248,17 +248,16 @@ return packer.startup(function()
     -- ------------------------------ Telescope ----------------------------- --
     use({
         "nvim-telescope/telescope.nvim",
-        requires = "nvim-lua/plenary.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
         config = function()
             require("user.plugins.config.telescope")
         end,
     })
     use({
         "nvim-telescope/telescope-frecency.nvim",
-        requires = "tami5/sqlite.lua",
+        requires = { "tami5/sqlite.lua" },
         config = function()
             vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
-            require("telescope").load_extension("frecency")
         end,
     })
     use({
