@@ -59,8 +59,8 @@ The following instructions are for Windows (powershell). **An admin prompt is re
 
     ```powershell
     choco install git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration" -y;
-    choco install neovim python which sumatrapdf.install miktex.install -y;
-    # For plugins
+    choco install neovim python which SumatraPDF.install miktex.install -y;
+    # Needed for various plugins
     choco install universal-ctags strawberryperl make SQLite ripgrep fd -y; RefreshEnv.cmd; exit
     ```
 
@@ -88,9 +88,24 @@ The following instructions are for Windows (powershell). **An admin prompt is re
 
 ### LaTeX
 
-#### Pdf Viewer
+#### Formatting ([latexindent](https://github.com/cmhughes/latexindent.pl))
 
-To launch sumatrapdf using VimTeX (<kbd>\lv</kbd>), ensure `sumatrapdf.exe` is added to environment path.
+latexindent is now included with miktex, so downloading it is no longer necessary. Moreover, null-ls is configured to run latexindent on save for tex files. Global formatting rules can be changed by:
+
+1. Creating `$HOME/indentconfig.yaml`:
+
+    ```yaml
+    paths:
+        - C:\Users\<username>\defaultSettings.yaml
+    ```
+
+2. Creating `$HOME/defaultSettings.yaml`, followed by copying and overriding [defaultSettings](https://github.com/cmhughes/latexindent.pl/blob/main/defaultSettings.yaml).
+
+For further reading refer: [docs](https://latexindentpl.readthedocs.io/en/latest/sec-indent-config-and-settings.html).
+
+#### Viewing PDF
+
+To launch SumatraPDF using VimTeX (<kbd>\lv</kbd>), ensure `SumatraPDF.exe` is added to environment path.
 
 ```powershell
 Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "$HOME\AppData\Local\SumatraPDF" + ";"); RefreshEnv.cmd; exit
@@ -98,7 +113,7 @@ Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Co
 
 #### Inverse Search
 
-For inverse search, open sumatrapdf then go to Settings -> Options and set inverse search command-line to:
+For inverse search, open SumatraPDF then go to Settings -> Options and set inverse search command-line to:
 
 ```cmd
 cmd /c start /min nvim --headless -c "PackerLoad vimtex" -c "VimtexInverseSearch %l '%f'"
@@ -186,35 +201,37 @@ Use `:checkhealth` to check for errors if any.
 
 ### LaTeX
 
--   <details>
-        <summary>Compile status on statusline</summary>
-        <figure>
-            <figurecaption>Compile not started</figurecaption>
-            <img
-                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l1.webp"
-                alt="Compile not started"
-            />
-            <figurecaption>Compile running</figurecaption>
-            <img
-                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l2.webp"
-                alt="Compile running"
-            />
-            <figurecaption>Compile success</figurecaption>
-            <img
-                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l3.webp"
-                alt="Compile success"
-            />
-            <figurecaption>Compile failed</figurecaption>
-            <img
-                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l4.webp"
-                alt="Compile failed"
-            />
-        </figure>
-    </details>
+<details>
+    <summary>Compile status on statusline</summary>
+    <figure>
+        <figurecaption>Compile not started</figurecaption>
+        <img
+            src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l1.webp"
+            alt="Compile not started"
+        />
+        <figurecaption>Compile running</figurecaption>
+        <img
+            src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l2.webp"
+            alt="Compile running"
+        />
+        <figurecaption>Compile success</figurecaption>
+        <img
+            src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l3.webp"
+            alt="Compile success"
+        />
+        <figurecaption>Compile failed</figurecaption>
+        <img
+            src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l4.webp"
+            alt="Compile failed"
+        />
+    </figure>
+</details>
+
 -   Extensive snippets for LaTeX.
 -   Better auxiliary file cleaner.
--   Null-ls latexindent support.
+-   Null-ls latexindent, chktex support.
 -   Automatically substitute `\` in imports (include, input) with `/` on save.
+-   Keybinds for bold, underline, math, chemical formula environments.
 -   Start newline with \item (or \task) if inside a list environment when pressing <kbd>Enter</kbd>, <kbd>o</kbd> or <kbd>O</kbd>.
 
 ### Plugins Used
