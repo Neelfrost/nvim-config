@@ -32,6 +32,7 @@
 -   [Features 📃](#features-)
     -   [General](#general)
     -   [LaTeX](#latex-1)
+    -   [Folder Structure](#folder-structure)
     -   [Plugins Used](#plugins-used)
     -   [Mappings](#mappings)
 -   [Todo ✔](#todo-)
@@ -233,6 +234,25 @@ Use `:checkhealth` to check for errors if any.
 -   Automatically substitute `\` in imports (include, input) with `/` on save.
 -   Keybinds for bold, underline, math, chemical formula environments.
 -   Start newline with \item (or \task) if inside a list environment when pressing <kbd>Enter</kbd>, <kbd>o</kbd> or <kbd>O</kbd>.
+
+### Folder Structure
+
+```bash
+nvim
+├── after
+│   └── ftplugin            # filetype specific options, settings, mappings
+├── lua                     # .lua config files
+│   └── user
+│       └── mappings.lua    # keybinds
+│       └── options.lua     # vim options
+│       └── utils.lua       # utility functions
+│       └── plugins
+│           ├── config      # main plugin config
+│           └── custom      # supplementary plugin config
+├── ultisnips               # snippets
+│   └── tex                 # latex snippets
+└── viml                    # .vim config files
+```
 
 ### Plugins Used
 
