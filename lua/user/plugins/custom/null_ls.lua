@@ -11,9 +11,6 @@ M.latexindent = helper.make_builtin({
     filetypes = { "tex" },
     generator_opts = {
         command = "latexindent.exe",
-        args = {
-            "-d",
-        },
         to_stdin = true,
     },
     factory = helper.formatter_factory,
@@ -30,6 +27,32 @@ M.black = helper.make_builtin({
             "-c",
             "$TEXT",
         },
+        to_stdin = true,
+    },
+    factory = helper.formatter_factory,
+})
+
+M.prettier = helper.make_builtin({
+    name = "prettier",
+    method = FORMATTING,
+    filetypes = {
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "vue",
+        "css",
+        "scss",
+        "less",
+        "html",
+        "json",
+        "yaml",
+        "markdown",
+        "graphql",
+    },
+    generator_opts = {
+        command = "prettier",
+        args = helper.range_formatting_args_factory({ "--stdin-filepath", "$FILENAME" }),
         to_stdin = true,
     },
     factory = helper.formatter_factory,

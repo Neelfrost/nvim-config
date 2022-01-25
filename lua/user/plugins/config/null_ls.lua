@@ -9,7 +9,7 @@ local null_ls_sources = require("user.plugins.custom.null_ls")
 
 local sources = {
     -- Formatters
-    null_ls.builtins.formatting.prettier,
+    null_ls_sources.prettier,
     null_ls.builtins.formatting.stylua.with({
         extra_args = { "--config-path", vim.fn.expand("~/.stylua.toml") },
     }),
@@ -17,7 +17,6 @@ local sources = {
     null_ls_sources.black,
     null_ls_sources.latexindent,
     -- Diagnostics
-    null_ls.builtins.diagnostics.stylelint,
     null_ls.builtins.diagnostics.flake8.with({
         extra_args = {
             "--config",

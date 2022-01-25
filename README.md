@@ -1,13 +1,25 @@
-<h1 align="center">neovim dotfiles</h1>
+<h1 align="center">nvim-config</h1>
 <p align="center">
-<b>Just another opinionated, visually appealing Neovim IDE.</b>
-<br>
-<b>Currently supports LaTeX, Python, Lua, and C#.</b>
-<br>
-<br>
-<a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/github/license/Neelfrost/dotfiles?labelColor=151515&color=A270BA&style=for-the-badge"></a>
-<a href="https://github.com/Neelfrost/dotfiles/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Neelfrost/dotfiles?colorA=151515&colorB=6A9FB5&style=for-the-badge&logo=starship"></a>
-<a href="https://github.com/Neelfrost/dotfiles/network/members"><img alt="forks" src="https://img.shields.io/github/forks/Neelfrost/dotfiles?colorA=151515&colorB=788C4C&style=for-the-badge&logo=github"></a>
+    <b>Just another opinionated, visually appealing Neovim IDE.</b>
+    <br />
+    <b>Currently supports LaTeX, Python, Lua, and C#.</b>
+    <br />
+    <br />
+    <a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"
+        ><img
+            alt="license"
+            src="https://img.shields.io/github/license/Neelfrost/dotfiles?labelColor=151515&color=A270BA&style=for-the-badge"
+    /></a>
+    <a href="https://github.com/Neelfrost/dotfiles/stargazers"
+        ><img
+            alt="stars"
+            src="https://img.shields.io/github/stars/Neelfrost/dotfiles?colorA=151515&colorB=6A9FB5&style=for-the-badge&logo=starship"
+    /></a>
+    <a href="https://github.com/Neelfrost/dotfiles/network/members"
+        ><img
+            alt="forks"
+            src="https://img.shields.io/github/forks/Neelfrost/dotfiles?colorA=151515&colorB=788C4C&style=for-the-badge&logo=github"
+    /></a>
 </p>
 
 ## Table of Contents <!-- omit in toc -->
@@ -26,17 +38,9 @@
 
 ## Screenshots 📷
 
-<p align="center">
-UI: <a href="https://github.com/Microsoft/Terminal" target="_blank">Windows Terminal</a> | Font: <a href="https://www.nerdfonts.com/font-downloads" target="_blank">Nerdfont</a> | Theme: <a href="https://github.com/sainnhe/gruvbox-material" target="_blank">Gruvbox Material</a>
-</p>
-
 ![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.webp "Alpha Startscreen")
-![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.webp "NvimTree File Explorer")
+![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.webp "NvimTree File Explorer, cmp code completion")
 ![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.webp "Telescope Fuzzy Finder")
-![statusline](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/statusline.webp "Lualine statusline")
-
-> From left to right: Mode, Wrap, Paste, File Name, Language Server, File Encoding, File Format, Mixed Indent, Line, Column Number, Total Lines, Git Branch
-
 ![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.webp "LaTeX Preview")
 ![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/snippets.webp "Snippet List")
 ![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/py.webp "Python Preview")
@@ -55,14 +59,16 @@ The following instructions are for Windows (powershell). **An admin prompt is re
 
     ```powershell
     choco install git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration" -y;
-    choco install neovim python universal-ctags sumatrapdf.install miktex.install which strawberryperl make -y; RefreshEnv.cmd; exit
+    choco install neovim python which sumatrapdf.install miktex.install -y;
+    # For plugins
+    choco install universal-ctags strawberryperl make SQLite ripgrep fd -y; RefreshEnv.cmd; exit
     ```
 
 3. Install python dependencies.
 
     ```powershell
     pip install pynvim neovim-remote
-    # Optionally, for python linting and formatting:
+    # Optionally for python linting and formatting:
     pip install flake8 black
     ```
 
@@ -82,26 +88,6 @@ The following instructions are for Windows (powershell). **An admin prompt is re
 
 ### LaTeX
 
-#### Auto Format ([latexindent](https://github.com/cmhughes/latexindent.pl))
-
-1. cd into install directory. _Example:_
-
-    ```powershell
-    cd C:\tools\latexindent
-    ```
-
-2. Get latexindent.exe.
-
-    ```powershell
-    curl.exe -LO $(curl.exe -s https://api.github.com/repos/cmhughes/latexindent.pl/releases/latest | findstr.exe "browser_" | %{"$($_.Split('"')[3])"})
-    ```
-
-3. Set environment paths.
-
-    ```powershell
-    Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "C:\tools\latexindent" + ";"); RefreshEnv.cmd; exit
-    ```
-
 #### Pdf Viewer
 
 To launch sumatrapdf using VimTeX (<kbd>\lv</kbd>), ensure `sumatrapdf.exe` is added to environment path.
@@ -115,7 +101,7 @@ Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Co
 For inverse search, open sumatrapdf then go to Settings -> Options and set inverse search command-line to:
 
 ```cmd
-cmd /c start /min '' nvim --headless -c 'PackerLoad vimtex' -c 'VimtexInverseSearch %l '%f''
+cmd /c start /min nvim --headless -c "PackerLoad vimtex" -c "VimtexInverseSearch %l '%f'"
 ```
 
 Use `:checkhealth` to check for errors if any.
@@ -155,7 +141,7 @@ Use `:checkhealth` to check for errors if any.
 3. Install sumneko lua-language-server.
 
     ```powershell
-    curl.exe -L $(curl.exe -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | findstr.exe "browser_" | %{"$($_.Split('"')[3])"}) -o lua.vsix; 7z.exe x .\lua.vsix; rm '.\`[Content_Types`].xml'; rm .\extension.vsixmanifest; rm .\lua.vsix; mv .\extension\server\ .; rm .\extension\ -Recurse; Rename-Item .\server\ lua-language-server; Get-ChildItem -Path ./lua-language-server/bin/Windows -Recurse | mv -Destination ./lua-language-server/bin; rm ./lua-language-server/bin/Windows; rm ./lua-language-server/bin/Linux -Recurse; rm ./lua-language-server/bin/macOS -Recurse
+    curl.exe -L $(curl.exe -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | findstr.exe "win32-x64" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o lua.vsix; 7z.exe x .\lua.vsix; rm '.\`[Content_Types`].xml'; rm .\extension.vsixmanifest; rm .\lua.vsix; mv .\extension\server\ .; rm .\extension\ -Recurse; Rename-Item .\server\ lua-language-server;
     ```
 
 4. Use `:checkhealth` to check for errors if any.
@@ -188,13 +174,11 @@ Use `:checkhealth` to check for errors if any.
 
 ### General
 
--   Clean folds.
 -   Smart display line movement.
 -   Resume cursor position when re-opening a file.
 -   Auto update file if changed outside of neovim.
 -   Fix mixed indents (tabs are converted to spaces).
 -   Persistent cursor positions when switching buffers.
--   Ability to load/delete sessions using telescope.nvim.
 -   Ability to search custom directories in telescope.nvim.
 -   Ability to reload specific modules using telescope.nvim.
 -   Automatically trim trailing whitespaces and newlines on save.
@@ -202,14 +186,36 @@ Use `:checkhealth` to check for errors if any.
 
 ### LaTeX
 
+-   <details>
+        <summary>Compile status on statusline</summary>
+        <figure>
+            <figurecaption>Compile not started</figurecaption>
+            <img
+                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l1.webp"
+                alt="Compile not started"
+            />
+            <figurecaption>Compile running</figurecaption>
+            <img
+                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l2.webp"
+                alt="Compile running"
+            />
+            <figurecaption>Compile success</figurecaption>
+            <img
+                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l3.webp"
+                alt="Compile success"
+            />
+            <figurecaption>Compile failed</figurecaption>
+            <img
+                src="https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/l4.webp"
+                alt="Compile failed"
+            />
+        </figure>
+    </details>
 -   Extensive snippets for LaTeX.
 -   Better auxiliary file cleaner.
--   Sectional folding.
 -   Null-ls latexindent support.
 -   Automatically substitute `\` in imports (include, input) with `/` on save.
 -   Start newline with \item (or \task) if inside a list environment when pressing <kbd>Enter</kbd>, <kbd>o</kbd> or <kbd>O</kbd>.
-
-> Note: nvim-cmp's omni source is broken, use <kbd>Ctrl O</kbd> to trigger completion of ref, cite, figure etc.
 
 ### Plugins Used
 
@@ -224,6 +230,7 @@ Use `:checkhealth` to check for errors if any.
     -   Lua language server: [sumneko_lua](https://github.com/sumneko/lua-language-server)
     -   Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
     -   Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
+    -   Backup code formatting: [neoformat](https://github.com/sbdchd/neoformat)
 
 #### File navigation, explorer
 
@@ -239,6 +246,9 @@ Use `:checkhealth` to check for errors if any.
     -   Ultisnips source: [cmp-nvim-ultisnips](https://github.com/quangnguyen30192/cmp-nvim-ultisnips)
     -   LSP source: [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
     -   Buffer source: [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
+    -   Path source: [cmp-path](https://github.com/hrsh7th/cmp-path)
+    -   Cmdline source: [cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)
+    -   Omni source: [cmp-omni](https://github.com/hrsh7th/cmp-omni)
 
 #### LaTeX
 
@@ -248,7 +258,7 @@ Use `:checkhealth` to check for errors if any.
 
 #### Looks
 
--   Gruvbox theme: [gruvbox-material](https://github.com/sainnhe/gruvbox-material)
+-   Theme support: [themer.lua](https://github.com/ThemerCorp/themer.lua)
 -   Indent lines: [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 -   Icons support: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
 -   Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
@@ -275,9 +285,10 @@ Use `:checkhealth` to check for errors if any.
 -   Open URLs and more: [vim-open-url](https://github.com/dhruvasagar/vim-open-url)
 -   Fix cursorhold autocmd: [FixCursorHold.nvim](https://github.com/antoinemadec/FixCursorHold.nvim)
 -   Fast expr folds: [FastFold](https://github.com/antoinemadec/Konfekt/FastFold)
--   Markdown preview: [nvim-markdown-preview](https://github.com/davidgranstrom/nvim-markdown-preview)
+-   Markdown preview: [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
 -   Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
--   Snippet collection: [vim-snippets](https://github.com/honza/vim-snippets) _(disabled by default)_
+-   Session manager: [neovim-session-manager](https://github.com/Shatur/neovim-session-manager)
+-   Restore cursor at last edit position: [nvim-lastplace](https://github.com/ethanholz/nvim-lastplace)
 
 ### Mappings
 
