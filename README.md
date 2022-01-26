@@ -44,7 +44,7 @@
 ![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.webp "Telescope Fuzzy Finder")
 ![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.webp "LaTeX Preview")
 ![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/snippets.webp "Snippet List")
-![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/py.webp "Python Preview")
+![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/python.webp "Python Preview")
 
 ## Installation ⚡
 
