@@ -24,8 +24,7 @@ M.black = helper.make_builtin({
         command = "black",
         args = {
             "--quiet",
-            "-c",
-            "$TEXT",
+            "-",
         },
         to_stdin = true,
     },
