@@ -4,14 +4,19 @@
 
 -- Colorscheme
 SCHEME = "javacafe"
+-- Language servers
+SERVERS = { "pyright", "sumneko_lua", "omnisharp" }
+
+-- Treesitter parsers
+PARSERS = { "comment", "python", "lua", "c_sharp" }
+
+-- Plugin filetypes
+PLUGINS = { "NvimTree", "packer", "alpha" }
 
 -- Paths
 HOME_PATH = vim.fn.expand("$HOME")
 CONFIG_PATH = vim.fn.stdpath("config")
 PACKER_PATH = vim.fn.stdpath("data") .. "\\site\\pack\\packer"
-
--- Plugin filetypes
-PLUGINS = { "NvimTree", "packer", "alpha" }
 
 -- Linting icons
 ICON_ERROR = "E"

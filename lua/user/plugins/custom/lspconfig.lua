@@ -67,9 +67,6 @@ end
 -- Setup language servers
 -- https://www.reddit.com/r/neovim/comments/r6gouy/migrating_from_nvim_051_to_nvim_060/hmvzsps/?context=3
 function M.setup_ls(lspconfig)
-    -- Language servers to be setup:
-    local servers = { "pyright", "sumneko_lua", "omnisharp" }
-
     -- Sumneko_lua vars
     local sumneko_root_path = "C:\\tools\\lua-language-server"
     local sumneko_binary = "C:\\tools\\lua-language-server\\bin\\lua-language-server.exe"
@@ -125,7 +122,7 @@ function M.setup_ls(lspconfig)
     }
 
     -- Setup ls
-    for _, lsp in ipairs(servers) do
+    for _, lsp in ipairs(SERVERS) do
         local config = specific_configs[lsp] or {}
         config = vim.tbl_extend("keep", config, default_config)
         lspconfig[lsp].setup(config)
