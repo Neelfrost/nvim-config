@@ -60,6 +60,7 @@ cmp.setup({
                 nvim_lsp = "[Lsp]",
                 nvim_lua = "[Lua]",
                 ultisnips = "[Snip]",
+                path = "[Path]",
             })[entry.source.name]
             return vim_item
         end,
@@ -67,8 +68,8 @@ cmp.setup({
     mapping = {
         ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-n>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-p>"] = cmp.mapping.scroll_docs(4),
+        ["<C-n>"] = cmp.mapping.scroll_docs(4),
+        ["<C-p>"] = cmp.mapping.scroll_docs(-4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-c>"] = cmp.mapping.close(),
         ["<Tab>"] = cmp.mapping(function(fallback)
@@ -129,7 +130,7 @@ cmp.setup({
 })
 
 local cmdline_formatting = {
-    format = function(entry, vim_item)
+    format = function(_, vim_item)
         vim_item.kind = ""
         vim_item.menu = ""
         return vim_item

@@ -72,12 +72,17 @@ return packer.startup(function()
         "nvim-treesitter/nvim-treesitter",
         event = "BufRead",
         run = ":TSUpdate",
-        requires = "nvim-ts-rainbow",
+        requires = { "nvim-ts-rainbow", "nvim-ts-autotag" },
+    })
+    use({
+        "windwp/nvim-ts-autotag",
+        after = "nvim-treesitter",
+        requires = { "nvim-treesitter" },
     })
     use({
         "p00f/nvim-ts-rainbow",
         after = "nvim-treesitter",
-        requires = "nvim-treesitter",
+        requires = { "nvim-treesitter" },
         config = function()
             require("user.plugins.config.others").treesitter()
         end,
@@ -93,6 +98,15 @@ return packer.startup(function()
         event = "BufRead",
         config = function()
             require("user.plugins.config.indentline")
+        end,
+    })
+    use({
+        "lukas-reineke/virt-column.nvim",
+        cond = function()
+            return vim.wo.colorcolumn ~= nil
+        end,
+        config = function()
+            require("virt-column").setup()
         end,
     })
     use({
@@ -150,21 +164,17 @@ return packer.startup(function()
     -- ----------------------------- Completion ----------------------------- --
     use({
         "hrsh7th/nvim-cmp",
-        config = function()
-            require("user.plugins.config.cmp")
-        end,
         requires = {
-            {
-                "quangnguyen30192/cmp-nvim-ultisnips",
-                after = "nvim-cmp",
-                commit = "4e8bf8e6c7f213bb2f8b66bdb4b35d0e515ac0ec",
-            },
+            { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
             { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", requires = "neovim/nvim-lspconfig" },
             { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
             { "hrsh7th/cmp-omni", after = "nvim-cmp" },
             { "hrsh7th/cmp-path", after = "nvim-cmp" },
             { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
         },
+        config = function()
+            require("user.plugins.config.cmp")
+        end,
     })
 
     -- ------------------------------ Features ------------------------------ --
@@ -215,11 +225,28 @@ return packer.startup(function()
     })
     use({
         "iamcco/markdown-preview.nvim",
+        cmd = "MarkdownPreview",
         ft = "markdown",
         run = "cd app && yarn install",
-        cmd = "MarkdownPreview",
         config = function()
             require("user.plugins.config.others").markdown_preview()
+        end,
+    })
+    use({
+        "plasticboy/vim-markdown",
+        ft = "markdown",
+        config = function()
+            vim.g.vim_markdown_frontmatter = 1
+            vim.g.vim_markdown_folding_disabled = 1
+        end,
+    })
+    use({
+        "danymat/neogen",
+        cmd = "Neogen",
+        after = "nvim-treesitter",
+        requires = { "nvim-treesitter/nvim-treesitter" },
+        config = function()
+            require("user.plugins.config.others").neogen()
         end,
     })
 
@@ -293,8 +320,8 @@ return packer.startup(function()
     })
     use({
         "https://gitlab.com/yorickpeterse/nvim-pqf",
-        event = "BufRead",
         as = "nvim-pqf",
+        event = "BufRead",
         config = function()
             require("pqf").setup()
         end,

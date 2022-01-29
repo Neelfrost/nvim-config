@@ -52,6 +52,9 @@ M.treesitter = function()
             extended_mode = true, -- Highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
             max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
         },
+        autotag = {
+            enable = true,
+        },
     })
 end
 
@@ -111,6 +114,15 @@ M.markdown_preview = function()
     vim.cmd("doautocmd mkdp_init BufEnter")
     vim.g.mkdp_auto_close = 0
     vim.g.mkdp_page_title = "${name}"
+end
+
+M.neogen = function()
+    require("neogen").setup({
+        enabled = true,
+    })
+
+    map("i", "<M-n>", "<cmd>lua require('neogen').jump_next()<CR>", ns_opts)
+    map("i", "<M-p>", "<cmd>lua require('neogen').jump_prev()<CR>", ns_opts)
 end
 
 return M
