@@ -1,6 +1,3 @@
-vim.cmd([[syntax on]])
-vim.cmd([[filetype plugin indent on]])
-
 -- File encoding
 vim.opt.fileencoding = "utf-8"
 
@@ -52,7 +49,6 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- Folding configuration
-vim.opt.foldtext = "CustomFoldText()"
 vim.opt.viewoptions:remove("options")
 vim.opt.foldmethod = "marker"
 
@@ -61,7 +57,7 @@ vim.opt.list = true
 
 -- Display chars
 vim.opt.fillchars = { eob = "–", fold = " ", vert = "│", foldsep = " ", foldclose = "", foldopen = "" }
-vim.opt.listchars = vim.opt.listchars + { tab = "··", lead = "·", eol = "﬋" }
+vim.opt.listchars:append({ tab = " ", lead = "·", trail = "·", eol = "﬋" })
 
 -- Use en_us to spellcheck
 vim.opt.spelllang = "en_us"
