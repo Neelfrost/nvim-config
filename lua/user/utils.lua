@@ -88,7 +88,7 @@ function _G.get_module_name(file_path)
 
     -- In the case that current file is not within "lua" folder
     if module_name == file_path then
-        print("Not a valid module.", module_name)
+        vim.notify(("Not a valid module (%s)"):format(module_name), vim.log.levels.WARN)
         return
     end
 
@@ -118,7 +118,7 @@ function _G.save_reload_module()
         -- Source
         vim.cmd(("source %s"):format(file_path))
         -- Print
-        print(("%s Sourced."):format(file_path))
+        vim.notify(("%s Sourced."):format(file_path), vim.log.levels.INFO)
         return
     end
 
@@ -133,7 +133,7 @@ function _G.save_reload_module()
         -- Reload
         plenary_reload(module)
         -- Print
-        print(("%s Reloaded."):format(module))
+        vim.notify(("%s Reloaded."):format(module), vim.log.levels.INFO)
     end
 end
 

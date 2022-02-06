@@ -121,7 +121,7 @@ M.reload_modules = function() --{{{
                 -- Reload filename
                 plenary_reload(name)
                 -- Print filename
-                print(name .. " Reloaded.")
+                vim.notify(("%s Reloaded."):format(name), vim.log.levels.INFO)
             end
 
             -- Map <Enter> to reload module
@@ -144,12 +144,6 @@ end --}}}
 M.frecency = function() --{{{
     local frecency_opts = M.dropdown({ prompt_title = "Recent Files", path_display = { "absolute" } })
     require("telescope").extensions.frecency.frecency(frecency_opts)
-end --}}}
-
--- Use dropdown theme with Sessions
-M.sessions = function() --{{{
-    local session_opts = M.dropdown({ path_display = { "absolute" } })
-    require("telescope").extensions.sessions.sessions(session_opts)
 end --}}}
 
 -- Fall back to find_files if not a git directory
