@@ -15,11 +15,16 @@ telescope.setup({
         },
         layout_config = {
             horizontal = {
-                mirror = false,
+                prompt_position = "top",
+                preview_width = 0.55,
+                results_width = 0.8,
             },
             vertical = {
                 mirror = false,
             },
+            width = 0.87,
+            height = 0.80,
+            preview_cutoff = 120,
         },
         borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         border = true,
@@ -27,11 +32,15 @@ telescope.setup({
         color_devicons = true,
         winblend = 0,
         entry_prefix = "  ",
-        prompt_prefix = "❯ ",
-        selection_caret = "❯ ",
+        prompt_prefix = "  ",
+        selection_caret = "  ",
         initial_mode = "insert",
         scroll_strategy = "cycle",
-        path_display = { "smart" },
+        path_display = function(_, path)
+            local smart_path = require("telescope.utils").path_smart(path)
+            return (smart_path:find("%.\\") or 0) + (smart_path:find("%./") or 0) == 1 and string.sub(smart_path, 3)
+                or smart_path
+        end,
         selection_strategy = "reset",
         layout_strategy = "horizontal",
         sorting_strategy = "ascending",

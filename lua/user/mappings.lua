@@ -109,14 +109,14 @@ map("c", "<C-h>", "<Left>", n_opts)
 map("c", "<C-l>", "<Right>", n_opts)
 
 -- Duplicate line
-map("n", "<M-d>", "<cmd>t.<CR>", n_opts)
-map("i", "<M-d>", "<Esc><cmd>t.<CR>gi", n_opts)
+map("n", "<M-d>", "<cmd>t.<CR>", ns_opts)
+map("i", "<M-d>", "<Esc><cmd>t.<CR>gi", ns_opts)
 
 -- Move line / block
-map("n", "<A-j>", ":m .+1<CR>==", n_opts)
-map("n", "<A-k>", ":m .-2<CR>==", n_opts)
-map("v", "<A-j>", ":m '>+1<CR>gv-gv", n_opts)
-map("v", "<A-k>", ":m '<-2<CR>gv-gv", n_opts)
+map("n", "<A-j>", ":m .+1<CR>==", ns_opts)
+map("n", "<A-k>", ":m .-2<CR>==", ns_opts)
+map("v", "<A-j>", ":m '>+1<CR>gv-gv", ns_opts)
+map("v", "<A-k>", ":m '<-2<CR>gv-gv", ns_opts)
 
 -- Toggle wrap
 map("n", "<F11>", "<cmd>set wrap!<CR>", ns_opts)
