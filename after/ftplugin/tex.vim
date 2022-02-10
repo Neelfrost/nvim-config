@@ -6,6 +6,7 @@ setlocal wrap
 setlocal shiftwidth=2
 setlocal softtabstop=2
 setlocal tabstop=2
+setlocal noexpandtab
 setlocal foldmethod=manual
 setlocal foldexpr=vimtex#fold#level(v:lnum)
 setlocal foldtext=CustomFoldText()
@@ -30,22 +31,21 @@ function! GetLine()
     return getline('.') =~ list[0] || getline('.') =~ list[1]
 endfunction
 
-" Replace \ with / in LaTeX input fields
-function! FixInputs()
+function! MiscFixes()
     let l:save = winsaveview()
+    " Replace \ with / in LaTeX input fields
     keeppatterns %s/\(input\|include\)\({.\+\)\\\(.\+}\)/\1\2\/\3/ge
+    " do not remove trailing space after LaTeX \item
+    keeppatterns %s/\\item$/\\item /e
+    " do not remove trailing space after LaTeX \task
+    keeppatterns %s/\\task$/\\task /e
+    " remove duplicate '\items' on sameline
+    keeppatterns %s/^\s*\\item\s*\\item/\\item/e
+    " '\item\something' -> '\item \something'
+    keeppatterns %s/\\item\\/\\item \\/e
+    " '%\label{fig:main_label}%' -> ''
+    keeppatterns %s/^\s\+%\\label{fig:main_label}%\n//e
     call winrestview(l:save)
-endfunction
-
-" Set and Restore indent
-function! SetIndentLine()
-    let g:indent_blankline_char = '·'
-    let g:indent_blankline_space_char = '·'
-endfunction
-
-function! ResetIndentLine()
-    let g:indent_blankline_char = '│'
-    let g:indent_blankline_space_char = ' '
 endfunction
 
 " Clean up auxiliary files
@@ -68,6 +68,9 @@ for folder, _, files in os.walk(cur_tex_path):
                 ".snm",
                 ".vrb",
                 ".fls",
+                ".bak",
+                "indent",
+                "output",
                 "indent.log",
                 ".fdb_latexmk",
                 "synctex(busy)",
@@ -82,18 +85,8 @@ endfunction
 
 augroup TEX_AUTOCOMMANDS
     autocmd!
-    autocmd BufRead *.tex lua require("cmp").setup.buffer({
-    \     sources = {
-    \        { name = "omni" },
-    \        { name = "ultisnips" },
-    \        { name = "buffer" },
-    \    },
-    \ })
     " Fix inputs
-    autocmd BufWritePre *.tex :call FixInputs()
-    " Set and Restore indent
-    autocmd BufEnter *.tex :call SetIndentLine()
-    autocmd BufLeave * :call ResetIndentLine()
+    autocmd BufWritePre *.tex :call MiscFixes()
     " Clean up auxiliary files on quit
     autocmd User VimtexEventQuit :silent! VimtexStopAll
     autocmd User VimtexEventQuit :silent! call CleanAuxFiles()
@@ -102,39 +95,47 @@ augroup END
 " --------------------------------- Mappings --------------------------------- "
 
 " Override VimtexClean
-nnoremap <silent> <Leader>lc :call CleanAuxFiles()<CR>
+nnoremap <silent><buffer> <Leader>lc :call CleanAuxFiles()<CR>
 
 " Auto \item, \task
-inoremap <expr> <CR> GetLine()
+inoremap <buffer><expr> <CR> GetLine()
             \ ? '<C-w><C-w>'
             \ : (col('.') < col('$') ? '<CR>' : '<CR>' . AutoItem())
-nnoremap <expr> o 'o' . AutoItem()
-nnoremap <expr> O 'O' . AutoItem()
+nnoremap <buffer><expr> o 'o' . AutoItem()
+nnoremap <buffer><expr> O 'O' . AutoItem()
 
 " Insert \item, \task on Numpad Enter
-imap <kEnter> <C-o>o
+imap <buffer> <kEnter> <C-o>o
 
 " Push to next item of the list
-nnoremap <Insert> i<CR>\item <Esc>
+nnoremap <buffer> <Insert> i<CR>\item <Esc>
 " Adjoin next item
-nnoremap <Delete> gJi<C-o>dW<C-o>dW <Esc>
+nnoremap <buffer> <Delete> gJi<C-o>dW<C-o>dW <Esc>
 
 " Bold - italics word under cursor or selected
-vnoremap <M-b> di\textbi{}<Esc>P
-nnoremap <M-b> diwi\textbi{}<Esc>P
+nmap <buffer> <M-B> <Plug>Ysurroundiw}i\textbi<Esc>
+xmap <buffer> <M-B> <Plug>VSurround}i\textbi<Esc>
 
 " Bold word under cursor or selected
-vnoremap <M-B> di\textbf{}<Esc>P
-nnoremap <M-B> diwi\textbf{}<Esc>P
+nmap <buffer> <M-b> <Plug>Ysurroundiw}i\textbf<Esc>
+xmap <buffer> <M-b> <Plug>VSurround}i\textbf<Esc>
 
 " Underline word under cursor or selected
-vnoremap <M-u> di\ul{}<Esc>P
-nnoremap <M-u> diwi\ul{}<Esc>P
+nmap <buffer> <M-f> <Plug>Ysurroundiw}i\ul<Esc>
+xmap <buffer> <M-f> <Plug>VSurround}i\ul<Esc>
+nmap <buffer> <M-F> <Plug>Ysurroundiw}i\underline<Esc>
+xmap <buffer> <M-F> <Plug>VSurround}i\underline<Esc>
 
 " Put the word inside chem environment
-nnoremap <M-v> diwi\ch{}<Esc>P
-vnoremap <M-v> di\ch{}<Esc>P
+nmap <buffer> <M-v> <Plug>Ysurroundiw}i\ch<Esc>
+xmap <buffer> <M-v> <Plug>VSurround}i\ch<Esc>
+
+" Put the word inside math environment
+nmap <buffer> <M-m> <Plug>Ysurroundiw$
+xmap <buffer> <M-m> <Plug>VSurround$
 
 " Append period or comma to selected lines
-vnoremap np :norm A.<CR>
-vnoremap nc :norm A,<CR>
+vnoremap <buffer> np :norm A.<CR>
+vnoremap <buffer> nc :norm A,<CR>
+
+nmap <buffer> <C-t> gui}gzi}
