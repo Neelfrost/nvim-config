@@ -58,13 +58,6 @@ M.current_mode = function() --{{{
     -- Get current mode
     local mode = require("lualine.utils.mode").get_mode()
 
-    -- Plugin name to be shown in mode section
-    local mode_plugins = {
-        NvimTree = "NVIMTREE",
-        packer = "PACKER",
-        alpha = "ALPHA",
-    }
-
     -- Return mode if in command mode
     if fn.mode() == "c" then
         return mode
@@ -72,9 +65,9 @@ M.current_mode = function() --{{{
 
     -- Return plugin name
     local file_name = fn.expand("%:t")
-    for k, v in pairs(mode_plugins) do
-        if vim.bo.filetype == k or file_name == k then
-            return v
+    for _, v in pairs(PLUGINS) do
+        if vim.bo.filetype == v or file_name == v then
+            return string.upper(v)
         end
     end
 
@@ -87,7 +80,7 @@ M.paste = function() --{{{
 end --}}}
 
 M.wrap = function() --{{{
-    return vim.o.wrap and "" or ""
+    return vim.o.wrap and "﬋" or ""
 end --}}}
 
 M.spell = function() --{{{
@@ -95,19 +88,11 @@ M.spell = function() --{{{
 end --}}}
 
 M.file_format = function() --{{{
-    if not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth then
-        return vim.bo.fileformat
-    else
-        return ""
-    end
+    return (not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth) and vim.bo.fileformat or ""
 end --}}}
 
 M.file_encoding = function() --{{{
-    if not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth then
-        return vim.bo.fileencoding
-    else
-        return ""
-    end
+    return (not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth) and vim.bo.fileencoding or ""
 end --}}}
 
 M.line_info = function() --{{{
@@ -127,49 +112,88 @@ M.total_lines = function() --{{{
 end --}}}
 
 M.lsp_client_names = function() --{{{
+    local get_sources = function()
+        local _, null_ls = pcall(require, "null-ls.sources")
+        local sources = null_ls.get_available(vim.bo.filetype)
+        local names = {}
+
+        for _, source in pairs(sources) do
+            table.insert(names, source.name)
+        end
+
+        return names
+    end
+
     -- Get all active clients in the buffer
-    local clients = vim.lsp.buf_get_clients()
+    local clients = vim.lsp.buf_get_clients(0)
     local client_names = {}
 
-    -- Return csv of all clients current window width > half window width
     if fn.winwidth(0) > half_winwidth then
+        for _, client in pairs(clients) do
+            if client.name ~= "null-ls" then
+                table.insert(client_names, client.name)
+            else
+                vim.list_extend(client_names, get_sources())
+            end
+        end
+    else
         for _, client in pairs(clients) do
             table.insert(client_names, client.name)
         end
-        return table.concat(client_names, ", ")
-    else
-        -- Return "main" client
-        for _, client in pairs(clients) do
-            if #clients == 1 then
-                return client.name
-            elseif client.name ~= "null-ls" then
-                return client.name
-            end
-        end
     end
+
+    return client_names
 end --}}}
 
 M.lsp_status = function() --{{{
-    -- https://github.com/samrath2007/kyoto.nvim/blob/main/lua/plugins/statusline.lua
-    local lsp_status = vim.lsp.util.get_progress_messages()[1]
-    local client_names = M.lsp_client_names()
-
-    -- Show client if client has been loaded
-    if not lsp_status then
-        return not M.buffer_is_plugin() and client_names or ""
+    local get_lsp_status = function(client_names)
+        local progress = vim.lsp.util.get_progress_messages()
+        -- Get lsp status for current buffer
+        for _, v in ipairs(progress) do
+            -- if client_names:find(v.name) ~= nil or v.name == "null-ls" then
+            if vim.tbl_contains(client_names, v.name) or v.name == "null-ls" then
+                return v
+            end
+        end
     end
 
+    if M.buffer_is_plugin() then
+        return ""
+    end
+
+    local client_names = M.lsp_client_names()
+    local lsp_status = get_lsp_status(client_names)
+
     -- Show client status
-    local status = (lsp_status.percentage and (lsp_status.percentage .. "%% ") or lsp_status.message)
-        .. lsp_status.title
-    return not M.buffer_is_plugin() and status or ""
+    if not lsp_status then
+        return ""
+    else
+        return lsp_status.title:gsub("^%l", string.upper)
+            .. " ["
+            .. (lsp_status.percentage and (lsp_status.percentage .. "%%") or lsp_status.message:gsub(
+                "^%l",
+                string.upper
+            ))
+            .. "]"
+    end
+end --}}}
+
+M.lsp = function() --{{{
+    local clients = table.concat(M.lsp_client_names(), ", ")
+    local status = M.lsp_status()
+
+    if M.buffer_is_plugin() then
+        return ""
+    end
+
+    return status ~= "" and status or clients
 end --}}}
 
 M.mixed_indent = function() --{{{
     local space_indent = vim.fn.search([[\v^ +]], "nw") > 0
     local tab_indent = vim.fn.search([[\v^\t+]], "nw") > 0
     local mixed = (space_indent and tab_indent) or vim.fn.search([[\v^(\t+ | +\t)]], "nw") > 0
-    return mixed and "" or ""
+    return mixed and "" or ""
 end --}}}
 
 M.theme = function() --{{{
