@@ -26,24 +26,13 @@ local icons = {
     TypeParameter = "",
 }
 
-local has_words_before = function(char)
-    if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
-        return false
-    end
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    if not char then
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-    else
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col) == char
-    end
-end
-
 local feedkey = function(key, mode)
     mode = mode or "n"
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
 local cmp = require("cmp")
+local cmp_mappings = require("user.plugins.custom.cmp")
 
 cmp.setup({
     snippet = {
@@ -73,34 +62,13 @@ cmp.setup({
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-c>"] = cmp.mapping.close(),
         ["<Tab>"] = cmp.mapping(function(fallback)
-            if vim.fn.complete_info()["selected"] == -1 and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-                feedkey("<C-R>=UltiSnips#ExpandSnippet()<CR>")
-            elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-                feedkey("<ESC>:call UltiSnips#JumpForwards()<CR>")
-            elseif has_words_before() then
-                cmp.confirm({ select = true })
-            else
-                fallback()
-            end
+            cmp_mappings.compose({ "expand", "jump_forwards", "confirm" })(fallback)
         end, {
             "i",
             "s",
         }),
         ["<C-e>"] = cmp.mapping(function(fallback)
-            if
-                vim.fn.complete_info()["selected"] == -1
-                and vim.fn["UltiSnips#CanExpandSnippet"]() ~= 1
-                and has_words_before()
-                and cmp.visible()
-            then
-                if not has_words_before(".") then
-                    cmp.confirm({ select = true })
-                else
-                    fallback()
-                end
-            else
-                fallback()
-            end
+            cmp_mappings.compose({ "confirm" })(fallback)
         end, {
             "i",
             "s",
