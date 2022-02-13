@@ -53,8 +53,7 @@ vim.cmd([[command! -bang -nargs=? QFix lua qfix_toggle(<bang>0)]])
 --- @param prog string program to run
 --- @vararg string args for program
 function _G.launch_ext_prog(prog, ...)
-    vim.api.nvim_command("!" .. prog .. " " .. table.concat({ ... }, " "))
-    vim.cmd("redraw!")
+    vim.fn.system(prog .. " " .. table.concat({ ... }, " "))
 end
 
 -- Reloading lua modules using Telescope

@@ -8,18 +8,33 @@ local nse_opts = { noremap = true, silent = true, expr = true }
 map(
     "n",
     "<Leader><Leader>t",
-    "<cmd>lua launch_ext_prog('wt.exe', '-d', string.format('\"%s\"', vim.fn.expand('%:p:h')))<CR>",
+    "<cmd>lua launch_ext_prog('wt', '-d', vim.fn.shellescape(vim.fn.expand('%:p:h')))<CR>",
     ns_opts
 )
 
 -- Open explorer at cwd
-map("n", "<Leader><Leader>e", "<cmd>lua launch_ext_prog('explorer.exe', vim.fn.expand('%:p:h'))<CR>", ns_opts)
+map(
+    "n",
+    "<Leader><Leader>e",
+    "<cmd>lua launch_ext_prog('explorer', vim.fn.shellescape(vim.fn.expand('%:p:h')))<CR>",
+    ns_opts
+)
 
--- Open current file in vscode
-map("n", "<Leader><Leader>c", "<cmd>lua launch_ext_prog('code', '%')<CR>", ns_opts)
+-- Open current file in vscode with current cursor position
+map(
+    "n",
+    "<Leader><Leader>c",
+    "<cmd>lua launch_ext_prog('code', '-g', vim.fn.shellescape(vim.api.nvim_buf_get_name(0) .. ':' .. table.concat(vim.api.nvim_win_get_cursor(0), ':'))) <CR>",
+    ns_opts
+)
 
 -- Open current file in notepad
-map("n", "<Leader><Leader>n", "<cmd>lua launch_ext_prog('notepad', '%')<CR>", ns_opts)
+map(
+    "n",
+    "<Leader><Leader>n",
+    "<cmd>lua launch_ext_prog('notepad', vim.fn.shellescape(vim.fn.expand('%:p')))<CR>",
+    ns_opts
+)
 
 -- Replace word under cursor
 map("n", "<F2>", [[:%s/\<<C-r><C-w>\>/]], n_opts)
