@@ -201,7 +201,7 @@ M.theme = function() --{{{
     local lighten = require("themer.utils.colors").lighten
 
     local colors = {
-        innerbg = nil,
+        innerbg = "None",
         outerbg = lighten(scheme_colors.bg.base, 0.9, "#4C4C4C"),
         lightgray = lighten(scheme_colors.fg, 0.5, "#000000"),
         darkgray = scheme_colors.bg.base,
