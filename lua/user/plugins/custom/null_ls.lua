@@ -2,16 +2,19 @@ local helper = require("null-ls.helpers")
 local methods = require("null-ls.methods")
 
 local FORMATTING = methods.internal.FORMATTING
+local RANGE_FORMATTING = methods.internal.RANGE_FORMATTING
 local DIAGNOSTICS = methods.internal.DIAGNOSTICS
 
 local M = {}
 
 M.latexindent = helper.make_builtin({
+    name = "latexindent",
     method = FORMATTING,
     filetypes = { "tex" },
     generator_opts = {
         command = "latexindent.exe",
         to_stdin = true,
+        args = { "-r" },
     },
     factory = helper.formatter_factory,
 })
@@ -33,7 +36,7 @@ M.black = helper.make_builtin({
 
 M.prettier = helper.make_builtin({
     name = "prettier",
-    method = FORMATTING,
+    method = { FORMATTING, RANGE_FORMATTING },
     filetypes = {
         "javascript",
         "javascriptreact",
@@ -51,7 +54,12 @@ M.prettier = helper.make_builtin({
     },
     generator_opts = {
         command = "prettier",
-        args = helper.range_formatting_args_factory({ "--stdin-filepath", "$FILENAME" }),
+        args = helper.range_formatting_args_factory(
+            { "--stdin-filepath", "$FILENAME" },
+            "--range-start",
+            "--range-end",
+            { row_offset = -1, col_offset = -1 }
+        ),
         to_stdin = true,
     },
     factory = helper.formatter_factory,
