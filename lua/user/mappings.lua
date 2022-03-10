@@ -134,7 +134,7 @@ map("v", "<A-j>", ":m '>+1<CR>gv-gv", ns_opts)
 map("v", "<A-k>", ":m '<-2<CR>gv-gv", ns_opts)
 
 -- Toggle wrap
-map("n", "<F11>", "<cmd>set wrap!<CR>", ns_opts)
+map("n", "<F11>", "<cmd>setlocal linebreak!<CR><cmd>setlocal wrap!<CR>", ns_opts)
 
 -- Close buffer
 map("n", "<Leader>w", "winnr('$') >= 2 ? '<cmd>close<CR>' : '<cmd>bd!<CR>'", nse_opts)
