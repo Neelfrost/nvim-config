@@ -3,7 +3,8 @@
 -- File: init.lua
 
 -- Colorscheme
-SCHEME = "javacafe"
+SCHEME = "onedark"
+
 -- Language servers
 SERVERS = { "pyright", "sumneko_lua", "omnisharp" }
 
