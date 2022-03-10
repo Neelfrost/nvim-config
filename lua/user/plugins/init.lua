@@ -217,14 +217,6 @@ return packer.startup(function()
         end,
     })
     use({
-        "kyazdani42/nvim-tree.lua",
-        cmd = { "NvimTreeToggle", "NvimTreeRefresh" },
-        keys = { { "n", "<C-b>" } },
-        config = function()
-            require("user.plugins.config.nvimtree")
-        end,
-    })
-    use({
         "iamcco/markdown-preview.nvim",
         cmd = "MarkdownPreview",
         ft = "markdown",
@@ -248,6 +240,18 @@ return packer.startup(function()
         requires = { "nvim-treesitter/nvim-treesitter" },
         config = function()
             require("user.plugins.config.others").neogen()
+        end,
+    })
+    use({
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v1.x",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+        },
+        config = function()
+            require("user.plugins.config.neotree")
         end,
     })
 
