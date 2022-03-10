@@ -67,6 +67,7 @@ vim.opt.laststatus = 2
 
 -- Fold column
 vim.opt.foldcolumn = "auto:9"
+vim.opt.signcolumn = "yes"
 
 -- No redraw during macro, regex execution
 vim.opt.lazyredraw = true
@@ -134,7 +135,7 @@ vim.opt.undodir = undo_dir
 vim.opt.undofile = true
 
 -- Python3 path
-vim.g.python3_host_prog = vim.fn.trim(vim.fn.system("which python"))
+vim.g.python3_host_prog = vim.fn.split(vim.fn.trim(vim.fn.system("where python")), "\n")[1]
 
 -- Disable builtin vim plugins
 local disabled_built_ins = {
