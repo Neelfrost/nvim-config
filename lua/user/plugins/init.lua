@@ -72,10 +72,15 @@ return packer.startup(function()
         "nvim-treesitter/nvim-treesitter",
         event = "BufRead",
         run = ":TSUpdate",
-        requires = { "nvim-ts-rainbow", "nvim-ts-autotag" },
+        requires = { "nvim-ts-rainbow", "nvim-ts-autotag", "nvim-treesitter-endwise" },
     })
     use({
         "windwp/nvim-ts-autotag",
+        after = "nvim-treesitter",
+        requires = { "nvim-treesitter" },
+    })
+    use({
+        "RRethy/nvim-treesitter-endwise",
         after = "nvim-treesitter",
         requires = { "nvim-treesitter" },
     })
@@ -165,12 +170,12 @@ return packer.startup(function()
     use({
         "hrsh7th/nvim-cmp",
         requires = {
-            { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
             { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", requires = "neovim/nvim-lspconfig" },
             { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
             { "hrsh7th/cmp-omni", after = "nvim-cmp" },
             { "hrsh7th/cmp-path", after = "nvim-cmp" },
             { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
+            { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
         },
         config = function()
             require("user.plugins.config.cmp")
@@ -371,10 +376,6 @@ return packer.startup(function()
             require("nvim-lastplace").setup()
         end,
     })
-
-    -- use({
-    --     "honza/vim-snippets",
-    -- })
 
     -- Automatic initial plugin installation
     if packer_bootstrap then

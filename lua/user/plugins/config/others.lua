@@ -55,6 +55,9 @@ M.treesitter = function()
         autotag = {
             enable = true,
         },
+        endwise = {
+            enable = true,
+        },
     })
 end
 
@@ -120,9 +123,6 @@ M.neogen = function()
     require("neogen").setup({
         enabled = true,
     })
-
-    map("i", "<M-n>", "<cmd>lua require('neogen').jump_next()<CR>", ns_opts)
-    map("i", "<M-p>", "<cmd>lua require('neogen').jump_prev()<CR>", ns_opts)
 end
 
 return M
