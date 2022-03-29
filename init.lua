@@ -12,7 +12,7 @@ SERVERS = { "pyright", "sumneko_lua", "omnisharp" }
 PARSERS = { "comment", "python", "lua", "c_sharp" }
 
 -- Plugin filetypes
-PLUGINS = { "NvimTree", "packer", "alpha" }
+PLUGINS = { "packer", "alpha", "neo-tree" }
 
 -- Paths
 HOME_PATH = vim.fn.expand("$HOME")

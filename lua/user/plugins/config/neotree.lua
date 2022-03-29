@@ -14,29 +14,37 @@ require("neo-tree").setup({
         {
             event = "file_opened",
             handler = function()
-                --auto close
                 require("neo-tree").close_all()
             end,
         },
         {
             event = "file_opened",
             handler = function()
-                --clear search after opening a file
                 require("neo-tree.sources.filesystem").reset_search()
             end,
         },
         {
             event = "file_renamed",
             handler = function(args)
-                -- fix references to file
-                vim.notify(args.source .. " renamed to " .. args.destination, vim.log.levels.INFO)
+                vim.notify(("'%s' renamed to '%s'"):format(args.source, args.destination), vim.log.levels.INFO)
             end,
         },
         {
             event = "file_moved",
             handler = function(args)
-                -- fix references to file
-                vim.notify(args.source .. " moved to " .. args.destination, vim.log.levels.INFO)
+                vim.notify(("'%s' moved to '%s'"):format(args.source, args.destination), vim.log.levels.INFO)
+            end,
+        },
+        {
+            event = "file_deleted",
+            handler = function(args)
+                vim.notify(("'%s' deleted"):format(args), vim.log.levels.INFO)
+            end,
+        },
+        {
+            event = "file_added",
+            handler = function(args)
+                vim.notify(("'%s' created"):format(args), vim.log.levels.INFO)
             end,
         },
     },
@@ -59,11 +67,29 @@ require("neo-tree").setup({
             trailing_slash = false,
             use_git_status_colors = false,
         },
+        git_status = {
+            symbols = {
+                -- Change type
+                added = "",
+                deleted = "",
+                modified = "",
+                renamed = "",
+                -- Status type
+                untracked = "",
+                ignored = " ",
+                unstaged = " ",
+                staged = " ",
+                conflict = " ",
+            },
+        },
     },
     filesystem = {
-        filters = {
-            show_hidden = true,
-            respect_gitignore = true,
+        filtered_items = {
+            visible = false,
+            hide_dotfiles = true,
+            hide_gitignored = true,
+            hide_by_name = {},
+            never_show = {},
         },
         follow_current_file = false,
         use_libuv_file_watcher = false,
@@ -85,14 +111,26 @@ require("neo-tree").setup({
                 ["f"] = "filter_on_submit",
                 ["<C-x>"] = "clear_filter",
                 ["a"] = "add",
+                ["A"] = "add_directory",
                 ["d"] = "delete",
                 ["r"] = "rename",
                 ["c"] = "copy_to_clipboard",
                 ["x"] = "cut_to_clipboard",
                 ["p"] = "paste_from_clipboard",
+                ["q"] = "close_window",
+                ["y"] = function(state)
+                    local node = state.tree:get_node()
+                    vim.notify(("Name '%s' copied to clipboard"):format(node.name), vim.log.levels.INFO)
+                    vim.cmd(("let @+ = '%s'"):format(node.name))
+                end,
+                ["Y"] = function(state)
+                    local node = state.tree:get_node()
+                    vim.notify(("Path '%s' copied to clipboard"):format(node.path), vim.log.levels.INFO)
+                    vim.cmd(("let @+ = '%s'"):format(node.path))
+                end,
             },
         },
     },
 })
 local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "<C-b>", "<cmd>NeoTreeRevealToggle!<CR>", opts)
+vim.api.nvim_set_keymap("n", "<C-b>", "<cmd>Neotree source=filesystem toggle=true dir=%:p:h<CR>", opts)
