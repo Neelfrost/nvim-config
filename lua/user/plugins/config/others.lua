@@ -56,9 +56,6 @@ M.treesitter = function()
         autotag = {
             enable = true,
         },
-        endwise = {
-            enable = true,
-        },
     })
 end
 

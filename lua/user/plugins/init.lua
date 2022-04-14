@@ -72,25 +72,20 @@ return packer.startup(function()
         "nvim-treesitter/nvim-treesitter",
         event = "BufRead",
         run = ":TSUpdate",
-        requires = { "nvim-ts-rainbow", "nvim-ts-autotag", "nvim-treesitter-endwise" },
+        requires = { "nvim-ts-rainbow", "nvim-ts-autotag" },
+        config = function()
+            require("user.plugins.config.others").treesitter()
+        end,
     })
     use({
         "windwp/nvim-ts-autotag",
-        after = "nvim-treesitter",
-        requires = { "nvim-treesitter" },
-    })
-    use({
-        "RRethy/nvim-treesitter-endwise",
-        after = "nvim-treesitter",
+        ft = { "html", "javascript", "xml", "markdown" },
         requires = { "nvim-treesitter" },
     })
     use({
         "p00f/nvim-ts-rainbow",
-        after = "nvim-treesitter",
+        ft = PARSERS,
         requires = { "nvim-treesitter" },
-        config = function()
-            require("user.plugins.config.others").treesitter()
-        end,
     })
     use({
         "kyazdani42/nvim-web-devicons",
