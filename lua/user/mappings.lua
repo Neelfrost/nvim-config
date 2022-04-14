@@ -38,7 +38,7 @@ map(
 
 -- Replace word under cursor
 map("n", "<F2>", [[:%s/\<<C-r><C-w>\>/]], n_opts)
-map("v", "<F2>", [[y:%s/\V<C-r>"/]], n_opts)
+map("v", "<F2>", [[<Esc>:%s/<C-r>=EscapeString(GetVisualSelection())<CR>/]], n_opts)
 
 -- Save file
 map("n", "<C-s>", "<cmd>update!<CR>", ns_opts)
