@@ -1,5 +1,9 @@
 local colors = require("themer.modules.core.api").get_cp(SCHEME)
 local lighten = require("themer.utils.colors").lighten
+local darken = require("themer.utils.colors").darken
+
+colors.bg.lighter = lighten(colors.bg.base, 0.9, "#4C4C4C")
+colors.bg.darker = darken(colors.bg.base, 0.9, "#000000")
 
 require("themer").setup({
     colorscheme = SCHEME,
@@ -12,7 +16,7 @@ require("themer").setup({
             globals = {
                 -- themer
                 themer = {
-                    ThemerNormalFloat = { link = "ThemerNormal" },
+                    ThemerNormalFloat = { bg = colors.bg.darker },
                     ThemerBorder = { fg = colors.blue },
                 },
                 -- base
@@ -26,30 +30,28 @@ require("themer").setup({
                     LineNrAbove = { link = "ThemerDimmed" },
                     LineNrBelow = { link = "ThemerDimmed" },
                     MatchParen = { fg = colors.diagnostic.warn, bg = "None", style = "bold" },
-                    TabLineFill = {
-                        fg = lighten(colors.bg.base, 0.9, "#4C4C4C"),
-                        bg = lighten(colors.bg.base, 0.9, "#4C4C4C"),
-                    },
+                    TabLineFill = { fg = colors.bg.lighter, bg = colors.bg.lighter },
                     SpellBad = { fg = "#ee6d85", bg = "black", style = "bold" },
                     SpellCap = { fg = colors.green, bg = "black", style = "bold" },
                     SpellLocal = { fg = colors.blue, bg = "black", style = "bold" },
                     SpellRare = { fg = colors.magenta, bg = "black", style = "bold" },
-                    NormalFloat = { bg = colors.bg.base },
-                    VertSplit = {
-                        fg = lighten(colors.bg.base, 0.9, "#4C4C4C"),
-                        bg = lighten(colors.bg.base, 0.9, "#4C4C4C"),
-                    },
-                    StatusLine = { link = "VertSplit" },
-                    StatusLineNC = { link = "VertSplit" },
+                    VertSplit = { fg = colors.bg.lighter, bg = "None", style = "None" },
+                    StatusLine = { link = "VertSplit", style = "None" },
+                    StatusLineNC = { link = "VertSplit", style = "None" },
+                    NormalFloat = { link = "ThemerNormalFloat" },
+                    FloatBorder = { link = "ThemerBorder" },
                 },
                 plugins = {
                     virtcolumn = {
                         -- virtcolumn
-                        VirtColumn = { link = "ThemerComment" },
+                        VirtColumn = {
+                            fg = darken(colors.blue, 0.5, "#000000"),
+                            bg = "None",
+                        },
                     },
                     indentline = {
                         -- indentline
-                        IndentBlanklineChar = { link = "ThemerComment" },
+                        IndentBlanklineChar = { fg = lighten(colors.bg.base, 0.9, "#FFFFFF") },
                     },
                     cmp = {
                         -- cmp
@@ -59,6 +61,7 @@ require("themer").setup({
                     },
                     telescope = {
                         TelescopePromptPrefix = { fg = colors.red },
+                        TelescopeNormal = { link = "ThemerNormalFloat" },
                     },
                     vimtex = {
                         -- vimtex
@@ -90,7 +93,9 @@ require("themer").setup({
                     neotree = {
                         NeoTreeRootName = { link = "ThemerMatch" },
                         NeoTreeDirectoryName = { link = "ThemerMatch" },
-                        NeoTreeGitUntracked = { link = "FloatBorder" },
+                        -- NeoTreeGitUntracked = { link = "FloatBorder" },
+                        NeoTreeNormal = { bg = colors.bg.darker },
+                        NeoTreeNormalNC = { bg = colors.bg.darker },
                     },
                 },
             },
