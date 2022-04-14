@@ -54,7 +54,7 @@ cmp.setup({
             return vim_item
         end,
     },
-    mapping = {
+    mapping = cmp.mapping.preset.insert({
         ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-n>"] = cmp.mapping.scroll_docs(4),
@@ -73,24 +73,30 @@ cmp.setup({
             "i",
             "s",
         }),
-    },
+    }),
     sources = cmp.config.sources({
+        { name = "omni" },
         { name = "ultisnips" },
         { name = "nvim_lsp" },
         {
             name = "buffer",
-            get_bufnrs = function()
-                local bufs = {}
-                for _, win in ipairs(vim.api.nvim_list_wins()) do
-                    bufs[vim.api.nvim_win_get_buf(win)] = true
-                end
-                return vim.tbl_keys(bufs)
-            end,
+            option = {
+                get_bufnrs = function()
+                    local bufs = {}
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        bufs[vim.api.nvim_win_get_buf(win)] = true
+                    end
+                    return vim.tbl_keys(bufs)
+                end,
+            },
         },
+        { name = "nvim_lua" },
         { name = "path" },
     }),
-    documentation = {
-        winhighlight = "NormalFloat:CmpDocumentation,FloatBorder:CmpDocumentationBorder",
+    window = {
+        documentation = {
+            winhighlight = "NormalFloat:CmpDocumentation,FloatBorder:CmpDocumentationBorder",
+        },
     },
     experimental = {
         ghost_text = true,
@@ -105,7 +111,7 @@ local cmdline_formatting = {
     end,
 }
 
-local cmdline_mapping = {
+local cmdline_mapping = cmp.mapping.preset.insert({
     ["<C-j>"] = cmp.mapping({
         c = function()
             if cmp.visible() then
@@ -133,21 +139,22 @@ local cmdline_mapping = {
             end
         end,
     }),
-}
+})
 
 cmp.setup.cmdline("/", {
     formatting = cmdline_formatting,
     mapping = cmdline_mapping,
-    sources = {
+    sources = cmp.config.sources({
         { name = "buffer" },
-    },
+    }),
 })
 
 cmp.setup.cmdline(":", {
     formatting = cmdline_formatting,
     mapping = cmdline_mapping,
     sources = cmp.config.sources({
-        { name = "path" },
+        { name = "buffer" },
         { name = "cmdline" },
+        { name = "path" },
     }),
 })
