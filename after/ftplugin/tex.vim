@@ -9,7 +9,7 @@ setlocal tabstop=2
 setlocal noexpandtab
 setlocal foldmethod=manual
 setlocal foldexpr=vimtex#fold#level(v:lnum)
-setlocal foldtext=CustomFoldText()
+setlocal foldtext=v:lua.require('pretty-fold').foldtext.global()
 
 " --------------------------------- Functions -------------------------------- "
 

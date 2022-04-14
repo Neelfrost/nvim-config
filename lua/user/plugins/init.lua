@@ -374,9 +374,9 @@ return packer.startup(function()
         end,
     })
     use({
-        "ethanholz/nvim-lastplace",
+        "anuvyklack/pretty-fold.nvim",
         config = function()
-            require("nvim-lastplace").setup()
+            require("user.plugins.config.pretty_fold")
         end,
     })
 
