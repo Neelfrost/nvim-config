@@ -14,6 +14,7 @@ M.autopairs = function()
         augroup DEFINE_AUTOPAIRS
             autocmd!
             autocmd FileType lua,vim,md,html,xml let b:AutoPairs = AutoPairsDefine({'<' : '>'})
+            autocmd FileType tex let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', "`":"'", '``':"''"}
         augroup END
     ]])
 end
