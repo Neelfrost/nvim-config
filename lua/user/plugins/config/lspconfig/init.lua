@@ -36,5 +36,12 @@ if not present then
     return
 end
 
+-- Server configs
+local servers = require("user.plugins.config.lspconfig.servers")
+
 -- Setup language servers
-require("user.plugins.custom.lspconfig").setup_ls(lspconfig)
+for _, lsp in ipairs(SERVERS) do
+    local config = servers.specific_configs[lsp] or {}
+    config = vim.tbl_extend("keep", config, servers.default_config)
+    lspconfig[lsp].setup(config)
+end

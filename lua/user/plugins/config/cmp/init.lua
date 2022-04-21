@@ -32,7 +32,7 @@ local feedkey = function(key, mode)
 end
 
 local cmp = require("cmp")
-local cmp_mappings = require("user.plugins.custom.cmp")
+local cmp_mappings = require("user.plugins.config.cmp.mappings")
 
 cmp.setup({
     snippet = {

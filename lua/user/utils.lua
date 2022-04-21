@@ -13,6 +13,7 @@ end
 --- Trim newline at eof, trailing whitespace.
 function _G.perform_cleanup()
     local pos = vim.api.nvim_win_get_cursor(0)
+
     do
         each(vim.cmd)(
             -- remove leading empty lines
@@ -25,7 +26,7 @@ function _G.perform_cleanup()
             [[keeppatterns %s/\r\+//e]]
         )
     end
-    if require("user.plugins.custom.lualine").mixed_indent() ~= "" then
+    if require("user.plugins.config.lualine.components").mixed_indent() ~= "" then
         vim.cmd([[keeppatterns %s/\v\t/    /e]])
     end
 
@@ -38,17 +39,6 @@ function _G.perform_cleanup()
     vim.api.nvim_win_set_cursor(0, pos)
 end
 
---- Quickfix toggle
---- https://vim.fandom.com/wiki/Toggle_to_open_or_close_the_quickfix_window
-function _G.qfix_toggle(forced)
-    if vim.fn.getqflist({ winid = 0 }).winid ~= 0 and forced then
-        vim.cmd("cclose")
-    else
-        vim.cmd("copen 10")
-    end
-end
-vim.cmd([[command! -bang -nargs=? QFix lua qfix_toggle(<bang>0)]])
-
 --- Launch external program
 --- @param prog string program to run
 --- @vararg string args for program
@@ -56,16 +46,22 @@ function _G.launch_ext_prog(prog, ...)
     vim.fn.system(prog .. " " .. table.concat({ ... }, " "))
 end
 
+function _G.open_url(url, prefix)
+    launch_ext_prog("start", (prefix or "") .. url)
+end
+
 -- Reloading lua modules using Telescope
 -- taken and modified from:
 -- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
+function _G.verbose_print(...)
+    local objects = {}
+    for i = 1, select("#", ...) do
+        local v = select(i, ...)
+        table.insert(objects, vim.inspect(v))
+    end
 
---- Pretty print lua tables
---- @param v table table to pretty print
---- @return table
-function _G.verbose_print(v)
-    print(vim.inspect(v))
-    return v
+    print(table.concat(objects, "\n"))
+    return ...
 end
 
 if pcall(require, "plenary") then
@@ -140,7 +136,7 @@ end
 function _G.set_title()
     local file = vim.fn.expand("%:p:t")
     local cwd = vim.fn.split(vim.fn.expand("%:p:h"):gsub("/", "\\"), "\\")
-    local is_plugin = require("user.plugins.custom.lualine").buffer_is_plugin()
+    local is_plugin = require("user.plugins.config.lualine.components").buffer_is_plugin()
 
     if file ~= "" and not is_plugin then
         vim.opt.titlestring = cwd[#cwd] .. "/" .. file
@@ -148,3 +144,17 @@ function _G.set_title()
         vim.opt.titlestring = "Neovim"
     end
 end
+
+--- Quickfix toggle
+--- https://vim.fandom.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+vim.api.nvim_create_user_command("QFix", function(bang)
+    if vim.fn.getqflist({ winid = 0 }).winid ~= 0 and bang then
+        vim.cmd("cclose")
+    else
+        vim.cmd("copen 10")
+    end
+end, {
+    nargs = "?",
+    bang = true,
+    force = true,
+})

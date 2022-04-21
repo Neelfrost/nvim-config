@@ -56,7 +56,20 @@ vim.opt.foldmethod = "marker"
 vim.opt.list = true
 
 -- Display chars
-vim.opt.fillchars = { eob = "–", fold = " ", vert = "│", foldsep = " ", foldclose = "", foldopen = "" }
+vim.opt.fillchars = {
+    eob = "–",
+    fold = " ",
+    foldsep = " ",
+    foldclose = "",
+    foldopen = "",
+    horiz = "━",
+    horizup = "┻",
+    horizdown = "┳",
+    vert = "┃",
+    vertleft = "┫",
+    vertright = "┣",
+    verthoriz = "╋",
+}
 vim.opt.listchars:append({ tab = " ", lead = "·", trail = "·", eol = "﬋" })
 
 -- Use en_us to spellcheck
@@ -161,9 +174,6 @@ local disabled_built_ins = {
 for _, plugin in pairs(disabled_built_ins) do
     vim.g["loaded_" .. plugin] = 1
 end
-
--- Disable Python2 support
-vim.g.loaded_python_provider = 0
 
 -- Disable perl provider
 vim.g.loaded_perl_provider = 0

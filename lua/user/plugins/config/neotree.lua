@@ -132,5 +132,8 @@ require("neo-tree").setup({
         },
     },
 })
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "<C-b>", "<cmd>Neotree source=filesystem toggle=true dir=%:p:h<CR>", opts)
+
+local map = vim.keymap.set
+local opts = { silent = true }
+
+map("n", "<C-b>", "<cmd>Neotree source=filesystem toggle=true dir=%:p:h<CR>", opts)

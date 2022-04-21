@@ -1,10 +1,10 @@
--- Fix buffer movement, remove eob in dashboard
-vim.cmd([[
-    augroup ALPHA
-        autocmd!
-        autocmd FileType alpha setlocal buflisted | setlocal fillchars=eob:\ ,
-    augroup END
-]])
+local group = vim.api.nvim_create_augroup("alpha_options", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+    command = [[setlocal buflisted fillchars=eob:\ ]],
+    desc = "Fix buffer movement, remove eob in alpha.",
+    group = group,
+    pattern = "alpha",
+})
 
 -- Alpha theme
 local dashboard = require("alpha.themes.dashboard")
@@ -53,7 +53,7 @@ local buttons = {
     val = {
         set_button("1", "  Load Last Session", "<cmd>SessionManager load_last_session<CR>"),
         set_button("2", "  Browse Sessions", "<cmd>SessionManager load_session<CR>"),
-        set_button("3", "  Recent Files", "<cmd>lua require('user.plugins.custom.telescope').frecency()<CR>"),
+        set_button("3", "  Recent Files", "<cmd>lua require('user.plugins.config.telescope.sources').frecency()<CR>"),
         set_button("4", "  Find Files", "<cmd>Telescope find_files<CR>"),
         set_button("5", "  New File", "<cmd>enew<CR>"),
         set_button("u", "  Update", "<cmd>PackerSync<CR>"),

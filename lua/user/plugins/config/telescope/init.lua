@@ -1,6 +1,6 @@
-local actions = require("telescope.actions")
-local custom_config = require("user.plugins.custom.telescope")
 local telescope = require("telescope")
+local actions = require("telescope.actions")
+local utils = require("user.plugins.config.telescope.utils")
 
 telescope.setup({
     defaults = {
@@ -45,7 +45,7 @@ telescope.setup({
         layout_strategy = "horizontal",
         sorting_strategy = "ascending",
         set_env = { COLORTERM = "truecolor" },
-        file_ignore_patterns = { ".git", "tags" },
+        file_ignore_patterns = { ".git", "tags", "__pycache__/*" },
         file_sorter = require("telescope.sorters").get_fuzzy_file,
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
@@ -68,9 +68,9 @@ telescope.setup({
         },
     },
     pickers = {
-        find_files = custom_config.dropdown(),
-        oldfiles = custom_config.dropdown({ prompt_title = "Recent Files" }),
-        git_files = custom_config.dropdown(),
+        find_files = utils.dropdown(),
+        oldfiles = utils.dropdown({ prompt_title = "Recent Files" }),
+        git_files = utils.dropdown(),
     },
     extensions = {
         frecency = {
@@ -88,18 +88,36 @@ telescope.setup({
 })
 
 -- Load extensions
-local extensions = { "ultisnips", "fzf", "sessions", "frecency" }
+local extensions = { "ultisnips", "fzf", "frecency" }
 pcall(function()
     for _, ext in ipairs(extensions) do
         telescope.load_extension(ext)
     end
 end)
+local map = vim.keymap.set
+local opts = { silent = true }
 
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "tr", "<cmd>lua require('user.plugins.custom.telescope').frecency()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tf", "<cmd>lua require('user.plugins.custom.telescope').git_or_find()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tp", "<cmd>lua require('user.plugins.custom.telescope').dir_python()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tn", "<cmd>lua require('user.plugins.custom.telescope').dir_nvim()<CR>", opts)
-vim.api.nvim_set_keymap("n", "tl", "<cmd>lua require('user.plugins.custom.telescope').dir_latex()<CR>", opts)
-vim.api.nvim_set_keymap("n", "ts", "<cmd>lua require('user.plugins.custom.telescope').sessions()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require('user.plugins.custom.telescope').reload_modules()<CR>", opts)
+map("n", "tr", function()
+    require("user.plugins.config.telescope.sources").frecency()
+end, opts)
+map("n", "tf", function()
+    require("user.plugins.config.telescope.sources").git_or_find()
+end, opts)
+map("n", "tp", function()
+    require("user.plugins.config.telescope.sources").dir_python()
+end, opts)
+map("n", "tn", function()
+    require("user.plugins.config.telescope.sources").dir_nvim()
+end, opts)
+map("n", "tl", function()
+    require("user.plugins.config.telescope.sources").dir_latex()
+end, opts)
+map("n", "ts", function()
+    require("user.plugins.config.telescope.sources").sessions()
+end, opts)
+map("n", "<F5>", function()
+    require("user.plugins.config.telescope.sources").reload_modules()
+end, opts)
+map("n", "<F6>", function()
+    require("user.plugins.config.telescope.sources").dir_plugins()
+end, opts)

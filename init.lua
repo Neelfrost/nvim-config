@@ -6,10 +6,10 @@
 SCHEME = "onedark"
 
 -- Language servers
-SERVERS = { "pyright", "sumneko_lua", "omnisharp" }
+SERVERS = { "pyright", "sumneko_lua", "omnisharp", "html", "cssls", "eslint", "emmet_ls" }
 
 -- Treesitter parsers
-PARSERS = { "comment", "python", "lua", "c_sharp" }
+PARSERS = { "comment", "python", "lua", "c_sharp", "html", "css", "javascript", "yaml", "json" }
 
 -- Plugin filetypes
 PLUGINS = { "packer", "alpha", "neo-tree" }

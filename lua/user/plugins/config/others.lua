@@ -1,22 +1,29 @@
-local map = vim.api.nvim_set_keymap
-local n_opts = { noremap = true }
-local ne_opts = { noremap = true, expr = true }
-local ns_opts = { noremap = true, silent = true }
-local nse_opts = { noremap = true, silent = true, expr = true }
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+local map = vim.keymap.set
+local e_opts = { expr = true }
+local s_opts = { silent = true }
+local se_opts = { silent = true, expr = true }
 
--- Contains configs for plugins which require < 10 lines
+-- Contains configs for plugins
 local M = {}
 
 M.autopairs = function()
     vim.g.AutoPairsShortcutToggle = ""
-    map("i", "<C-l>", "<Esc><cmd>call AutoPairsJump()<CR>a", ns_opts)
-    vim.cmd([[
-        augroup DEFINE_AUTOPAIRS
-            autocmd!
-            autocmd FileType lua,vim,md,html,xml let b:AutoPairs = AutoPairsDefine({'<' : '>'})
-            autocmd FileType tex let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', "`":"'", '``':"''"}
-        augroup END
-    ]])
+    map("i", "<C-l>", "<Esc><cmd>call AutoPairsJump()<CR>a", s_opts)
+    local group = augroup("custom_autopairs", { clear = true })
+    autocmd("Filetype", {
+        command = [[let b:AutoPairs = AutoPairsDefine({'<' : '>'})]],
+        desc = "Add angle brackets as an autopair.",
+        group = group,
+        pattern = { "lua", "vim", "md", "html", "xml" },
+    })
+    autocmd("Filetype", {
+        command = [[let b:AutoPairs = {'(':')', '[':']', '{':'}', "'":"'", '"':'"', "`":"'", '``':"''"}]],
+        desc = "Add latex quotes as autopairs.",
+        group = group,
+        pattern = "tex",
+    })
 end
 
 M.gutentags = function()
@@ -24,12 +31,6 @@ M.gutentags = function()
     vim.g.gutentags_generate_on_write = 1
     vim.g.gutentags_generate_on_missing = 1
     vim.g.gutentags_generate_on_empty_buffer = 0
-end
-
-M.openurl = function()
-    vim.g.open_url_default_mappings = 0
-    map("n", "<Leader>u", "<Plug>(open-url-browser)", {})
-    map("n", "<Leader>s", "<Plug>(open-url-search)", {})
 end
 
 M.ultisnips = function()
@@ -60,18 +61,15 @@ M.treesitter = function()
 end
 
 M.nvim_comment = function()
-    require("nvim_comment").setup({
-        comment_empty = false,
-    })
-    map("i", "<C-/>", "<C-o><cmd>CommentToggle<CR><C-o>A", ns_opts)
-    map("n", "<C-/>", "<cmd>CommentToggle<CR>", ns_opts)
-    map("v", "<C-/>", ":<C-u>call CommentOperator(visualmode())<CR>", ns_opts)
+    require("nvim_comment").setup({ comment_empty = false })
+    map("i", "<C-/>", "<C-o><cmd>CommentToggle<CR><C-o>A", s_opts)
+    map("n", "<C-/>", "<cmd>CommentToggle<CR>", s_opts)
+    map("v", "<C-/>", ":<C-u>call CommentOperator(visualmode())<CR>", s_opts)
 end
 
 M.fastfold = function()
-    vim.g.fastfold_minlines = 0
     vim.g.fastfold_savehook = 0
-    vim.g.fastfold_fold_command_suffixes = { "x", "X", "a", "A", "o", "O", "c", "C", "m" }
+    vim.g.fastfold_fold_command_suffixes = { "x", "X" }
     vim.g.fastfold_fold_movement_commands = { "]z", "[z", "zj", "zk" }
 end
 
@@ -91,8 +89,8 @@ end
 
 M.hop = function()
     require("hop").setup()
-    map("n", "S", "<cmd>HopChar2<CR>", ns_opts)
-    map("n", "f", "<cmd>HopChar1<CR>", ns_opts)
+    map("n", "S", "<cmd>HopChar2<CR>", s_opts)
+    map("n", "f", "<cmd>HopChar1<CR>", s_opts)
 end
 
 M.session = function()
@@ -106,8 +104,8 @@ M.session = function()
         autosave_ignore_not_normal = true,
         autosave_only_in_session = true,
     })
-    map("n", "<Leader>ss", "<cmd>SessionManager save_current_session<CR>", ns_opts)
-    map("n", "<Leader>ls", "<cmd>SessionManager load_session<CR>", ns_opts)
+    map("n", "<Leader>ss", "<cmd>SessionManager save_current_session<CR>", s_opts)
+    map("n", "<Leader>ls", "<cmd>SessionManager load_session<CR>", s_opts)
 end
 
 M.markdown_preview = function()
@@ -118,9 +116,7 @@ M.markdown_preview = function()
 end
 
 M.neogen = function()
-    require("neogen").setup({
-        enabled = true,
-    })
+    require("neogen").setup({ enabled = true })
 end
 
 return M

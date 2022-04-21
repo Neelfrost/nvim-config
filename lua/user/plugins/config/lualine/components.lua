@@ -88,11 +88,19 @@ M.spell = function() --{{{
 end --}}}
 
 M.file_format = function() --{{{
-    return (not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth) and vim.bo.fileformat or ""
+    if not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth then
+        return ""
+    else
+        return vim.bo.fileformat == "dos" and "" or vim.bo.fileformat
+    end
 end --}}}
 
 M.file_encoding = function() --{{{
-    return (not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth) and vim.bo.fileencoding or ""
+    if not M.buffer_is_plugin() and fn.winwidth(0) > half_winwidth then
+        return ""
+    else
+        return vim.bo.fileencoding == "utf-8" and "" or vim.bo.fileencoding
+    end
 end --}}}
 
 M.line_info = function() --{{{

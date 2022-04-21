@@ -101,10 +101,12 @@ require("cokeline").setup({
     },
 })
 
+local map = vim.keymap.set
 local opts = { silent = true }
-vim.api.nvim_set_keymap("n", "<Tab>", "<Plug>(cokeline-focus-next)", opts)
-vim.api.nvim_set_keymap("n", "<S-Tab>", "<Plug>(cokeline-focus-prev)", opts)
-vim.api.nvim_set_keymap("n", "<M-Left>", "<Plug>(cokeline-switch-prev)", opts)
-vim.api.nvim_set_keymap("n", "<M-Right>", "<Plug>(cokeline-switch-next)", opts)
-vim.api.nvim_set_keymap("n", "<Leader>bf", "<Plug>(cokeline-pick-focus)", opts)
-vim.api.nvim_set_keymap("n", "<Leader>bc", "<Plug>(cokeline-pick-close)", opts)
+
+map("n", "<Tab>", "<Plug>(cokeline-focus-next)", opts)
+map("n", "<S-Tab>", "<Plug>(cokeline-focus-prev)", opts)
+map("n", "<M-Left>", "<Plug>(cokeline-switch-prev)", opts)
+map("n", "<M-Right>", "<Plug>(cokeline-switch-next)", opts)
+map("n", "<Leader>bf", "<Plug>(cokeline-pick-focus)", opts)
+map("n", "<Leader>bc", "<Plug>(cokeline-pick-close)", opts)

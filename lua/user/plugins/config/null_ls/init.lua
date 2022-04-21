@@ -4,8 +4,8 @@ if not null_present then
     return
 end
 
-local lspconfig = require("user.plugins.custom.lspconfig")
-local null_ls_sources = require("user.plugins.custom.null_ls")
+local utils = require("user.plugins.config.lspconfig.utils")
+local null_ls_sources = require("user.plugins.config.null_ls.sources")
 
 local sources = {
     -- Formatters
@@ -31,5 +31,5 @@ null_ls.setup({
     default_timeout = 10000,
     diagnostics_format = "#{m} (#{s})",
     sources = sources,
-    on_attach = lspconfig.on_attach,
+    on_attach = utils.on_attach,
 })

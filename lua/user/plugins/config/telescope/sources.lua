@@ -1,63 +1,8 @@
 -- Custom telescope pickers
 local M = {}
 
--- Custom dropdown theme
-M.dropdown = function(opts) --{{{
-    opts = opts or {}
-
-    local theme_opts = {
-        theme = "dropdown",
-
-        previewer = false,
-        results_title = false,
-
-        sorting_strategy = "ascending",
-        layout_strategy = "center",
-
-        layout_config = {
-            width = function(_, max_columns, _)
-                return math.min(max_columns - 10, 100)
-            end,
-
-            height = function(_, _, max_lines)
-                return math.min(max_lines, 20)
-            end,
-        },
-
-        border = true,
-        borderchars = {
-            { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-            prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-            results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-            preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-        },
-    }
-
-    return vim.tbl_deep_extend("force", theme_opts, opts)
-end --}}}
-
--- Only list files with extensions in the whitelist
-local file_sorter = function(whitelist) --{{{
-    local sorter = require("telescope.sorters").get_fuzzy_file()
-
-    sorter._was_discarded = function()
-        return false
-    end
-
-    -- Filter based on whitelist
-    sorter.filter_function = function(_, prompt, entry)
-        for _, v in ipairs(whitelist) do
-            if entry.value:find(v) then
-                -- 0 is highest filtering score
-                return 0, prompt
-            end
-        end
-        -- -1 is considered filtered
-        return -1, prompt
-    end
-
-    return sorter
-end --}}}
+local file_sorter = require("user.plugins.config.telescope.utils").file_sorter
+local dropdown = require("user.plugins.config.telescope.utils").dropdown
 
 -- List files in specified directories with pre-filtering
 M.dir_nvim = function() --{{{
@@ -67,19 +12,17 @@ M.dir_nvim = function() --{{{
         prompt_title = "Neovim",
         no_ignore = true,
     }
-
     require("telescope.builtin").find_files(opts)
 end --}}}
 
 M.dir_latex = function() --{{{
     local opts = {
         cwd = HOME_PATH .. "\\Documents\\LaTeX",
-        file_ignore_patterns = { ".git", "tags" },
+        file_ignore_patterns = { ".git", "tags", "Sem5", "Sem6", "Internship" },
         prompt_title = "LaTeX",
-        sorter = file_sorter({ "%.tex$", "%.sty$", "%.cls$" }),
+        sorter = file_sorter({ "%.tex$", "%.sty$", "%.cls$", "%.bib$" }),
         no_ignore = true,
     }
-
     require("telescope.builtin").find_files(opts)
 end --}}}
 
@@ -88,9 +31,18 @@ M.dir_python = function() --{{{
         cwd = "D:\\My Folder\\Dev\\Python",
         file_ignore_patterns = { ".git", "tags", "__pycache__", "venv", "__init__" },
         prompt_title = "Python",
-        sorter = file_sorter({ "%.py$" }),
+        sorter = file_sorter({ "%.py$", "%.md$", "%.txt$" }),
     }
+    require("telescope.builtin").find_files(opts)
+end --}}}
 
+M.dir_plugins = function() --{{{
+    local opts = {
+        cwd = PACKER_PATH,
+        file_ignore_patterns = { ".git" },
+        prompt_title = "Plugin Files",
+        sorter = file_sorter({ "%.vim$", "%.lua$" }),
+    }
     require("telescope.builtin").find_files(opts)
 end --}}}
 
@@ -142,13 +94,13 @@ end --}}}
 
 -- Use dropdown theme with Frecency
 M.frecency = function() --{{{
-    local frecency_opts = M.dropdown({ prompt_title = "Recent Files", path_display = { "absolute" } })
+    local frecency_opts = dropdown({ prompt_title = "Recent Files", path_display = { "absolute" } })
     require("telescope").extensions.frecency.frecency(frecency_opts)
 end --}}}
 
 -- Fall back to find_files if not a git directory
 M.git_or_find = function() --{{{
-    local opts = M.dropdown({ prompt_title = "Find Files" })
+    local opts = dropdown({ prompt_title = "Find Files" })
     local ok = pcall(require("telescope.builtin").git_files, opts)
     if not ok then
         require("telescope.builtin").find_files(opts)

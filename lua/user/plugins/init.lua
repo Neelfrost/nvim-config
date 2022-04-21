@@ -1,10 +1,11 @@
--- Run ":PackerCompile" when this file changes
-vim.cmd([[
-    augroup PACKER_COMPILE_ONCHANGE
-        autocmd!
-        autocmd BufWritePost init.lua source <afile> | PackerCompile
-    augroup END
-]])
+-- Compile on change autocmd{{{
+local group = vim.api.nvim_create_augroup("packer_compile_onchange", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePost", {
+    command = [[source <afile> | PackerCompile]],
+    desc = "Run ':PackerCompile' when this file changes.",
+    group = group,
+    pattern = "*/plugins/init.lua",
+}) --}}}
 
 -- Install packer.nvim in "start" folder i.e., not lazy loaded {{{
 local install_path = PACKER_PATH .. "\\start\\packer.nvim"
@@ -127,8 +128,6 @@ return packer.startup(function()
     })
     use({
         "jose-elias-alvarez/null-ls.nvim",
-        after = "nvim-cmp",
-        requires = { "hrsh7th/cmp-nvim-lsp" },
         config = function()
             require("user.plugins.config.null_ls")
         end,
@@ -148,12 +147,12 @@ return packer.startup(function()
         "sbdchd/neoformat",
         cmd = "Neoformat",
         setup = function()
-            vim.cmd([[
-                augroup NEOFORMAT
-                  autocmd!
-                  autocmd BufWritePre * silent! undojoin | Neoformat
-                augroup END
-            ]])
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                command = [[silent! undojoin | Neoformat]],
+                desc = "Format using neoformat on save.",
+                group = vim.api.nvim_create_augroup("neoformat_format_onsave", { clear = true }),
+                pattern = "*",
+            })
         end,
         config = function()
             require("user.plugins.config.neoformat")
@@ -199,7 +198,6 @@ return packer.startup(function()
     })
     use({
         "jiangmiao/auto-pairs",
-        event = "InsertEnter",
         config = function()
             require("user.plugins.config.others").autopairs()
         end,
@@ -221,17 +219,8 @@ return packer.startup(function()
         end,
     })
     use({
-        "plasticboy/vim-markdown",
-        ft = "markdown",
-        config = function()
-            vim.g.vim_markdown_frontmatter = 1
-            vim.g.vim_markdown_folding_disabled = 1
-        end,
-    })
-    use({
         "danymat/neogen",
         cmd = "Neogen",
-        after = "nvim-treesitter",
         requires = { "nvim-treesitter/nvim-treesitter" },
         config = function()
             require("user.plugins.config.others").neogen()
@@ -341,13 +330,6 @@ return packer.startup(function()
         end,
     })
     use({
-        "dhruvasagar/vim-open-url",
-        keys = { { "n", "<Leader>u" }, { "n", "<Leader>s" } },
-        config = function()
-            require("user.plugins.config.others").openurl()
-        end,
-    })
-    use({
         "antoinemadec/FixCursorHold.nvim",
         event = "BufRead",
         config = function()
@@ -363,7 +345,6 @@ return packer.startup(function()
     })
     use({
         "Shatur/neovim-session-manager",
-        cmd = "SessionManager",
         config = function()
             require("user.plugins.config.others").session()
         end,
