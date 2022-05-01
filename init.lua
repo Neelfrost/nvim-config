@@ -3,7 +3,7 @@
 -- File: init.lua
 
 -- Colorscheme
-SCHEME = "onedark"
+SCHEME = "nightlamp"
 
 -- Language servers
 SERVERS = { "pyright", "sumneko_lua", "omnisharp", "html", "cssls", "eslint", "emmet_ls" }

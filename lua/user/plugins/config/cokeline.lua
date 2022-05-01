@@ -19,6 +19,12 @@ local function padding(n)
     return { text = string.rep(" ", n or 1) }
 end
 
+-- Poor man's superscript converter
+local function superscript(n)
+    local superscripts = { "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "⁰" }
+    return superscripts[(n % 10)]
+end
+
 require("cokeline").setup({
     show_if_buffers_are_at_least = 1,
 
@@ -58,21 +64,13 @@ require("cokeline").setup({
         bg = function(buffer)
             return buffer.is_focused and active_bg or inactive_bg
         end,
-        style = "bold",
+        style = function(buffer)
+            return buffer.is_focused and "bold" or nil
+        end,
     },
 
     components = {
         padding(2),
-        {
-            text = function(buffer)
-                return (is_picking_focus() or is_picking_close()) and (buffer.pick_letter .. ":")
-                    or (buffer.index .. ":")
-            end,
-            fg = function()
-                return is_picking_close() and modified_fg or (is_picking_focus() and switch_fg or nil)
-            end,
-        },
-        padding(),
         {
             text = function(buffer)
                 return buffer.unique_prefix
@@ -86,6 +84,17 @@ require("cokeline").setup({
                 priority = 10,
                 direcion = "left",
             },
+        },
+        padding(),
+        {
+            text = function(buffer)
+                return (is_picking_focus() or is_picking_close()) and (buffer.pick_letter .. ":") or (superscript(
+                    buffer.index
+                ))
+            end,
+            fg = function()
+                return is_picking_close() and modified_fg or (is_picking_focus() and switch_fg or nil)
+            end,
         },
         padding(),
         {

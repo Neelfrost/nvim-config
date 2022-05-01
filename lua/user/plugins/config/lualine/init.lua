@@ -1,19 +1,47 @@
 local components = require("user.plugins.config.lualine.components")
+local utils = require("user.plugins.config.lualine.utils")
 
 require("lualine").setup({
     options = {
         globalstatus = true,
         theme = components.theme(),
-        section_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
         component_separators = { left = "│", right = "│" },
     },
-    sections = {
+    sections = utils.process_sections({
         lualine_a = {
             { components.current_mode },
         },
         lualine_b = {
+            {
+                "branch",
+                icon = "",
+                cond = function()
+                    return not components.buffer_is_plugin()
+                end,
+            },
             { components.file_name },
-            { components.lsp },
+            {
+                components.compile_status,
+                padding = 0,
+                color = function()
+                    local scheme_colors = require("themer.modules.core.api").get_cp(SCHEME)
+
+                    if not vim.b.vimtex then
+                        return
+                    end
+
+                    if vim.b.vimtex["compiler"]["status"] == 1 then
+                        return { fg = scheme_colors.blue }
+                    elseif vim.b.vimtex["compiler"]["status"] == 2 then
+                        return { fg = scheme_colors.green }
+                    elseif vim.b.vimtex["compiler"]["status"] == 3 then
+                        return { fg = scheme_colors.red }
+                    else
+                        return
+                    end
+                end,
+            },
         },
         lualine_c = {
             { components.spell },
@@ -26,19 +54,13 @@ require("lualine").setup({
             { components.paste },
         },
         lualine_y = {
+            { components.lsp },
             { components.line_info },
-            { components.total_lines },
         },
         lualine_z = {
-            {
-                "branch",
-                icon = "",
-                cond = function()
-                    return not components.buffer_is_plugin()
-                end,
-            },
+            { components.total_lines },
         },
-    },
+    }),
     inactive_sections = {
         lualine_a = {},
         lualine_b = { { components.file_name } },

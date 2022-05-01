@@ -17,7 +17,7 @@ require("themer").setup({
                 -- themer
                 themer = {
                     ThemerNormalFloat = { bg = colors.bg.darker },
-                    ThemerBorder = { fg = colors.blue },
+                    ThemerBorder = { fg = colors.bg.darker, bg = colors.bg.darker },
                 },
                 -- base
                 base = {
@@ -60,6 +60,7 @@ require("themer").setup({
                         CmpDocumentationBorder = { bg = colors.pum.bg },
                     },
                     telescope = {
+                        TelescopeTitle = { bg = colors.blue, gui = "bold" },
                         TelescopePromptPrefix = { fg = colors.red },
                         TelescopeNormal = { link = "ThemerNormalFloat" },
                     },
@@ -93,7 +94,6 @@ require("themer").setup({
                     neotree = {
                         NeoTreeRootName = { link = "ThemerMatch" },
                         NeoTreeDirectoryName = { link = "ThemerMatch" },
-                        -- NeoTreeGitUntracked = { link = "FloatBorder" },
                         NeoTreeNormal = { bg = colors.bg.darker },
                         NeoTreeNormalNC = { bg = colors.bg.darker },
                     },

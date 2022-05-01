@@ -47,7 +47,7 @@ M.file_name = function() --{{{
         end
     end
 
-    return M.readonly() .. M.file_icon(file_name, file_type) .. M.compile_status()
+    return M.readonly() .. M.file_icon(file_name, file_type)
 end --}}}
 
 M.readonly = function() --{{{
@@ -209,10 +209,13 @@ M.theme = function() --{{{
     local lighten = require("themer.utils.colors").lighten
 
     local colors = {
-        innerbg = "None",
-        outerbg = lighten(scheme_colors.bg.base, 0.9, "#4C4C4C"),
-        lightgray = lighten(scheme_colors.fg, 0.5, "#000000"),
+        bybg = lighten(scheme_colors.bg.base, 0.9, "#4C4C4C"),
+        cxbg = "None",
+
+        lightgray = lighten(scheme_colors.fg, 0.5, scheme_colors.bg.base),
         darkgray = scheme_colors.bg.base,
+
+        -- modes
         normal = scheme_colors.blue,
         insert = scheme_colors.green,
         visual = scheme_colors.orange,
@@ -222,34 +225,34 @@ M.theme = function() --{{{
 
     return {
         inactive = {
-            a = { fg = colors.lightgray, bg = colors.outerbg, gui = "bold" },
-            b = { fg = colors.lightgray, bg = colors.outerbg },
-            c = { fg = colors.lightgray, bg = colors.innerbg },
+            a = { fg = colors.lightgray, bg = colors.bybg, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.bybg, gui = "bold" },
+            c = { fg = colors.lightgray, bg = colors.cxbg, gui = "bold" },
         },
         visual = {
             a = { fg = colors.darkgray, bg = colors.visual, gui = "bold" },
-            b = { fg = colors.lightgray, bg = colors.outerbg },
-            c = { fg = colors.lightgray, bg = colors.innerbg },
+            b = { fg = colors.lightgray, bg = colors.bybg, gui = "bold" },
+            c = { fg = colors.lightgray, bg = colors.cxbg, gui = "bold" },
         },
         replace = {
             a = { fg = colors.darkgray, bg = colors.replace, gui = "bold" },
-            b = { fg = colors.lightgray, bg = colors.outerbg },
-            c = { fg = colors.lightgray, bg = colors.innerbg },
+            b = { fg = colors.lightgray, bg = colors.bybg, gui = "bold" },
+            c = { fg = colors.lightgray, bg = colors.cxbg, gui = "bold" },
         },
         normal = {
             a = { fg = colors.darkgray, bg = colors.normal, gui = "bold" },
-            b = { fg = colors.lightgray, bg = colors.outerbg },
-            c = { fg = colors.lightgray, bg = colors.innerbg },
+            b = { fg = colors.lightgray, bg = colors.bybg, gui = "bold" },
+            c = { fg = colors.lightgray, bg = colors.cxbg, gui = "bold" },
         },
         insert = {
             a = { fg = colors.darkgray, bg = colors.insert, gui = "bold" },
-            b = { fg = colors.lightgray, bg = colors.outerbg },
-            c = { fg = colors.lightgray, bg = colors.innerbg },
+            b = { fg = colors.lightgray, bg = colors.bybg, gui = "bold" },
+            c = { fg = colors.lightgray, bg = colors.cxbg, gui = "bold" },
         },
         command = {
             a = { fg = colors.darkgray, bg = colors.command, gui = "bold" },
-            b = { fg = colors.lightgray, bg = colors.outerbg },
-            c = { fg = colors.lightgray, bg = colors.innerbg },
+            b = { fg = colors.insert, bg = colors.bybg, gui = "bold" },
+            c = { fg = colors.insert, bg = colors.cxbg, gui = "bold" },
         },
     }
 end --}}}
@@ -263,13 +266,13 @@ M.compile_status = function() --{{{
 
         -- Status: running
         if vim.b.vimtex["compiler"]["status"] == 1 then
-            return " (⋯)"
+            return "(⋯)"
             -- Status: compile success
         elseif vim.b.vimtex["compiler"]["status"] == 2 then
-            return " ()"
+            return "()"
             -- Status: compile failed
         elseif vim.b.vimtex["compiler"]["status"] == 3 then
-            return " ()"
+            return "()"
         end
     else
         return ""

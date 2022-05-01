@@ -14,7 +14,7 @@ local plugins_loaded = #vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1)
 local plugins_waiting = #vim.fn.globpath(PACKER_PATH .. "\\opt", "*", 0, 1)
 
 -- Common highlight
-local highlight = "ThemerBorder"
+local highlight = "ThemerHeadingH1"
 
 local function set_button(sc, txt, keybind, keybind_opts)
     local button = dashboard.button(sc, txt, keybind, keybind_opts)
