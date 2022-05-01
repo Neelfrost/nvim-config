@@ -24,27 +24,27 @@
 
 ## Table of Contents <!-- omit in toc -->
 
--   [Screenshots 📷](#screenshots-)
--   [Installation ⚡](#installation-)
-    -   [LaTeX](#latex)
-    -   [Language Servers](#language-servers)
--   [Update 🚀](#update-)
--   [Features 📃](#features-)
-    -   [General](#general)
-    -   [LaTeX](#latex-1)
-    -   [Folder Structure](#folder-structure)
-    -   [Plugins Used](#plugins-used)
-    -   [Mappings](#mappings)
--   [Todo ✔](#todo-)
+- [Screenshots 📷](#screenshots-)
+- [Installation ⚡](#installation-)
+  - [LaTeX](#latex)
+  - [Language Servers](#language-servers)
+- [Update 🚀](#update-)
+- [Features 📃](#features-)
+  - [General](#general)
+  - [LaTeX](#latex-1)
+  - [Folder Structure](#folder-structure)
+  - [Plugins Used](#plugins-used)
+  - [Mappings](#mappings)
+- [Todo ✔](#todo-)
 
 ## Screenshots 📷
 
-![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.webp "Alpha Startscreen")
-![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.webp "NvimTree File Explorer, cmp code completion")
-![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.webp "Telescope Fuzzy Finder")
-![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.webp "LaTeX Preview")
-![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/snippets.webp "Snippet List")
-![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/python.webp "Python Preview")
+![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.png "Alpha Startscreen")
+![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.png "NvimTree File Explorer, cmp code completion")
+![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.png "Telescope Fuzzy Finder")
+![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.png "LaTeX Preview")
+![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/snippets.png "Snippet List")
+![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/python.png "Python Preview")
 
 ## Installation ⚡
 
@@ -52,40 +52,40 @@ The following instructions are for Windows (powershell). **An admin prompt is re
 
 1. Install chocolatey.
 
-    ```powershell
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    ```
+   ```powershell
+   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+   ```
 
 2. Install main dependencies.
 
-    ```powershell
-    choco install git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration" -y;
-    choco install neovim python which SumatraPDF.install miktex.install -y;
-    # Needed for various plugins
-    choco install universal-ctags strawberryperl make SQLite ripgrep fd -y; RefreshEnv.cmd; exit
-    ```
+   ```powershell
+   choco install git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration" -y;
+   choco install neovim python which SumatraPDF.install miktex.install -y;
+   # Needed for various plugins
+   choco install universal-ctags strawberryperl make SQLite ripgrep fd -y; RefreshEnv.cmd; exit
+   ```
 
 3. Install python dependencies.
 
-    ```powershell
-    pip install pynvim neovim-remote
-    # Optionally for python linting and formatting:
-    pip install flake8 black
-    ```
+   ```powershell
+   pip install pynvim neovim-remote
+   # Optionally for python linting and formatting:
+   pip install flake8 black
+   ```
 
 4. Clone the repository and open nvim-qt or nvim.
 
-    If fresh installation:
+   If fresh installation:
 
-    ```powershell
-    git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
-    ```
+   ```powershell
+   git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
+   ```
 
-    If nvim directory exists:
+   If nvim directory exists:
 
-    ```powershell
-    rm "$HOME\Appdata\Local\nvim" -Recurse; git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
-    ```
+   ```powershell
+   rm "$HOME\Appdata\Local\nvim" -Recurse; git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
+   ```
 
 ### LaTeX
 
@@ -95,10 +95,10 @@ latexindent is now included with miktex, so downloading it is no longer necessar
 
 1. Creating `$HOME/indentconfig.yaml`:
 
-    ```yaml
-    paths:
-        - C:\Users\<username>\defaultSettings.yaml
-    ```
+   ```yaml
+   paths:
+     - C:\Users\<username>\defaultSettings.yaml
+   ```
 
 2. Creating `$HOME/defaultSettings.yaml`, followed by copying and overriding [defaultSettings](https://github.com/cmhughes/latexindent.pl/blob/main/defaultSettings.yaml).
 
@@ -125,18 +125,18 @@ Use `:checkhealth` to check for errors if any.
 ### Language Servers
 
 #### Python ([pyright](https://github.com/microsoft/pyright))
-
+tt
 1. Install npm.
 
-    ```powershell
-    choco install nodejs.install -y; RefreshEnv.cmd; exit
-    ```
+   ```powershell
+   choco install nodejs.install -y; RefreshEnv.cmd; exit
+   ```
 
 2. Install pyright.
 
-    ```powershell
-    npm install -g pyright
-    ```
+   ```powershell
+   npm install -g pyright
+   ```
 
 3. Use `:checkhealth` to check for errors if any.
 
@@ -144,21 +144,21 @@ Use `:checkhealth` to check for errors if any.
 
 1. Install dependencies.
 
-    ```powershell
-    choco install 7zip.install -y; RefreshEnv.cmd; exit
-    ```
+   ```powershell
+   choco install 7zip.install -y; RefreshEnv.cmd; exit
+   ```
 
 2. cd into install directory. _Example:_
 
-    ```powershell
-    cd C:\tools
-    ```
+   ```powershell
+   cd C:\tools
+   ```
 
 3. Install sumneko lua-language-server.
 
-    ```powershell
-    curl.exe -L $(curl.exe -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | findstr.exe "win32-x64" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o lua.vsix; 7z.exe x .\lua.vsix; rm '.\`[Content_Types`].xml'; rm .\extension.vsixmanifest; rm .\lua.vsix; mv .\extension\server\ .; rm .\extension\ -Recurse; Rename-Item .\server\ lua-language-server;
-    ```
+   ```powershell
+   curl.exe -L $(curl.exe -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | findstr.exe "win32-x64" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o lua.vsix; 7z.exe x .\lua.vsix; rm '.\`[Content_Types`].xml'; rm .\extension.vsixmanifest; rm .\lua.vsix; mv .\extension\server\ .; rm .\extension\ -Recurse; Rename-Item .\server\ lua-language-server;
+   ```
 
 4. Use `:checkhealth` to check for errors if any.
 
@@ -166,9 +166,9 @@ Use `:checkhealth` to check for errors if any.
 
 1. Install dependencies.
 
-    ```powershell
-    choco install omnisharp; RefreshEnv.cmd; exit
-    ```
+   ```powershell
+   choco install omnisharp; RefreshEnv.cmd; exit
+   ```
 
 2. Use `:checkhealth` to check for errors if any.
 
@@ -176,29 +176,30 @@ Use `:checkhealth` to check for errors if any.
 
 1. Pull changes.
 
-    ```powershell
-    cd "$HOME\Appdata\Local\nvim"; git pull
-    ```
+   ```powershell
+   cd "$HOME\Appdata\Local\nvim"; git pull
+   ```
 
 2. Open nvim-qt or nvim and update plugins:
 
-    ```
-    :PackerSync
-    ```
+   ```
+   :PackerSync
+   ```
 
 ## Features 📃
 
 ### General
 
--   Smart display line movement.
--   Resume cursor position when re-opening a file.
--   Auto update file if changed outside of neovim.
--   Fix mixed indents (tabs are converted to spaces).
--   Persistent cursor positions when switching buffers.
--   Ability to search custom directories in telescope.nvim.
--   Ability to reload specific modules using telescope.nvim.
--   Automatically trim trailing whitespaces and newlines on save.
--   Open windows terminal, vscode, explorer at current directory using <kbd>\\\\t</kbd>, <kbd>\\\\c</kbd>, <kbd>\\\\e</kbd> respectively.
+- Smart display line movement.
+- Resume cursor position when re-opening a file.
+- Auto update file if changed outside of neovim.
+- Fix mixed indents (tabs are converted to spaces).
+- Persistent cursor positions when switching buffers.
+- Ability to search custom directories in telescope.nvim.
+- Ability to reload specific modules using telescope.nvim.
+- Automatically trim trailing whitespaces and newlines on save.
+- Search and replace selection (automatically escape special chars).
+- Open windows terminal, vscode, explorer at current directory using <kbd>\\\\t</kbd>, <kbd>\\\\c</kbd>, <kbd>\\\\e</kbd> respectively.
 
 ### LaTeX
 
@@ -228,104 +229,104 @@ Use `:checkhealth` to check for errors if any.
     </figure>
 </details>
 
--   Extensive snippets for LaTeX.
--   Better auxiliary file cleaner.
--   Null-ls latexindent, chktex support.
--   Automatically substitute `\` in imports (include, input) with `/` on save.
--   Keybinds for bold, underline, math, chemical formula environments.
--   Start newline with \item (or \task) if inside a list environment when pressing <kbd>Enter</kbd>, <kbd>o</kbd> or <kbd>O</kbd>.
+- Extensive snippets for LaTeX.
+- Better auxiliary file cleaner.
+- Null-ls: latexindent, chktex support.
+- Automatically substitute `\` in imports (include, input) with `/` on save.
+- Keybinds for bold, underline, math, chemical formula environments.
+- Start newline with \item (or \task) if inside a list environment when pressing <kbd>Enter</kbd>, <kbd>o</kbd> or <kbd>O</kbd>.
 
 ### Folder Structure
 
 ```bash
 nvim
 ├── after
-│   └── ftplugin            # filetype specific options, settings, mappings
-├── lua                     # .lua config files
+│   └── ftplugin         # filetype specific options, settings, mappings
+├── lua                  # .lua config files
 │   └── user
-│       └── mappings.lua    # keybinds
-│       └── options.lua     # vim options
-│       └── utils.lua       # utility functions
+│       └── mappings.lua # keybinds
+│       └── options.lua  # vim options
+│       └── utils.lua    # utility functions
 │       └── plugins
-│           ├── config      # main plugin config
-│           └── custom      # supplementary plugin config
-├── ultisnips               # snippets
-│   └── tex                 # latex snippets
-└── viml                    # .vim config files
+│           ├── config   # main plugin config
+│           └── init.lua # plugin definition file
+├── ultisnips            # snippets
+│   └── tex              # latex snippets
+└── viml                 # .vim config files
 ```
 
 ### Plugins Used
 
--   Plugin manager: [packer.nvim](https://github.com/wbthomason/packer.nvim)
+- Plugin manager: [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 #### LSP
 
--   LSP: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-    -   Diagnostics, formatting LSP: [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
-    -   Python language server: [pyright](https://github.com/microsoft/pyright)
-    -   C# language server: [omnisharp](https://github.com/omnisharp/omnisharp-roslyn)
-    -   Lua language server: [sumneko_lua](https://github.com/sumneko/lua-language-server)
-    -   Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
-    -   Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
-    -   Backup code formatting: [neoformat](https://github.com/sbdchd/neoformat)
+- LSP: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+  - Diagnostics, formatting LSP: [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
+  - Python language server: [pyright](https://github.com/microsoft/pyright)
+  - C# language server: [omnisharp](https://github.com/omnisharp/omnisharp-roslyn)
+  - Lua language server: [sumneko_lua](https://github.com/sumneko/lua-language-server)
+  - Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
+  - Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
+  - Backup code formatting: [neoformat](https://github.com/sbdchd/neoformat)
 
 #### File navigation, explorer
 
--   File explorer: [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
--   Fuzzy finder: [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-    -   Telescope frecency picker: [telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim)
-    -   Telescope fzf sorter: [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
-    -   Telescope ultisnips viewer: [telescope-ultisnips.nvim](https://github.com/fhill2/telescope-ultisnips.nvim)
+- File explorer: [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
+- Fuzzy finder: [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+  - Telescope frecency picker: [telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim)
+  - Telescope fzf sorter: [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
+  - Telescope ultisnips viewer: [telescope-ultisnips.nvim](https://github.com/fhill2/telescope-ultisnips.nvim)
 
 #### Code completion
 
--   Code completion: [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
-    -   Ultisnips source: [cmp-nvim-ultisnips](https://github.com/quangnguyen30192/cmp-nvim-ultisnips)
-    -   LSP source: [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
-    -   Buffer source: [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
-    -   Path source: [cmp-path](https://github.com/hrsh7th/cmp-path)
-    -   Cmdline source: [cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)
-    -   Omni source: [cmp-omni](https://github.com/hrsh7th/cmp-omni)
+- Code completion: [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+  - Ultisnips source: [cmp-nvim-ultisnips](https://github.com/quangnguyen30192/cmp-nvim-ultisnips)
+  - LSP source: [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
+  - Buffer source: [cmp-buffer](https://github.com/hrsh7th/cmp-buffer)
+  - Path source: [cmp-path](https://github.com/hrsh7th/cmp-path)
+  - Cmdline source: [cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)
+  - Omni source (for vimtex): [cmp-omni](https://github.com/hrsh7th/cmp-omni)
 
 #### LaTeX
 
--   LaTeX support: [vimtex](https://github.com/lervag/vimtex)
--   Snippet engine: [ultisnips](https://github.com/SirVer/ultisnips)
--   Tag management: [vim-gutentags](https://github.com/ludovicchabant/vim-gutentags)
+- LaTeX support: [vimtex](https://github.com/lervag/vimtex)
+- Snippet engine: [ultisnips](https://github.com/SirVer/ultisnips)
+- Tag management: [vim-gutentags](https://github.com/ludovicchabant/vim-gutentags)
 
 #### Looks
 
--   Theme support: [themer.lua](https://github.com/ThemerCorp/themer.lua)
--   Indent lines: [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
--   Icons support: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
--   Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
--   Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
--   Colorizer: [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
+- Theme support: [themer.lua](https://github.com/ThemerCorp/themer.lua)
+- Indent lines: [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
+- Thin virtual column: [virt-column.nvim](https://github.com/lukas-reineke/virt-column.nvim)
+- Icons support: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
+- Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
+- Colorizer: [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
+- Prettier folds: [pretty-fold.nvim](https://github.com/anuvyklack/pretty-fold.nvim)
 
 #### Buffer, Status
 
--   Bufferline: [cokeline.nvim](https://github.com/noib3/cokeline.nvim)
--   Statusline: [lualine.nvim](https://github.com/shadmansaleh/lualine.nvim)
+- Bufferline: [cokeline.nvim](https://github.com/noib3/cokeline.nvim)
+- Statusline: [lualine.nvim](https://github.com/shadmansaleh/lualine.nvim)
 
 #### QOL
 
--   Repeat actions: [vim-repeat](https://github.com/tpope/vim-repeat)
--   Faster navigation: [hop.nvim](https://github.com/phaazon/hop.nvim)
--   Better quickfix: [nvim-pqf](https://gitlab.com/yorickpeterse/nvim-pqf)
--   Aligning: [vim-easy-align](https://github.com/junegunn/vim-easy-align)
--   Commenting: [nvim-comment](https://github.com/terrortylor/nvim-comment)
--   Title Case: [vim-titlecase](https://github.com/christoomey/vim-titlecase)
--   Start screen: [alpha-nvim](goolord/alpha-nvim)
--   Auto pair brackets: [auto-pairs](https://github.com/jiangmiao/auto-pairs)
--   Bracket operations: [vim-surround](https://github.com/tpope/vim-surround)
--   Startup time: [vim-startuptime](https://github.com/dstein64/vim-startuptime)
--   Open URLs and more: [vim-open-url](https://github.com/dhruvasagar/vim-open-url)
--   Fix cursorhold autocmd: [FixCursorHold.nvim](https://github.com/antoinemadec/FixCursorHold.nvim)
--   Fast expr folds: [FastFold](https://github.com/antoinemadec/Konfekt/FastFold)
--   Markdown preview: [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
--   Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
--   Session manager: [neovim-session-manager](https://github.com/Shatur/neovim-session-manager)
--   Restore cursor at last edit position: [nvim-lastplace](https://github.com/ethanholz/nvim-lastplace)
+- Repeat actions: [vim-repeat](https://github.com/tpope/vim-repeat)
+- Faster navigation: [hop.nvim](https://github.com/phaazon/hop.nvim)
+- Better quickfix: [nvim-pqf](https://gitlab.com/yorickpeterse/nvim-pqf)
+- Aligning: [vim-easy-align](https://github.com/junegunn/vim-easy-align)
+- Commenting: [nvim-comment](https://github.com/terrortylor/nvim-comment)
+- Title Case: [vim-titlecase](https://github.com/christoomey/vim-titlecase)
+- Start screen: [alpha-nvim](goolord/alpha-nvim)
+- Auto pair brackets: [auto-pairs](https://github.com/jiangmiao/auto-pairs)
+- Bracket operations: [vim-surround](https://github.com/tpope/vim-surround)
+- Startup time: [vim-startuptime](https://github.com/dstein64/vim-startuptime)
+- Fix cursorhold autocmd: [FixCursorHold.nvim](https://github.com/antoinemadec/FixCursorHold.nvim)
+- Fast expr folds: [FastFold](https://github.com/antoinemadec/Konfekt/FastFold)
+- Markdown preview: [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
+- Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
+- Session manager: [neovim-session-manager](https://github.com/Shatur/neovim-session-manager)
 
 ### Mappings
 
@@ -406,7 +407,7 @@ nvim
 
 ## Todo ✔
 
--   [ ] Improve mappings table
--   [ ] Document snippets
--   [ ] Automatic install script
--   [ ] Create video to showcase snippets
+- [ ] Improve mappings table
+- [ ] Document snippets
+- [ ] Automatic install script
+- [ ] Create video to showcase snippets
