@@ -251,8 +251,8 @@ M.theme = function() --{{{
         },
         command = {
             a = { fg = colors.darkgray, bg = colors.command, gui = "bold" },
-            b = { fg = colors.insert, bg = colors.bybg, gui = "bold" },
-            c = { fg = colors.insert, bg = colors.cxbg, gui = "bold" },
+            b = { fg = colors.lightgray, bg = colors.bybg, gui = "bold" },
+            c = { fg = colors.lightgray, bg = colors.cxbg, gui = "bold" },
         },
     }
 end --}}}
