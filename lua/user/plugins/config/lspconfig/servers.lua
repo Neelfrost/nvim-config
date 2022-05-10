@@ -1,6 +1,6 @@
 local M = {}
 
-local lspconfig_util = pcall(require, "lspconfig.util")
+local _, lspconfig_util = pcall(require, "lspconfig.util")
 local utils = require("user.plugins.config.lspconfig.utils")
 
 -- Setup language servers
@@ -40,6 +40,12 @@ M.specific_configs = {
                 },
             },
         },
+        root_pattern = lspconfig_util.root_pattern(".git", ".luarc.json", ".luacheckrc", ".stylua.toml", "selene.toml"),
+        root_dir = function(fname)
+            return lspconfig_util.root_pattern(".git", ".luarc.json", ".luacheckrc", ".stylua.toml", "selene.toml")(
+                fname
+            ) or lspconfig_util.path.dirname(fname)
+        end,
     },
     omnisharp = {
         cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
