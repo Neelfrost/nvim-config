@@ -40,6 +40,7 @@ require("themer").setup({
                     StatusLineNC = { link = "VertSplit", style = "None" },
                     NormalFloat = { link = "ThemerNormalFloat" },
                     FloatBorder = { link = "ThemerBorder" },
+                    PmenuSel = { bg = colors.syntax.comment or colors.dimmed.subtle },
                 },
                 plugins = {
                     virtcolumn = {
@@ -55,9 +56,33 @@ require("themer").setup({
                     },
                     cmp = {
                         -- cmp
-                        CmpItemMenu = { fg = colors.pum.fg, bg = colors.pum.bg },
+                        CmpItemMenu = { fg = colors.syntax.comment or colors.dimmed.subtle, bg = colors.pum.bg },
                         CmpDocumentation = { fg = colors.pum.fg, bg = colors.pum.bg },
                         CmpDocumentationBorder = { bg = colors.pum.bg },
+
+                        CmpItemAbbr = { fg = colors.fg, style = "NONE" },
+                        CmpItemAbbrDeprecated = { fg = colors.fg },
+                        CmpItemAbbrMatch = { fg = colors.green, style = "bold" },
+                        CmpItemAbbrMatchFuzzy = { fg = colors.blue },
+
+                        CmpItemKindText = { fg = colors.orange },
+                        CmpItemKindMethod = { fg = colors.blue },
+                        CmpItemKindFunction = { fg = colors.blue },
+                        CmpItemKindConstructor = { fg = colors.yellow },
+                        CmpItemKindField = { fg = colors.blue },
+                        CmpItemKindClass = { fg = colors.yellow },
+                        CmpItemKindInterface = { fg = colors.yellow },
+                        CmpItemKindModule = { fg = colors.blue },
+                        CmpItemKindProperty = { fg = colors.blue },
+                        CmpItemKindValue = { fg = colors.orange },
+                        CmpItemKindEnum = { fg = colors.yellow },
+                        CmpItemKindKeyword = { fg = colors.purple },
+                        CmpItemKindSnippet = { fg = colors.green },
+                        CmpItemKindFile = { fg = colors.blue },
+                        CmpItemKindEnumMember = { fg = colors.cyan },
+                        CmpItemKindConstant = { fg = colors.orange },
+                        CmpItemKindStruct = { fg = colors.yellow },
+                        CmpItemKindTypeParameter = { fg = colors.yellow },
                     },
                     telescope = {
                         TelescopeTitle = { bg = colors.blue, gui = "bold" },

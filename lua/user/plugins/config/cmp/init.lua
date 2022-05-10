@@ -1,25 +1,25 @@
 local icons = {
-    Text = "",
+    Text = "",
     Method = "",
     Function = "",
-    Constructor = "",
+    Constructor = "⌘",
     Field = "ﰠ",
-    Variable = "",
+    Variable = "",
     Class = "ﴯ",
     Interface = "",
-    Module = "",
+    Module = "",
     Property = "ﰠ",
     Unit = "塞",
     Value = "",
     Enum = "",
-    Keyword = "",
-    Snippet = "",
+    Keyword = "廓",
+    Snippet = "",
     Color = "",
     File = "",
     Reference = "",
-    Folder = "",
+    Folder = "",
     EnumMember = "",
-    Constant = "",
+    Constant = "",
     Struct = "פּ",
     Event = "",
     Operator = "",
@@ -41,16 +41,19 @@ cmp.setup({
         end,
     },
     formatting = {
+        fields = { "kind", "abbr", "menu" },
         format = function(entry, vim_item)
-            vim_item.kind = string.format("%s %s", icons[vim_item.kind], vim_item.kind)
-            vim_item.menu = ({
-                omni = "[Omni]",
-                buffer = "[Buf]",
-                nvim_lsp = "[Lsp]",
-                nvim_lua = "[Lua]",
-                ultisnips = "[Snip]",
-                path = "[Path]",
-            })[entry.source.name]
+            vim_item.menu = vim_item.kind
+                .. " "
+                .. ({
+                    omni = "[Omni]",
+                    buffer = "[Buf]",
+                    nvim_lsp = "[Lsp]",
+                    nvim_lua = "[Lua]",
+                    ultisnips = "[Snip]",
+                    path = "[Path]",
+                })[entry.source.name]
+            vim_item.kind = icons[vim_item.kind]
             return vim_item
         end,
     },
