@@ -26,25 +26,25 @@ require("neo-tree").setup({
         {
             event = "file_renamed",
             handler = function(args)
-                vim.notify(("'%s' renamed to '%s'"):format(args.source, args.destination), vim.log.levels.INFO)
+                vim_notify(("'%s' renamed to '%s'"):format(args.source, args.destination), vim.log.levels.INFO)
             end,
         },
         {
             event = "file_moved",
             handler = function(args)
-                vim.notify(("'%s' moved to '%s'"):format(args.source, args.destination), vim.log.levels.INFO)
+                vim_notify(("'%s' moved to '%s'"):format(args.source, args.destination), vim.log.levels.INFO)
             end,
         },
         {
             event = "file_deleted",
             handler = function(args)
-                vim.notify(("'%s' deleted"):format(args), vim.log.levels.INFO)
+                vim_notify(("'%s' deleted"):format(args), vim.log.levels.WARN)
             end,
         },
         {
             event = "file_added",
             handler = function(args)
-                vim.notify(("'%s' created"):format(args), vim.log.levels.INFO)
+                vim_notify(("'%s' created"):format(args), vim.log.levels.INFO)
             end,
         },
     },
@@ -120,12 +120,12 @@ require("neo-tree").setup({
                 ["q"] = "close_window",
                 ["y"] = function(state)
                     local node = state.tree:get_node()
-                    vim.notify(("Name '%s' copied to clipboard"):format(node.name), vim.log.levels.INFO)
+                    vim_notify(("Name '%s' copied to clipboard"):format(node.name), vim.log.levels.INFO)
                     vim.cmd(("let @+ = '%s'"):format(node.name))
                 end,
                 ["Y"] = function(state)
                     local node = state.tree:get_node()
-                    vim.notify(("Path '%s' copied to clipboard"):format(node.path), vim.log.levels.INFO)
+                    vim_notify(("Path '%s' copied to clipboard"):format(node.path), vim.log.levels.INFO)
                     vim.cmd(("let @+ = '%s'"):format(node.path))
                 end,
             },

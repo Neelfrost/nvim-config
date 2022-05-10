@@ -29,9 +29,9 @@ if not present and vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 
     present, packer = pcall(require, "packer")
     if present then
-        vim.notify("packer.nvim installation successful.", vim.log.levels.INFO)
+        vim_notify("packer.nvim installation successful.", vim.log.levels.INFO)
     else
-        vim.notify("packer.nvim installation failed.", vim.log.levels.ERROR)
+        vim_notify("packer.nvim installation failed.", vim.log.levels.ERROR)
         return
     end
 end --}}}

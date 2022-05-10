@@ -53,17 +53,6 @@ end
 -- Reloading lua modules using Telescope
 -- taken and modified from:
 -- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
-function _G.verbose_print(...)
-    local objects = {}
-    for i = 1, select("#", ...) do
-        local v = select(i, ...)
-        table.insert(objects, vim.inspect(v))
-    end
-
-    print(table.concat(objects, "\n"))
-    return ...
-end
-
 if pcall(require, "plenary") then
     local reload = require("plenary.reload").reload_module
     --- Reload module using plenary
@@ -83,7 +72,7 @@ function _G.get_module_name(file_path)
 
     -- In the case that current file is not within "lua" folder
     if module_name == file_path then
-        vim.notify(("Not a valid module (%s)"):format(module_name), vim.log.levels.WARN)
+        vim_notify(("Not a valid module (%s)"):format(module_name), vim.log.levels.WARN)
         return
     end
 
@@ -158,3 +147,11 @@ end, {
     bang = true,
     force = true,
 })
+
+--- Redraw before notifying
+---@param msg string Content of the notification to show to the user.
+---@param level number|nil One of the values from vim.log.levels.
+function _G.vim_notify(msg, level)
+    vim.cmd("redraw")
+    vim.notify(msg, level)
+end

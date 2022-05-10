@@ -46,7 +46,7 @@ M.compose = function(actions)
         for _, v in ipairs(actions) do
             local action = valid_actions[v]
             if not action then
-                vim.notify(
+                vim_notify(
                     ('[cmp_mappings] Invalid action ("%s"). Please check your mappings.\nAllowed values: { %s }'):format(
                         v,
                         table.concat(vim.tbl_keys(valid_actions), ", ")

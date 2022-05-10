@@ -73,7 +73,7 @@ M.reload_modules = function() --{{{
                 -- Reload filename
                 plenary_reload(name)
                 -- Print filename
-                vim.notify(("%s Reloaded."):format(name), vim.log.levels.INFO)
+                vim_notify(("%s Reloaded."):format(name), vim.log.levels.INFO)
             end
 
             -- Map <Enter> to reload module
