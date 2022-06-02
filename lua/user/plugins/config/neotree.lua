@@ -19,8 +19,10 @@ require("neo-tree").setup({
         },
         {
             event = "file_opened",
-            handler = function()
-                require("neo-tree.sources.filesystem").reset_search()
+            handler = function(args)
+                if args.state then
+                    require("neo-tree.sources.filesystem").reset_search()
+                end
             end,
         },
         {
