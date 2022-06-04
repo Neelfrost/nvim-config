@@ -104,7 +104,7 @@ return packer.startup(function()
     use({
         "lukas-reineke/virt-column.nvim",
         cond = function()
-            return vim.wo.colorcolumn ~= nil
+            return vim.wo.colorcolumn ~= ""
         end,
         config = function()
             require("virt-column").setup()
