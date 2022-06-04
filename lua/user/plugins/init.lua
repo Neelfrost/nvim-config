@@ -49,7 +49,7 @@ packer.init({
     },
     auto_clean = true,
     compile_on_sync = true,
-    max_jobs = 5,
+    autoremove = true,
 }) --}}}
 
 -- Plugin list
@@ -63,9 +63,7 @@ return packer.startup(function()
     -- ------------------------------- Themes ------------------------------- --
     use({
         "themercorp/themer.lua",
-        config = function()
-            require("user.plugins.config.themer")
-        end,
+        config = 'require("user.plugins.config.themer")',
     })
 
     -- -------------------------------- Looks ------------------------------- --
@@ -74,9 +72,7 @@ return packer.startup(function()
         event = "BufRead",
         run = ":TSUpdate",
         requires = { "nvim-ts-rainbow", "nvim-ts-autotag" },
-        config = function()
-            require("user.plugins.config.others").treesitter()
-        end,
+        config = 'require("user.plugins.config.others").treesitter()',
     })
     use({
         "windwp/nvim-ts-autotag",
@@ -90,25 +86,19 @@ return packer.startup(function()
     })
     use({
         "kyazdani42/nvim-web-devicons",
-        config = function()
-            require("user.plugins.config.devicons")
-        end,
+        config = 'require("user.plugins.config.devicons")',
     })
     use({
         "lukas-reineke/indent-blankline.nvim",
         event = "BufRead",
-        config = function()
-            require("user.plugins.config.indentline")
-        end,
+        config = 'require("user.plugins.config.indentline")',
     })
     use({
         "lukas-reineke/virt-column.nvim",
         cond = function()
             return vim.wo.colorcolumn ~= ""
         end,
-        config = function()
-            require("virt-column").setup()
-        end,
+        config = 'require("virt-column").setup()',
     })
     use({
         "norcalli/nvim-colorizer.lua",
@@ -122,22 +112,16 @@ return packer.startup(function()
         "neovim/nvim-lspconfig",
         after = "nvim-cmp",
         requires = { "hrsh7th/cmp-nvim-lsp" },
-        config = function()
-            require("user.plugins.config.lspconfig")
-        end,
+        config = 'require("user.plugins.config.lspconfig")',
     })
     use({
         "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("user.plugins.config.null_ls")
-        end,
+        config = 'require("user.plugins.config.null_ls")',
     })
     use({
         "ray-x/lsp_signature.nvim",
         after = "nvim-lspconfig",
-        config = function()
-            require("user.plugins.config.others").lsp_signature()
-        end,
+        config = 'require("user.plugins.config.others").lsp_signature()',
     })
     use({
         "fvictorio/vim-extract-variable",
@@ -154,9 +138,7 @@ return packer.startup(function()
                 pattern = "*",
             })
         end,
-        config = function()
-            require("user.plugins.config.neoformat")
-        end,
+        config = 'require("user.plugins.config.neoformat")',
         disable = true,
     })
 
@@ -171,9 +153,7 @@ return packer.startup(function()
             { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
             { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
         },
-        config = function()
-            require("user.plugins.config.cmp")
-        end,
+        config = 'require("user.plugins.config.cmp")',
     })
 
     -- ------------------------------ Features ------------------------------ --
@@ -192,39 +172,29 @@ return packer.startup(function()
         "terrortylor/nvim-comment",
         cmd = "CommentToggle",
         keys = { { "n", "<C-/>" }, { "v", "<C-/>" }, { "i", "<C-/>" }, { "n", "gc" }, { "v", "gc" } },
-        config = function()
-            require("user.plugins.config.others").nvim_comment()
-        end,
+        config = 'require("user.plugins.config.others").nvim_comment()',
     })
     use({
         "jiangmiao/auto-pairs",
-        config = function()
-            require("user.plugins.config.others").autopairs()
-        end,
+        config = 'require("user.plugins.config.others").autopairs()',
     })
     use({
         "goolord/alpha-nvim",
         after = "themer.lua",
-        config = function()
-            require("user.plugins.config.alpha")
-        end,
+        config = 'require("user.plugins.config.alpha")',
     })
     use({
         "iamcco/markdown-preview.nvim",
         cmd = "MarkdownPreview",
         ft = "markdown",
         run = "cd app && yarn install",
-        config = function()
-            require("user.plugins.config.others").markdown_preview()
-        end,
+        config = 'require("user.plugins.config.others").markdown_preview()',
     })
     use({
         "danymat/neogen",
         cmd = "Neogen",
         requires = { "nvim-treesitter/nvim-treesitter" },
-        config = function()
-            require("user.plugins.config.others").neogen()
-        end,
+        config = 'require("user.plugins.config.others").neogen()',
     })
     use({
         "nvim-neo-tree/neo-tree.nvim",
@@ -233,40 +203,30 @@ return packer.startup(function()
             "nvim-lua/plenary.nvim",
             "MunifTanjim/nui.nvim",
         },
-        config = function()
-            require("user.plugins.config.neotree")
-        end,
+        config = 'require("user.plugins.config.neotree")',
     })
 
     -- -------------------------------- LaTeX ------------------------------- --
     use({
         "lervag/vimtex",
         ft = { "tex", "bib" },
-        config = function()
-            require("user.plugins.config.vimtex")
-        end,
+        config = 'require("user.plugins.config.vimtex")',
     })
     use({
         "ludovicchabant/vim-gutentags",
         ft = { "tex" },
-        config = function()
-            require("user.plugins.config.others").gutentags()
-        end,
+        config = 'require("user.plugins.config.others").gutentags()',
     })
     use({
         "SirVer/ultisnips",
-        config = function()
-            require("user.plugins.config.others").ultisnips()
-        end,
+        config = 'require("user.plugins.config.others").ultisnips()',
     })
 
     -- ------------------------------ Telescope ----------------------------- --
     use({
         "nvim-telescope/telescope.nvim",
         requires = { "nvim-lua/plenary.nvim" },
-        config = function()
-            require("user.plugins.config.telescope")
-        end,
+        config = 'require("user.plugins.config.telescope")',
     })
     use({
         "nvim-telescope/telescope-frecency.nvim",
@@ -287,16 +247,12 @@ return packer.startup(function()
     use({
         "noib3/nvim-cokeline",
         after = "themer.lua",
-        config = function()
-            require("user.plugins.config.cokeline")
-        end,
+        config = 'require("user.plugins.config.cokeline")',
     })
     use({
         "nvim-lualine/lualine.nvim",
         after = "themer.lua",
-        config = function()
-            require("user.plugins.config.lualine")
-        end,
+        config = 'require("user.plugins.config.lualine")',
     })
 
     -- --------------------------------- QOL -------------------------------- --
@@ -310,9 +266,7 @@ return packer.startup(function()
         "https://gitlab.com/yorickpeterse/nvim-pqf",
         as = "nvim-pqf",
         event = "BufRead",
-        config = function()
-            require("pqf").setup()
-        end,
+        config = 'require("pqf").setup()',
     })
     use({
         "christoomey/vim-titlecase",
@@ -325,9 +279,7 @@ return packer.startup(function()
     use({
         "phaazon/hop.nvim",
         event = "BufRead",
-        config = function()
-            require("user.plugins.config.others").hop()
-        end,
+        config = 'require("user.plugins.config.others").hop()',
     })
     use({
         "antoinemadec/FixCursorHold.nvim",
@@ -339,21 +291,15 @@ return packer.startup(function()
     use({
         "Konfekt/FastFold",
         event = "BufRead",
-        config = function()
-            require("user.plugins.config.others").fastfold()
-        end,
+        config = 'require("user.plugins.config.others").fastfold()',
     })
     use({
         "Shatur/neovim-session-manager",
-        config = function()
-            require("user.plugins.config.others").session()
-        end,
+        config = 'require("user.plugins.config.others").session()',
     })
     use({
         "anuvyklack/pretty-fold.nvim",
-        config = function()
-            require("user.plugins.config.pretty_fold")
-        end,
+        config = 'require("user.plugins.config.pretty_fold")',
     })
 
     -- Automatic initial plugin installation
