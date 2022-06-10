@@ -250,9 +250,10 @@ return packer.startup(function()
         config = 'require("user.plugins.config.cokeline")',
     })
     use({
-        "nvim-lualine/lualine.nvim",
+        "rebelot/heirline.nvim",
         after = "themer.lua",
-        config = 'require("user.plugins.config.lualine")',
+        requires = { { "lewis6991/gitsigns.nvim", config = "require('user.plugins.config.gitsigns')" } },
+        config = 'require("user.plugins.config.heirline")',
     })
 
     -- --------------------------------- QOL -------------------------------- --
