@@ -26,7 +26,7 @@ function _G.perform_cleanup()
             [[keeppatterns %s/\r\+//e]]
         )
     end
-    if require("user.plugins.config.lualine.components").mixed_indent() ~= "" then
+    if require("user.plugins.config.heirline.components").mixed_indents.condition() ~= "" then
         vim.cmd([[keeppatterns %s/\v\t/    /e]])
     end
 
@@ -84,7 +84,7 @@ end
 
 --- Save and reload a module
 function _G.save_reload_module()
-    local file_path = vim.fn.expand("%:p")
+    local file_path = vim.fn.fnameescape(vim.fn.expand("%:p"))
 
     -- Handle lowercase drive names
     file_path = file_path:gsub("^%l", string.upper)
@@ -94,30 +94,26 @@ function _G.save_reload_module()
         file_path = file_path:gsub("\\\\", "\\")
     end
 
-    -- Reload (source) vim files
+    -- Save changes if any
+    vim.cmd("update!")
+
     if file_path:find("%.vim$") then
-        file_path = vim.fn.fnameescape(file_path)
-        -- Save
-        vim.cmd("update!")
         -- Source
         vim.cmd(("source %s"):format(file_path))
         -- Print
-        vim.notify(("%s Sourced."):format(file_path), vim.log.levels.INFO)
-        return
-    end
-
-    -- Reload lua files
-    -- Get module
-    local module = get_module_name(file_path)
-
-    -- Only reload if current file is a valid module
-    if module then
-        -- Save
-        vim.cmd("update!")
-        -- Reload
-        plenary_reload(module)
-        -- Print
-        vim.notify(("%s Reloaded."):format(module), vim.log.levels.INFO)
+        vim_notify(("%s Reloaded."):format(vim.fn.expand("%")), vim.log.levels.INFO)
+    else
+        -- Get module
+        local module = get_module_name(file_path)
+        -- Reload if current file is a valid module or is a ".vim" file
+        if module then
+            -- Reload
+            plenary_reload(module)
+            -- Source
+            vim.cmd(("source %s"):format(file_path))
+            -- Print
+            vim_notify(("%s Reloaded."):format(module), vim.log.levels.INFO)
+        end
     end
 end
 
@@ -125,7 +121,7 @@ end
 function _G.set_title()
     local file = vim.fn.expand("%:p:t")
     local cwd = vim.fn.split(vim.fn.expand("%:p:h"):gsub("/", "\\"), "\\")
-    local is_plugin = require("user.plugins.config.lualine.components").buffer_is_plugin()
+    local is_plugin = require("user.plugins.config.heirline.utils").buffer_is_plugin()
 
     if file ~= "" and not is_plugin then
         vim.opt.titlestring = cwd[#cwd] .. "/" .. file
