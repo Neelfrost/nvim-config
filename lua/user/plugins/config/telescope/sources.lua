@@ -1,55 +1,51 @@
+local utils = require("user.plugins.config.telescope.utils")
+local file_sorter = utils.file_sorter
+local dropdown = utils.dropdown
+
 -- Custom telescope pickers
 local M = {}
 
-local file_sorter = require("user.plugins.config.telescope.utils").file_sorter
-local dropdown = require("user.plugins.config.telescope.utils").dropdown
-
 -- List files in specified directories with pre-filtering
-M.dir_nvim = function() --{{{
+M.dir_nvim = function()
     local opts = {
         cwd = CONFIG_PATH,
-        file_ignore_patterns = { ".git", "tags" },
         prompt_title = "Neovim",
         no_ignore = true,
     }
     require("telescope.builtin").find_files(opts)
-end --}}}
+end
 
-M.dir_latex = function() --{{{
+M.dir_latex = function()
     local opts = {
         cwd = HOME_PATH .. "\\Documents\\LaTeX",
-        file_ignore_patterns = { ".git", "tags", "Sem5", "Sem6", "Internship" },
+        file_ignore_patterns = vim.list_extend({ "Sem5", "Sem6", "Internship" }, utils.ignore_patterns),
         prompt_title = "LaTeX",
-        sorter = file_sorter({ "%.tex$", "%.sty$", "%.cls$", "%.bib$" }),
         no_ignore = true,
     }
     require("telescope.builtin").find_files(opts)
-end --}}}
+end
 
-M.dir_python = function() --{{{
+M.dir_python = function()
     local opts = {
         cwd = "D:\\My Folder\\Dev\\Python",
-        file_ignore_patterns = { ".git", "tags", "__pycache__", "venv", "__init__" },
         prompt_title = "Python",
-        sorter = file_sorter({ "%.py$", "%.md$", "%.txt$" }),
     }
     require("telescope.builtin").find_files(opts)
-end --}}}
+end
 
-M.dir_plugins = function() --{{{
+M.dir_plugins = function()
     local opts = {
         cwd = PACKER_PATH,
-        file_ignore_patterns = { ".git" },
+        file_ignore_patterns = vim.list_extend({ "test\\" }, utils.ignore_patterns),
         prompt_title = "Plugin Files",
-        sorter = file_sorter({ "%.vim$", "%.lua$" }),
     }
     require("telescope.builtin").find_files(opts)
-end --}}}
+end
 
 -- Reload lua modules using Telescope
 -- taken and modified from:
 -- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
-M.reload_modules = function() --{{{
+M.reload_modules = function()
     local actions_state = require("telescope.actions.state")
     local cwd = CONFIG_PATH .. "\\lua\\"
 
@@ -90,21 +86,21 @@ M.reload_modules = function() --{{{
     }
 
     require("telescope.builtin").find_files(opts)
-end --}}}
+end
 
 -- Use dropdown theme with Frecency
-M.frecency = function() --{{{
+M.frecency = function()
     local frecency_opts = dropdown({ prompt_title = "Recent Files", path_display = { "absolute" } })
     require("telescope").extensions.frecency.frecency(frecency_opts)
-end --}}}
+end
 
 -- Fall back to find_files if not a git directory
-M.git_or_find = function() --{{{
+M.git_or_find = function()
     local opts = dropdown({ prompt_title = "Find Files" })
     local ok = pcall(require("telescope.builtin").git_files, opts)
     if not ok then
         require("telescope.builtin").find_files(opts)
     end
-end --}}}
+end
 
 return M

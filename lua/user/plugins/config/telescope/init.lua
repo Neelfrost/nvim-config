@@ -45,7 +45,7 @@ telescope.setup({
         layout_strategy = "horizontal",
         sorting_strategy = "ascending",
         set_env = { COLORTERM = "truecolor" },
-        file_ignore_patterns = { ".git", "tags", "__pycache__/*" },
+        file_ignore_patterns = utils.ignore_patterns,
         file_sorter = require("telescope.sorters").get_fuzzy_file,
         file_previewer = require("telescope.previewers").vim_buffer_cat.new,
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
