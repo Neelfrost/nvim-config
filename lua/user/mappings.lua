@@ -29,7 +29,14 @@ end, s_opts)
 
 -- Open url at cursor in browser
 map("n", "<Leader>ou", function()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    local col, _ = vim.api.nvim_get_current_line():find("https?")
+    if not col then
+        return
+    end
+    vim.api.nvim_win_set_cursor(0, { pos[1], col - 1 })
     open_url(vim.fn.expand("<cfile>"))
+    vim.api.nvim_win_set_cursor(0, pos)
 end, s_opts)
 
 -- Open plugin repository at cursor in browser
