@@ -1,39 +1,26 @@
-" Set current file's dir to cwd
-" Set window title
-augroup SET_CWD
-    autocmd!
-    autocmd BufEnter *.* silent! lcd %:p:h
-    autocmd BufEnter * lua set_title()
-augroup END
+" Save current view settings on a per-window, per-buffer basis.
+function! AutoSaveWinView()
+    if !exists("w:SavedBufView")
+        let w:SavedBufView = {}
+    endif
+    let w:SavedBufView[bufnr("%")] = winsaveview()
+endfunction
 
-" Remove trailing whitespace and newlines
-augroup PERFORM_CLEANUP
-    autocmd!
-    autocmd BufWritePre * silent! lua perform_cleanup()
-augroup END
+" Restore current view settings.
+function! AutoRestoreWinView()
+    let buf = bufnr("%")
+    if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
+        let v = winsaveview()
+        let atStartOfFile = v.lnum == 1 && v.col == 0
+        if atStartOfFile && !&diff
+            call winrestview(w:SavedBufView[buf])
+        endif
+        unlet w:SavedBufView[buf]
+    endif
+endfunction
 
-" Highlight on yank
-augroup HL_ON_YANK
+augroup RESTORE_WIN_VIEW
     autocmd!
-    autocmd TextYankPost * lua vim.highlight.on_yank({ higroup = 'Visual', timeout = 500, on_visual = true, on_macro = true })
-augroup END
-
-" Automatically reload the file if it is changed outside of nvim
-augroup AUTO_READ
-    autocmd!
-    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
-    autocmd FileChangedShellPost * echohl WarningMsg | redraw | echo 'File changed on disk. Buffer reloaded!' | echohl None
-augroup END
-
-" Update lualine on lsp progress
-augroup UPDATE_STATUS_LINE
-    autocmd!
-    autocmd User LspProgressUpdate redrawstatus
-augroup END
-
-" Force disable inserting comment leader after hitting o or O
-" Force disable inserting comment leader after hitting <Enter> in insert mode
-augroup FORCE_FORMAT_OPTIONS
-    autocmd!
-    autocmd BufEnter * setlocal formatoptions-=r formatoptions-=o
+    autocmd BufLeave * call AutoSaveWinView()
+    autocmd BufEnter * call AutoRestoreWinView()
 augroup END

@@ -28,6 +28,7 @@ ICON_HINT = "H"
 -- Configuration files
 vim.cmd("source ~/AppData/Local/nvim/viml/utils.vim")
 vim.cmd("source ~/AppData/Local/nvim/viml/autocommands.vim")
+require("user.autocmds")
 require("user.options")
 require("user.utils")
 require("user.mappings")
