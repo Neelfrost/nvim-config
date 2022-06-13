@@ -95,16 +95,16 @@ return packer.startup(function()
     })
     use({
         "lukas-reineke/virt-column.nvim",
-        cond = function()
-            return vim.wo.colorcolumn ~= ""
-        end,
+        event = "BufRead",
         config = 'require("virt-column").setup()',
     })
     use({
-        "norcalli/nvim-colorizer.lua",
-        cmd = {
-            "ColorizerToggle",
-        },
+        "RRethy/vim-hexokinase",
+        run = "make",
+        cmd = { "HexokinaseToggle" },
+        config = function()
+            vim.g.Hexokinase_optInPatterns = "full_hex,rgb,rgba,hsl,hsla"
+        end,
     })
 
     -- --------------------------------- LSP -------------------------------- --
@@ -124,8 +124,10 @@ return packer.startup(function()
         config = 'require("user.plugins.config.others").lsp_signature()',
     })
     use({
-        "fvictorio/vim-extract-variable",
-        keys = "<Leader>ev",
+        "ThePrimeagen/refactoring.nvim",
+        after = "nvim-treesitter",
+        requires = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" },
+        config = 'require("user.plugins.config.others").refactoring()',
     })
     use({
         "sbdchd/neoformat",
@@ -199,10 +201,7 @@ return packer.startup(function()
     use({
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v2.x",
-        requires = {
-            "nvim-lua/plenary.nvim",
-            "MunifTanjim/nui.nvim",
-        },
+        requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
         config = 'require("user.plugins.config.neotree")',
     })
 

@@ -119,4 +119,25 @@ M.neogen = function()
     require("neogen").setup({ enabled = true })
 end
 
+M.refactoring = function()
+    vim.api.nvim_create_user_command("ExtractFunction", function()
+        require("refactoring").refactor("Extract Function")
+    end, {
+        force = true,
+        range = true,
+    })
+    vim.api.nvim_create_user_command("ExtractVariable", function()
+        require("refactoring").refactor("Extract Variable")
+    end, {
+        force = true,
+        range = true,
+    })
+    vim.api.nvim_create_user_command("ExtractFunctionToFile", function()
+        require("refactoring").refactor("Extract Function To File")
+    end, {
+        force = true,
+        range = true,
+    })
+end
+
 return M
