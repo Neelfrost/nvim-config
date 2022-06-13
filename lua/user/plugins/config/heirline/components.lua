@@ -248,6 +248,44 @@ M.file_block = utils.surround(
     M.file_block
 )
 
+M.search_results = {
+    condition = function(self)
+        if vim.api.nvim_buf_line_count(0) > 50000 then
+            return
+        end
+
+        local query = vim.fn.getreg("/")
+        if query == "" or query:find("@") then
+            return
+        end
+
+        local active = false
+        local search_count = vim.fn.searchcount({ recompute = 1, maxcount = -1 })
+
+        if vim.v.hlsearch and vim.v.hlsearch == 1 and search_count.total > 0 then
+            active = true
+        end
+
+        if not active then
+            return
+        end
+
+        self.count = search_count
+
+        return true
+    end,
+
+    M.delim_left("slant_left_2", theme.ci),
+    {
+        provider = function(self)
+            return table.concat({ "", " ", self.count.current, "/", self.count.total })
+        end,
+    },
+    M.delim_right("slant_right", theme.ci),
+
+    hl = theme.c,
+}
+
 M.spellcheck = {
     condition = function()
         return vim.wo.spell
@@ -431,4 +469,3 @@ M.terminal_name = utils.surround({ helper.icons.powerline.slant_left, "" }, func
 end, M.terminal_name)
 
 return M
-

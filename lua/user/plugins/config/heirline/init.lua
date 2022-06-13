@@ -6,6 +6,7 @@ local normal_statusline = {
     c.vim_mode,
     c.git_info,
     c.file_block,
+    c.search_results,
     c.spellcheck,
     c.file_format,
     c.file_encoding,
