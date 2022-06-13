@@ -75,8 +75,8 @@ vim.opt.listchars:append({ tab = " ", lead = "·", trail = "·", eol = "﬋" 
 -- Use en_us to spellcheck
 vim.opt.spelllang = "en_us"
 
--- Statusline
-vim.opt.laststatus = 2
+-- Global statusline
+vim.opt.laststatus = 3
 
 -- Fold column
 vim.opt.foldcolumn = "auto:9"
@@ -95,7 +95,7 @@ vim.opt.pastetoggle = "<F12>"
 vim.opt.scrolloff = 8
 
 -- No completion messages in secondary mode bar
-vim.opt.shortmess:append("c")
+vim.opt.shortmess = "ilmxoOsTIcF"
 
 -- Disable secondary mode bar
 vim.opt.showmode = false
