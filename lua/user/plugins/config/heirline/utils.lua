@@ -1,4 +1,9 @@
-local colors = require("themer.modules.core.api").get_cp(SCHEME)
+local present, themer_api = pcall(require, "themer.modules.core.api")
+if not present then
+    return
+end
+
+local colors = themer_api.get_cp(SCHEME)
 
 local M = {}
 
@@ -172,4 +177,3 @@ M.lsp_status = function()
 end
 
 return M
-

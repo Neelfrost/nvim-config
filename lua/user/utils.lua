@@ -121,9 +121,13 @@ end
 function _G.set_title()
     local file = vim.fn.expand("%:p:t")
     local cwd = vim.fn.split(vim.fn.expand("%:p:h"):gsub("/", "\\"), "\\")
-    local is_plugin = require("user.plugins.config.heirline.utils").buffer_is_plugin()
 
-    if file ~= "" and not is_plugin then
+    local present, utils = pcall(require, "user.plugins.config.heirline.utils")
+    if not present then
+        return
+    end
+
+    if file ~= "" and not utils.buffer_is_plugin() then
         vim.opt.titlestring = cwd[#cwd] .. "/" .. file
     else
         vim.opt.titlestring = "Neovim"
