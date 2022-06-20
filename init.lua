@@ -25,6 +25,9 @@ ICON_WARN = "W"
 ICON_INFO = "I"
 ICON_HINT = "H"
 
+-- Improve startuptime using impatient
+require("user.plugins.config.impatient")
+
 -- Configuration files
 vim.cmd("source ~/AppData/Local/nvim/viml/utils.vim")
 vim.cmd("source ~/AppData/Local/nvim/viml/autocommands.vim")

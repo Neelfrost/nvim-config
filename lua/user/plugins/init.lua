@@ -38,6 +38,7 @@ end --}}}
 
 -- Initialize packer.nvim {{{
 packer.init({
+    compile_path = CONFIG_PATH .. "/plugin/packer_compiled.lua", -- for impatient caching
     display = {
         open_fn = function()
             return require("packer.util").float({ border = "single" })
@@ -58,6 +59,11 @@ return packer.startup(function()
     -- ------------------------------- Packer ------------------------------- --
     use({
         "wbthomason/packer.nvim",
+    })
+
+    -- ------------------------------ Impatient ----------------------------- --
+    use({
+        "lewis6991/impatient.nvim",
     })
 
     -- ------------------------------- Themes ------------------------------- --
