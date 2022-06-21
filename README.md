@@ -1,25 +1,30 @@
 <h1 align="center">nvim-config</h1>
 <p align="center">
-    <b>Just another opinionated, visually appealing Neovim IDE.</b>
-    <br />
-    <b>Currently supports LaTeX, Python, Lua, and C#.</b>
-    <br />
-    <br />
-    <a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"
-        ><img
-            alt="license"
-            src="https://img.shields.io/github/license/Neelfrost/dotfiles?labelColor=151515&color=A270BA&style=for-the-badge"
-    /></a>
-    <a href="https://github.com/Neelfrost/dotfiles/stargazers"
-        ><img
-            alt="stars"
-            src="https://img.shields.io/github/stars/Neelfrost/dotfiles?colorA=151515&colorB=6A9FB5&style=for-the-badge&logo=starship"
-    /></a>
-    <a href="https://github.com/Neelfrost/dotfiles/network/members"
-        ><img
-            alt="forks"
-            src="https://img.shields.io/github/forks/Neelfrost/dotfiles?colorA=151515&colorB=788C4C&style=for-the-badge&logo=github"
-    /></a>
+  <b>Just another opinionated, visually appealing Neovim IDE.</b>
+  <br />
+  <b>Pre-configured for LaTeX, Python, Lua, C#, HTML, CSS, and Javascript.</b>
+  <br />
+  <br />
+  <a href="https://github.com/neovim/neovim">
+    <img
+      src="https://img.shields.io/badge/requires-neovim%200.7%2B-green?color=76946A&labelColor=16161D&style=for-the-badge&logo=neovim"
+    />
+  </a>
+  <a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"
+    ><img
+      alt="license"
+      src="https://img.shields.io/github/license/Neelfrost/dotfiles?labelColor=151515&color=A270BA&style=for-the-badge"
+  /></a>
+  <a href="https://github.com/Neelfrost/dotfiles/stargazers"
+    ><img
+      alt="stars"
+      src="https://img.shields.io/github/stars/Neelfrost/dotfiles?colorA=151515&colorB=6A9FB5&style=for-the-badge&logo=starship"
+  /></a>
+  <a href="https://github.com/Neelfrost/dotfiles/network/members"
+    ><img
+      alt="forks"
+      src="https://img.shields.io/github/forks/Neelfrost/dotfiles?colorA=151515&colorB=788C4C&style=for-the-badge&logo=github"
+  /></a>
 </p>
 
 ## Table of Contents <!-- omit in toc -->
@@ -58,40 +63,38 @@ The following instructions are for Windows (powershell). **An admin prompt is re
 
 2. Install main dependencies.
 
-   ```powershell
-   choco install git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration" -y;
-   choco install neovim python which SumatraPDF.install miktex.install -y;
+   ```
+   choco install -y git.install --params "/GitAndUnixToolsOnPath /NoGitLfs /SChannel /NoShellIntegration";
+   choco install -y neovim python SumatraPDF.install miktex.install;
    # Needed for various plugins
-   choco install universal-ctags strawberryperl make SQLite ripgrep fd -y; RefreshEnv.cmd; exit
+   choco install -y universal-ctags strawberryperl make SQLite ripgrep fd golang; refreshenv; exit
    ```
 
 3. Install python dependencies.
 
-   ```powershell
+   ```
    pip install pynvim neovim-remote
-   # Optionally for python linting and formatting:
-   pip install flake8 black
    ```
 
 4. Clone the repository and open nvim-qt or nvim.
 
-   If fresh installation:
+   For fresh installation:
 
-   ```powershell
-   git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
+   ```
+   git clone https://github.com/Neelfrost/nvim-config.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
    ```
 
-   If nvim directory exists:
+   For existing config:
 
-   ```powershell
-   rm "$HOME\Appdata\Local\nvim" -Recurse; git clone https://github.com/Neelfrost/dotfiles.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
+   ```
+   ren "$HOME\Appdata\Local\nvim" 'nvim-old'; git clone https://github.com/Neelfrost/nvim-config.git "$HOME\Appdata\Local\nvim"; nvim-qt.exe
    ```
 
 ### LaTeX
 
 #### Formatting ([latexindent](https://github.com/cmhughes/latexindent.pl))
 
-latexindent is now included with miktex, so downloading it is no longer necessary. Moreover, null-ls is configured to run latexindent on save for tex files. Global formatting rules can be changed by:
+latexindent is now included with miktex, so downloading it separately is no longer necessary. Moreover, null-ls is pre-configured to run latexindent on save for tex files. Global formatting rules can be changed by:
 
 1. Creating `$HOME/indentconfig.yaml`:
 
@@ -109,7 +112,7 @@ For further reading refer: [docs](https://latexindentpl.readthedocs.io/en/latest
 To launch SumatraPDF using VimTeX (<kbd>\lv</kbd>), ensure `SumatraPDF.exe` is added to environment path.
 
 ```powershell
-Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "$HOME\AppData\Local\SumatraPDF" + ";"); RefreshEnv.cmd; exit
+Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "$HOME\AppData\Local\SumatraPDF" + ";"); refreshenv; exit
 ```
 
 #### Inverse Search
@@ -125,32 +128,38 @@ Use `:checkhealth` to check for errors if any.
 ### Language Servers
 
 #### Python ([pyright](https://github.com/microsoft/pyright))
-tt
+
 1. Install npm.
 
-   ```powershell
-   choco install nodejs.install -y; RefreshEnv.cmd; exit
+   ```
+   choco install -y nodejs.install; refreshenv; exit
    ```
 
 2. Install pyright.
 
-   ```powershell
+   ```
    npm install -g pyright
    ```
 
-3. Use `:checkhealth` to check for errors if any.
+3. Install black, isort, and flake for formatting and linting.
+
+   ```
+   pip install flake8 black isort
+   ```
+
+4. Use `:checkhealth` to check for errors if any.
 
 #### Lua ([sumneko_lua](https://github.com/sumneko/lua-language-server))
 
 1. Install dependencies.
 
-   ```powershell
-   choco install 7zip.install -y; RefreshEnv.cmd; exit
+   ```
+   choco install -y 7zip.install; refreshenv; exit
    ```
 
-2. cd into install directory. _Example:_
+2. cd into install directory. _For example:_
 
-   ```powershell
+   ```
    cd C:\tools
    ```
 
@@ -160,23 +169,47 @@ tt
    curl.exe -L $(curl.exe -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | findstr.exe "win32-x64" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o lua.vsix; 7z.exe x .\lua.vsix; rm '.\`[Content_Types`].xml'; rm .\extension.vsixmanifest; rm .\lua.vsix; mv .\extension\server\ .; rm .\extension\ -Recurse; Rename-Item .\server\ lua-language-server;
    ```
 
-4. Use `:checkhealth` to check for errors if any.
+4. Install stylua for formatting.
+
+   ```powershell
+   curl.exe -L $(curl.exe -s https://api.github.com/repos/JohnnyMorganz/StyLua/releases/latest | findstr.exe "win64.zip" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o stylua-win64.zip; 7z.exe x -oC:\tools\stylua .\stylua-win64.zip; rm .\stylua-win64.zip;
+   # Add stylua to environment path:
+   Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "C:\tools\stylua" + ";"); refreshenv; exit
+   ```
+
+5. Use `:checkhealth` to check for errors if any.
 
 #### C# ([omnisharp](https://github.com/omnisharp/omnisharp-roslyn))
 
 1. Install dependencies.
 
-   ```powershell
-   choco install omnisharp; RefreshEnv.cmd; exit
+   ```
+   choco install -y omnisharp; refreshenv; exit
    ```
 
 2. Use `:checkhealth` to check for errors if any.
+
+#### HTML, CSS, Javascript ([vscode-langservers-extracted](https://github.com/hrsh7th/vscode-langservers-extracted))
+
+1. Install dependencies.
+
+   ```
+   npm i -g vscode-langservers-extracted
+   ```
+
+2. Install prettierd for formatting.
+
+   ```
+   npm i -g @fsouza/prettierd
+   ```
+
+3. Use `:checkhealth` to check for errors if any.
 
 ## Update 🚀
 
 1. Pull changes.
 
-   ```powershell
+   ```
    cd "$HOME\Appdata\Local\nvim"; git pull
    ```
 
@@ -255,7 +288,7 @@ nvim
 └── viml                 # .vim config files
 ```
 
-### Plugins Used
+### Plugins
 
 - Plugin manager: [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
@@ -266,13 +299,14 @@ nvim
   - Python language server: [pyright](https://github.com/microsoft/pyright)
   - C# language server: [omnisharp](https://github.com/omnisharp/omnisharp-roslyn)
   - Lua language server: [sumneko_lua](https://github.com/sumneko/lua-language-server)
+  - HTML, CSS, Javascript language server: ([vscode-langservers-extracted](https://github.com/hrsh7th/vscode-langservers-extracted))
   - Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
-  - Extract variable: [vim-extract-variable](https://github.com/fvictorio/vim-extract-variable)
+  - Refactor functionality: [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim)
   - Backup code formatting: [neoformat](https://github.com/sbdchd/neoformat)
 
-#### File navigation, explorer
+#### File navigation
 
-- File explorer: [nvim-tree.lua](https://github.com/kyazdani42/nvim-tree.lua)
+- File explorer: [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
 - Fuzzy finder: [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
   - Telescope frecency picker: [telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim)
   - Telescope fzf sorter: [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim)
@@ -302,13 +336,13 @@ nvim
 - Icons support: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
 - Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 - Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
-- Colorizer: [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua)
+- Color preview: [vim-hexokinase](https://github.com/RRethy/vim-hexokinase)
 - Prettier folds: [pretty-fold.nvim](https://github.com/anuvyklack/pretty-fold.nvim)
 
 #### Buffer, Status
 
 - Bufferline: [cokeline.nvim](https://github.com/noib3/cokeline.nvim)
-- Statusline: [lualine.nvim](https://github.com/shadmansaleh/lualine.nvim)
+- Statusline: [heirline.nvim](https://github.com/rebelot/heirline.nvim)
 
 #### QOL
 
@@ -327,6 +361,7 @@ nvim
 - Markdown preview: [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
 - Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
 - Session manager: [neovim-session-manager](https://github.com/Shatur/neovim-session-manager)
+- Annotation generator: [neogen](https://github.com/danymat/neogen)
 
 ### Mappings
 
