@@ -9,7 +9,7 @@ local null_ls_sources = require("user.plugins.config.null_ls.sources")
 
 local sources = {
     -- Formatters
-    null_ls_sources.prettier,
+    null_ls.builtins.formatting.prettierd,
     null_ls.builtins.formatting.stylua.with({
         extra_args = { "--config-path", vim.fn.expand("~/.stylua.toml") },
     }),

@@ -34,37 +34,6 @@ M.black = helper.make_builtin({
     factory = helper.formatter_factory,
 })
 
-M.prettier = helper.make_builtin({
-    name = "prettier",
-    method = { FORMATTING, RANGE_FORMATTING },
-    filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "vue",
-        "css",
-        "scss",
-        "less",
-        "html",
-        "json",
-        "yaml",
-        "markdown",
-        "graphql",
-    },
-    generator_opts = {
-        command = "prettier",
-        args = helper.range_formatting_args_factory(
-            { "--stdin-filepath", "$FILENAME" },
-            "--range-start",
-            "--range-end",
-            { row_offset = -1, col_offset = -1 }
-        ),
-        to_stdin = true,
-    },
-    factory = helper.formatter_factory,
-})
-
 M.chktex = helper.make_builtin({
     name = "chktex",
     method = DIAGNOSTICS,
