@@ -71,8 +71,10 @@ M.git_info = {
 
     init = function(self)
         self.status_dict = vim.b.gitsigns_status_dict
-        self.has_changes = (self.status_dict.added or self.status_dict.removed or self.status_dict.changed)
-            and (self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0)
+        self.added = self.status_dict.added and self.status_dict.added ~= 0
+        self.removed = self.status_dict.removed and self.status_dict.removed ~= 0
+        self.changed = self.status_dict.changed and self.status_dict.changed ~= 0
+        self.has_changes = self.added or self.removed or self.changed
     end,
 
     M.delim_left("slant_left_2", theme.bi),
@@ -103,10 +105,7 @@ M.git_info = {
         },
         {
             provider = function(self)
-                return (
-                        self.status_dict.added ~= 0
-                        and (self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0)
-                    ) and " "
+                return (self.added and (self.removed or self.changed)) and " " or ""
             end,
         },
         {
@@ -118,7 +117,7 @@ M.git_info = {
         },
         {
             provider = function(self)
-                return (self.status_dict.removed ~= 0 and self.status_dict.changed ~= 0) and " "
+                return (self.removed and self.changed) and " " or ""
             end,
         },
         {
