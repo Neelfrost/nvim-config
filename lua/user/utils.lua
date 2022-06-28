@@ -1,42 +1,23 @@
--- https://www.reddit.com/r/neovim/comments/rw4imi/what_is_the_most_interesting_part_of_your_lua/
-function _G.each(z)
-    return (function(x)
-        return x(x)
-    end)(function(x)
-        return function(...)
-            z(...)
-            return x(x)
-        end
-    end)
-end
-
 --- Trim newline at eof, trailing whitespace.
 function _G.perform_cleanup()
-    local pos = vim.api.nvim_win_get_cursor(0)
+    local patterns = {
+        -- remove leading empty lines
+        [[%s/\%^\n//e]],
+        -- remove trailing empty lines
+        [[%s/$\n\+\%$//e]],
+        -- remove trailing spaces
+        [[%s/\s\+$//e]],
+        -- remove trailing "\r"
+        [[%s/\r\+//e]],
+    }
 
-    do
-        each(vim.cmd)(
-            -- remove leading empty lines
-            [[keeppatterns %s/\%^\n//e]]
-        )( -- remove trailing empty lines
-            [[keeppatterns %s/$\n\+\%$//e]]
-        )( -- remove trailing spaces
-            [[keeppatterns %s/\s\+$//e]]
-        )( -- remove trailing "\r"
-            [[keeppatterns %s/\r\+//e]]
-        )
-    end
-    if require("user.plugins.config.heirline.components").mixed_indents.condition() ~= "" then
-        vim.cmd([[keeppatterns %s/\v\t/    /e]])
-    end
+    local view = vim.fn.winsaveview()
 
-    local end_row = vim.api.nvim_buf_line_count(0)
-
-    if pos[1] > end_row then
-        pos[1] = end_row
+    for _, v in pairs(patterns) do
+        vim.cmd(string.format("keepjumps keeppatterns silent! %s", v))
     end
 
-    vim.api.nvim_win_set_cursor(0, pos)
+    vim.fn.winrestview(view)
 end
 
 --- Launch external program
