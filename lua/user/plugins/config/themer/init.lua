@@ -14,13 +14,11 @@ require("themer").setup({
     remaps = {
         highlights = {
             globals = {
-                -- themer
                 themer = {
                     ThemerBorder = { fg = colors.bg.darker, bg = colors.bg.darker },
                     ThemerNormalFloat = { bg = colors.bg.darker },
                     ThemerSelected = { bg = darken(colors.bg.base, 0.8, colors.magenta) },
                 },
-                -- base
                 base = {
                     Folded = { fg = utils.adjust_color(colors.fg, -80), bg = colors.bg.lighter },
                     FoldColumn = { fg = colors.blue, bg = colors.bg.base },
@@ -39,6 +37,7 @@ require("themer").setup({
                     NormalFloat = { bg = colors.bg.darker },
                     FloatBorder = { link = "ThemerBorder" },
                     PmenuSel = { bg = colors.syntax.comment or colors.dimmed.subtle },
+                    Comment = { fg = utils.adjust_color(colors.bg.base, 60) },
                 },
                 plugins = {
                     virtcolumn = {
@@ -75,7 +74,7 @@ require("themer").setup({
                         CmpItemKindTypeParameter = { fg = colors.yellow },
                     },
                     telescope = {
-                        TelescopeTitle = { bg = colors.blue, gui = "bold" },
+                        TelescopeTitle = { bg = colors.blue, style = "bold" },
                         TelescopePromptPrefix = { fg = colors.red },
                         TelescopeNormal = { link = "ThemerNormalFloat" },
                     },
@@ -106,10 +105,10 @@ require("themer").setup({
                         texAuthorArg = { link = "ThemerConstantBuiltIn" },
                     },
                     lsp = {
-                        DiagnosticUnderlineHint = { gui = "underline" },
-                        DiagnosticUnderlineInfo = { gui = "underline" },
-                        DiagnosticUnderlineWarn = { gui = "underline" },
-                        DiagnosticUnderlineError = { gui = "underline" },
+                        DiagnosticUnderlineHint = { style = "underline" },
+                        DiagnosticUnderlineInfo = { style = "underline" },
+                        DiagnosticUnderlineWarn = { style = "underline" },
+                        DiagnosticUnderlineError = { style = "underline" },
                     },
                     neotree = {
                         NeoTreeRootName = { link = "ThemerMatch" },
