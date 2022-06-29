@@ -1,29 +1,44 @@
-local get_hex = require("cokeline.utils").get_hex
-local is_picking_focus = require("cokeline.mappings").is_picking_focus
-local is_picking_close = require("cokeline.mappings").is_picking_close
+local present, themer_api = pcall(require, "themer.modules.core.api")
+if not present then
+    return
+end
 
-local buffer_ignore_types = { "terminal", "quickfix" }
+local colors = themer_api.get_cp(SCHEME)
+local utils = require("user.plugins.config.themer.utils")
 
-local colors = require("themer.modules.core.api").get_cp(SCHEME)
 local active_fg = colors.blue
-local active_bg = get_hex("Normal", "bg")
-local inactive_fg = get_hex("DevIconSh", "fg")
-local inactive_bg = get_hex("TabLineFill", "bg")
+local active_bg = colors.bg.base
+local inactive_fg = utils.adjust_color(colors.fg, -150)
+local inactive_bg = utils.adjust_color(colors.bg.base, 5)
 local modified_fg = colors.red
 local switch_fg = colors.green
 
---- Create a padding component
---- @param n string amount of padding (default 1)
+--- Variable padding component
+--- @param n number amount of padding (default: 1)
 --- @return table component
-local function padding(n)
-    return { text = string.rep(" ", n or 1) }
+local padding = setmetatable({ text = " " }, {
+    __call = function(_, n)
+        return { text = string.rep(" ", n) }
+    end,
+})
+
+--- Poor man's superscript converter
+--- @param n number number to be converted into superscript
+--- @return string converted superscript number
+local function superscript(n)
+    local superscripts = { "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹" }
+    local str = tostring(n)
+    local digits = {}
+    for i = 1, #str do
+        digits[i] = superscripts[1 + (str:sub(i, i) % 10)]
+    end
+
+    return table.concat(digits, "")
 end
 
--- Poor man's superscript converter
-local function superscript(n)
-    local superscripts = { "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "⁰" }
-    return superscripts[(n % 10)]
-end
+local is_picking_focus = require("cokeline.mappings").is_picking_focus
+local is_picking_close = require("cokeline.mappings").is_picking_close
+local buffer_ignore_types = { "terminal", "quickfix" }
 
 require("cokeline").setup({
     show_if_buffers_are_at_least = 1,
@@ -85,18 +100,26 @@ require("cokeline").setup({
                 direcion = "left",
             },
         },
-        padding(),
+        padding,
         {
             text = function(buffer)
-                return (is_picking_focus() or is_picking_close()) and (buffer.pick_letter .. ":") or (superscript(
-                    buffer.index
-                ))
+                if is_picking_focus() or is_picking_close() then
+                    return buffer.pick_letter
+                end
+
+                return superscript(buffer.index)
             end,
             fg = function()
-                return is_picking_close() and modified_fg or (is_picking_focus() and switch_fg or nil)
+                if is_picking_focus() then
+                    return switch_fg
+                elseif is_picking_close() then
+                    return modified_fg
+                else
+                    return nil
+                end
             end,
         },
-        padding(),
+        padding,
         {
             text = function(buffer)
                 return buffer.is_modified and "" or ""
