@@ -156,8 +156,8 @@ cmp.setup.cmdline(":", {
     formatting = cmdline_formatting,
     mapping = cmdline_mapping,
     sources = cmp.config.sources({
-        { name = "buffer" },
         { name = "cmdline" },
+        { name = "buffer" },
         { name = "path" },
     }),
 })
