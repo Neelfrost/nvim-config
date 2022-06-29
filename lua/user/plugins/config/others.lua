@@ -42,24 +42,6 @@ M.ultisnips = function()
     vim.g.UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 end
 
-M.treesitter = function()
-    require("nvim-treesitter.configs").setup({
-        ensure_installed = PARSERS,
-        highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = false,
-        },
-        rainbow = {
-            enable = true,
-            extended_mode = true, -- Highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-            max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
-        },
-        autotag = {
-            enable = true,
-        },
-    })
-end
-
 M.nvim_comment = function()
     require("nvim_comment").setup({ comment_empty = false })
     map("i", "<C-/>", "<C-o><cmd>CommentToggle<CR><C-o>A", s_opts)

@@ -38,6 +38,7 @@ end --}}}
 
 -- Initialize packer.nvim {{{
 packer.init({
+    max_jobs = 8,
     compile_path = CONFIG_PATH .. "/plugin/packer_compiled.lua", -- for impatient caching
     display = {
         open_fn = function()
@@ -68,27 +69,20 @@ return packer.startup(function()
 
     -- ------------------------------- Themes ------------------------------- --
     use({
-        "themercorp/themer.lua",
+        "ThemerCorp/themer.lua",
         config = 'require("user.plugins.config.themer")',
     })
 
     -- -------------------------------- Looks ------------------------------- --
     use({
         "nvim-treesitter/nvim-treesitter",
-        event = "BufRead",
         run = ":TSUpdate",
-        requires = { "nvim-ts-rainbow", "nvim-ts-autotag" },
-        config = 'require("user.plugins.config.others").treesitter()',
-    })
-    use({
-        "windwp/nvim-ts-autotag",
-        ft = { "html", "javascript", "xml", "markdown" },
-        requires = { "nvim-treesitter" },
-    })
-    use({
-        "p00f/nvim-ts-rainbow",
-        ft = PARSERS,
-        requires = { "nvim-treesitter" },
+        requires = {
+            { "p00f/nvim-ts-rainbow", ft = PARSERS },
+            { "windwp/nvim-ts-autotag", ft = { "html", "javascript", "xml", "markdown" } },
+            { "nvim-treesitter/nvim-treesitter-textobjects" },
+        },
+        config = 'require("user.plugins.config.treesitter")',
     })
     use({
         "kyazdani42/nvim-web-devicons",
@@ -96,12 +90,10 @@ return packer.startup(function()
     })
     use({
         "lukas-reineke/indent-blankline.nvim",
-        event = "BufRead",
         config = 'require("user.plugins.config.indentline")',
     })
     use({
         "lukas-reineke/virt-column.nvim",
-        event = "BufRead",
         config = 'require("virt-column").setup()',
     })
     use({
@@ -122,6 +114,7 @@ return packer.startup(function()
     })
     use({
         "jose-elias-alvarez/null-ls.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
         config = 'require("user.plugins.config.null_ls")',
     })
     use({
@@ -156,9 +149,10 @@ return packer.startup(function()
         requires = {
             { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", requires = "neovim/nvim-lspconfig" },
             { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-            { "hrsh7th/cmp-omni", after = "nvim-cmp" },
+            { "hrsh7th/cmp-omni", after = "nvim-cmp", ft = "tex" },
             { "hrsh7th/cmp-path", after = "nvim-cmp" },
             { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
+            { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
             { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
         },
         config = 'require("user.plugins.config.cmp")',
@@ -230,22 +224,19 @@ return packer.startup(function()
     -- ------------------------------ Telescope ----------------------------- --
     use({
         "nvim-telescope/telescope.nvim",
-        requires = { "nvim-lua/plenary.nvim" },
+        requires = {
+            { "nvim-lua/plenary.nvim" },
+            { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+            {
+                "nvim-telescope/telescope-frecency.nvim",
+                requires = { "tami5/sqlite.lua" },
+                config = function()
+                    vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
+                end,
+            },
+            { "fhill2/telescope-ultisnips.nvim" },
+        },
         config = 'require("user.plugins.config.telescope")',
-    })
-    use({
-        "nvim-telescope/telescope-frecency.nvim",
-        requires = { "tami5/sqlite.lua" },
-        config = function()
-            vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
-        end,
-    })
-    use({
-        "fhill2/telescope-ultisnips.nvim",
-    })
-    use({
-        "nvim-telescope/telescope-fzf-native.nvim",
-        run = "make",
     })
 
     -- ------------------------- Buffer, Statusline ------------------------- --
@@ -271,7 +262,6 @@ return packer.startup(function()
     use({
         "https://gitlab.com/yorickpeterse/nvim-pqf",
         as = "nvim-pqf",
-        event = "BufRead",
         config = 'require("pqf").setup()',
     })
     use({
@@ -284,28 +274,41 @@ return packer.startup(function()
     })
     use({
         "phaazon/hop.nvim",
-        event = "BufRead",
         config = 'require("user.plugins.config.others").hop()',
     })
     use({
         "antoinemadec/FixCursorHold.nvim",
-        event = "BufRead",
         config = function()
             vim.g.curshold_updatime = 500
         end,
     })
     use({
         "Konfekt/FastFold",
-        event = "BufRead",
         config = 'require("user.plugins.config.others").fastfold()',
     })
     use({
         "Shatur/neovim-session-manager",
+        requires = { "nvim-lua/plenary.nvim" },
         config = 'require("user.plugins.config.others").session()',
     })
     use({
         "anuvyklack/pretty-fold.nvim",
         config = 'require("user.plugins.config.pretty_fold")',
+    })
+    -- use({
+    --     "Neelfrost/vim-bujo",
+    --     cmd = "Todo",
+    --     config = function()
+    --         vim.g["bujo#window_width"] = math.floor(vim.fn.winwidth(0) / 2)
+    --     end,
+    -- })
+    use({
+        "rmagatti/alternate-toggler",
+        cmd = { "ToggleAlternate" },
+        keys = "ta",
+        config = function()
+            vim.keymap.set("n", "ta", "<Cmd>:ToggleAlternate<CR>")
+        end,
     })
 
     -- Automatic initial plugin installation
