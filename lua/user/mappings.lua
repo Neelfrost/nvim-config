@@ -3,9 +3,14 @@ local e_opts = { expr = true }
 local s_opts = { silent = true }
 local se_opts = { silent = true, expr = true }
 
--- Open windows terminal terminal at cwd
+-- Open windows terminal terminal at cwd or git root
 map("n", "<Leader><Leader>t", function()
-    launch_ext_prog("wt", "-d", vim.fn.shellescape(vim.fn.expand("%:p:h")))
+    local gitsigns_status = vim.b.gitsigns_status_dict
+    if gitsigns_status then
+        launch_ext_prog("wt", "-d", vim.fn.shellescape(gitsigns_status.root))
+    else
+        launch_ext_prog("wt", "-d", vim.fn.shellescape(vim.fn.expand("%:p:h")))
+    end
 end, s_opts)
 
 -- Open explorer at cwd
