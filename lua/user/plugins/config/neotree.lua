@@ -50,6 +50,24 @@ require("neo-tree").setup({
             end,
         },
     },
+    sort_function = function(a, b)
+        a.ft = a.path:gsub(".+%.", "")
+        b.ft = b.path:gsub(".+%.", "")
+
+        -- Show subdirectories before files
+        if a.type ~= b.type then
+            return a.type ~= "file"
+        end
+
+        -- Sort by filetype, then name
+        if a.ft ~= b.ft then
+            return a.ft < b.ft
+        elseif a.type == b.type then
+            return a.path < b.path
+        else
+            return a.type < b.type
+        end
+    end,
     default_component_configs = {
         indent = {
             indent_size = 2,
