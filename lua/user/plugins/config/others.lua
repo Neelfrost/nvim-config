@@ -70,9 +70,15 @@ M.lsp_signature = function()
 end
 
 M.hop = function()
-    require("hop").setup()
+    require("hop").setup({ jump_on_sole_occurrence = true })
     map("n", "S", "<cmd>HopChar2<CR>", s_opts)
     map("n", "f", "<cmd>HopChar1<CR>", s_opts)
+    map("o", "f", function()
+        require("hop").hint_char1({
+            direction = require("hop.hint").HintDirection.AFTER_CURSOR,
+            current_line_only = true,
+        })
+    end)
 end
 
 M.session = function()

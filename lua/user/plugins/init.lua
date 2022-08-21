@@ -204,6 +204,12 @@ return packer.startup(function()
         requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
         config = 'require("user.plugins.config.neotree")',
     })
+    use({
+        "phaazon/hop.nvim",
+        tag = "v2.*",
+        keys = { { "n", "f" }, { "n", "S" }, { "o", "f" } },
+        config = 'require("user.plugins.config.others").hop()',
+    })
 
     -- -------------------------------- LaTeX ------------------------------- --
     use({
