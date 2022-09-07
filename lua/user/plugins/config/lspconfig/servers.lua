@@ -13,8 +13,7 @@ table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
 -- Omnisharp vars
-local pid = vim.fn.getpid()
-local omnisharp_bin = vim.split(vim.fn.trim(vim.fn.system("where omnisharp")), "\n")[1]
+local omnisharp_dll = [[C:\tools\omnisharp\OmniSharp.dll]]
 
 -- Specific server config
 M.specific_configs = {
@@ -48,11 +47,7 @@ M.specific_configs = {
         end,
     },
     omnisharp = {
-        cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
-        root_dir = function(fname)
-            local dir = lspconfig_util.root_pattern(".csproj", ".sln")(fname) or lspconfig_util.path.dirname(fname)
-            return vim.fn.has("win32") == 1 and string.format("'%s'", dir:lower()) or dir
-        end,
+        cmd = { "dotnet", omnisharp_dll },
     },
     html = {
         cmd = { "vscode-html-language-server.cmd", "--stdio" },

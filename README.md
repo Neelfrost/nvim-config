@@ -181,13 +181,19 @@ Use `:checkhealth` to check for errors if any.
 
 #### C# ([omnisharp](https://github.com/omnisharp/omnisharp-roslyn))
 
-1. Install dependencies.
+1. Install dotnet-sdk.
 
    ```
-   choco install -y omnisharp; refreshenv; exit
+   choco install dotnet-sdk -y
    ```
 
-2. Use `:checkhealth` to check for errors if any.
+2. Install omnisharp-roslyn.
+
+   ```
+   curl.exe -L $(curl.exe -s https://api.github.com/repos/OmniSharp/omnisharp-roslyn/releases/latest | findstr.exe "omnisharp-win-x64-net6.0.zip" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o omnisharp-win-x64-net6.0.zip; 7z.exe x -oC:\tools\omnisharp .\omnisharp-win-x64-net6.0.zip; rm .\omnisharp-win-x64-net6.0.zip;
+   ```
+
+3. Use `:checkhealth` to check for errors if any.
 
 #### HTML, CSS, Javascript ([vscode-langservers-extracted](https://github.com/hrsh7th/vscode-langservers-extracted))
 
@@ -281,7 +287,7 @@ nvim
 │       └── options.lua  # vim options
 │       └── utils.lua    # utility functions
 │       └── plugins
-│           ├── config   # main plugin config
+│           ├── config   # plugin config
 │           └── init.lua # plugin definition file
 ├── ultisnips            # snippets
 │   └── tex              # latex snippets
