@@ -61,6 +61,17 @@ M.specific_configs = {
     },
     eslint = {
         cmd = { "vscode-eslint-language-server.cmd", "--stdio" },
+        root_dir = lspconfig_util.root_pattern(
+            ".eslintrc",
+            ".eslintrc.js",
+            ".eslintrc.cjs",
+            ".eslintrc.yaml",
+            ".eslintrc.yml",
+            ".eslintrc.json",
+            "package.json",
+            ".git"
+        ),
+        settings = { format = false },
     },
     emmet_ls = {
         filetypes = { "html" },
@@ -70,7 +81,7 @@ M.specific_configs = {
 -- Common config for all servers
 M.default_config = {
     on_attach = utils.on_attach,
-    capabilities = require("cmp_nvim_lsp").update_capabilities(utils.capabilities),
+    capabilities = utils.capabilities,
     flags = {
         debounce_text_changes = 500,
     },

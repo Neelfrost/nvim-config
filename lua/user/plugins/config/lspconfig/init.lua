@@ -16,20 +16,9 @@ vim.fn.sign_define("DiagnosticsSignWarning", { text = ICON_WARN })
 vim.fn.sign_define("DiagnosticsSignInformation", { text = ICON_INFO })
 vim.fn.sign_define("DiagnosticsSignHint", { text = ICON_HINT })
 
--- Define borders
-local borders = {
-    { "┌", "FloatBorder" },
-    { "─", "FloatBorder" },
-    { "┐", "FloatBorder" },
-    { "│", "FloatBorder" },
-    { "┘", "FloatBorder" },
-    { "─", "FloatBorder" },
-    { "└", "FloatBorder" },
-    { "│", "FloatBorder" },
-}
--- Set borders
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = borders })
+-- Set square borders
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
 
 local present, lspconfig = pcall(require, "lspconfig")
 if not present then
