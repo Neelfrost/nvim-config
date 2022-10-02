@@ -1,13 +1,13 @@
 --- Trim newline at eof, trailing whitespace.
 function _G.perform_cleanup()
     local patterns = {
-        -- remove leading empty lines
+        -- Remove leading empty lines
         [[%s/\%^\n//e]],
-        -- remove trailing empty lines
+        -- Remove trailing empty lines
         [[%s/$\n\+\%$//e]],
-        -- remove trailing spaces
+        -- Remove trailing spaces
         [[%s/\s\+$//e]],
-        -- remove trailing "\r"
+        -- Remove trailing "\r"
         [[%s/\r\+//e]],
     }
 
@@ -135,4 +135,11 @@ end, {
 function _G.vim_notify(msg, level)
     vim.cmd("redraw")
     vim.notify(msg, level)
+end
+
+function _G.exists_and_not_nil(t)
+    if t then
+        return next(t) ~= nil
+    end
+    return false
 end

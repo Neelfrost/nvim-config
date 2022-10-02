@@ -6,6 +6,7 @@ local normal_statusline = {
     c.git_info,
     c.file_block,
     c.search_results,
+    c.visual_multi,
     c.spellcheck,
     c.file_format,
     c.file_encoding,

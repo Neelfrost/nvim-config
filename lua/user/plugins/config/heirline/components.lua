@@ -11,6 +11,10 @@ local utils = require("heirline.utils")
 
 local M = {}
 
+local function mode()
+    return M.visual_multi.condition() and "V-M" or vim.api.nvim_get_mode().mode
+end
+
 M.align = { provider = "%=" }
 M.null = { provider = "" }
 M.space = setmetatable({
@@ -66,8 +70,8 @@ M.vim_mode = utils.insert(M.vim_mode, M.space, M.vim_icon, M.space, {
         end,
     }),
 
-    hl = function()
-        return { bg = theme.bg1, fg = helper.mode_colors[vim.api.nvim_get_mode().mode:sub(1, 1)], bold = true }
+    hl = function(self)
+        return { bg = theme.bg1, fg = helper.mode_colors[self.mode:sub(1, 1)], bold = true }
     end,
 }, M.space)
 
@@ -259,7 +263,7 @@ M.file_block = utils.surround(
 
 M.search_results = {
     condition = function(self)
-        if vim.api.nvim_buf_line_count(0) > 50000 then
+        if vim.api.nvim_buf_line_count(0) > 50000 or M.visual_multi.condition() then
             return
         end
 
@@ -292,6 +296,52 @@ M.search_results = {
     {
         provider = function(self)
             return table.concat({ self.count.current, "/", self.count.total })
+        end,
+    },
+    M.delim_right("slant_right", theme.bi),
+
+    hl = theme.b,
+}
+
+M.visual_multi = {
+    condition = function()
+        return exists_and_not_nil(vim.b.VM_Selection)
+    end,
+
+    init = function(self)
+        local info = vim.fn.VMInfos()
+        self.patterns = exists_and_not_nil(info.patterns)
+            and string.format("(%s)", table.concat(info.patterns, ", "):gsub("[\\<>]", ""))
+            or ""
+        self.ratio = info.ratio and info.ratio:gsub(" ", "") or ""
+        self.status = info.status or ""
+    end,
+
+    M.delim_left("slant_left_2", theme.bi),
+    {
+        provider = helper.icons.search,
+        hl = { fg = colors.yellow },
+    },
+    M.space,
+    {
+        provider = function(self)
+            return self.patterns
+        end,
+    },
+    M.space(function(self)
+        return self.patterns ~= "" and self.ratio ~= ""
+    end),
+    {
+        provider = function(self)
+            return self.ratio
+        end,
+    },
+    M.space(function(self)
+        return self.ratio ~= "" and self.status ~= ""
+    end),
+    {
+        provider = function(self)
+            return self.status
         end,
     },
     M.delim_right("slant_right", theme.bi),
