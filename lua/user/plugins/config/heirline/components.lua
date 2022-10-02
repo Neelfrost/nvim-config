@@ -12,8 +12,17 @@ local utils = require("heirline.utils")
 local M = {}
 
 M.align = { provider = "%=" }
-M.space = { provider = " " }
 M.null = { provider = "" }
+M.space = setmetatable({
+    provider = " ",
+}, {
+    __call = function(_, condition)
+        return {
+            provider = " ",
+            condition = condition,
+        }
+    end,
+})
 
 M.delim_left = function(icon, hl)
     return {
@@ -44,7 +53,7 @@ M.vim_mode = {}
 
 M.vim_mode = utils.insert(M.vim_mode, M.space, M.vim_icon, M.space, {
     init = function(self)
-        self.mode = vim.api.nvim_get_mode().mode
+        self.mode = mode()
     end,
 
     utils.make_flexible_component(8, {
@@ -103,11 +112,9 @@ M.git_info = {
             end,
             hl = { fg = colors.green },
         },
-        {
-            provider = function(self)
-                return (self.added and (self.removed or self.changed)) and " " or ""
-            end,
-        },
+        M.space(function(self)
+            return self.added and (self.removed or self.changed)
+        end),
         {
             provider = function(self)
                 local count = self.status_dict.removed or 0
@@ -115,11 +122,9 @@ M.git_info = {
             end,
             hl = { fg = colors.red },
         },
-        {
-            provider = function(self)
-                return (self.removed and self.changed) and " " or ""
-            end,
-        },
+        M.space(function(self)
+            return self.removed and self.changed
+        end),
         {
             provider = function(self)
                 local count = self.status_dict.changed or 0
@@ -279,15 +284,19 @@ M.search_results = {
         return true
     end,
 
-    M.delim_left("slant_left_2", theme.ci),
+    M.delim_left("slant_left_2", theme.bi),
+    {
+        provider = helper.icons.search .. " ",
+        hl = { fg = colors.yellow },
+    },
     {
         provider = function(self)
-            return table.concat({ "", " ", self.count.current, "/", self.count.total })
+            return table.concat({ self.count.current, "/", self.count.total })
         end,
     },
-    M.delim_right("slant_right", theme.ci),
+    M.delim_right("slant_right", theme.bi),
 
-    hl = theme.c,
+    hl = theme.b,
 }
 
 M.spellcheck = {
@@ -295,11 +304,11 @@ M.spellcheck = {
         return vim.wo.spell
     end,
 
-    M.delim_left("slant_left_2", theme.ci),
+    M.delim_left("slant_left_2", theme.bi),
     { provider = vim.bo.spelllang },
-    M.delim_right("slant_right", theme.ci),
+    M.delim_right("slant_right", theme.bi),
 
-    hl = theme.c,
+    hl = theme.b,
 }
 
 M.file_format = {
@@ -318,15 +327,15 @@ M.file_format = {
         return self.fileformat ~= "dos"
     end,
 
-    M.delim_left("slant_left_2", theme.ci),
+    M.delim_left("slant_left_2", theme.bi),
     {
         provider = function(self)
             return self.text
         end,
     },
-    M.delim_right("slant_right", theme.ci),
+    M.delim_right("slant_right", theme.bi),
 
-    hl = theme.c,
+    hl = theme.b,
 }
 
 M.file_encoding = {
@@ -334,11 +343,11 @@ M.file_encoding = {
         return vim.bo.fileencoding ~= "utf-8"
     end,
 
-    M.delim_left("slant_left_2", theme.ci),
+    M.delim_left("slant_left_2", theme.bi),
     { provider = vim.bo.fileencoding:upper() },
-    M.delim_right("slant_right", theme.ci),
+    M.delim_right("slant_right", theme.bi),
 
-    hl = theme.c,
+    hl = theme.b,
 }
 
 M.paste = {
@@ -346,11 +355,11 @@ M.paste = {
         return vim.o.paste
     end,
 
-    M.delim_left("slant_left", theme.ci),
+    M.delim_left("slant_left", theme.bi),
     { provider = helper.icons.paste },
-    M.delim_right("slant_right_2", theme.ci),
+    M.delim_right("slant_right_2", theme.bi),
 
-    hl = theme.c,
+    hl = theme.b,
 }
 
 M.wrap = {
@@ -358,11 +367,11 @@ M.wrap = {
         return vim.o.wrap
     end,
 
-    M.delim_left("slant_left", theme.ci),
+    M.delim_left("slant_left", theme.bi),
     { provider = helper.icons.wrap },
-    M.delim_right("slant_right_2", theme.ci),
+    M.delim_right("slant_right_2", theme.bi),
 
-    hl = theme.c,
+    hl = theme.b,
 }
 
 M.mixed_indents = {
@@ -372,11 +381,11 @@ M.mixed_indents = {
         return (space_indent and tab_indent) or vim.fn.search([[\v^(\t+ | +\t)]], "nw") > 0
     end,
 
-    M.delim_left("slant_left", theme.ci),
+    M.delim_left("slant_left", theme.bi),
     { provider = helper.icons.mixed_indents },
-    M.delim_right("slant_right_2", theme.ci),
+    M.delim_right("slant_right_2", theme.bi),
 
-    hl = theme.c,
+    hl = theme.b,
 }
 
 M.lsp_info = {
@@ -436,11 +445,15 @@ M.total_lines = {
     end,
 
     provider = function(self)
-        return string.format(" %d  ", self.lines)
+        return string.format(" %d %s ", self.lines, helper.icons.total_lines)
     end,
 
     hl = function()
-        return { bg = theme.bg1, fg = helper.mode_colors[vim.api.nvim_get_mode().mode:sub(1, 1)], bold = true }
+        return {
+            bg = theme.bg1,
+            fg = helper.mode_colors[mode():sub(1, 1)],
+            bold = true,
+        }
     end,
 }
 

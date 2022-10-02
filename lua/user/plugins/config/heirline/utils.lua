@@ -51,6 +51,9 @@ M.icons = {
     circle_plus = "",
     dot_circle_o = "",
     circle_o = "⭘",
+    search = "",
+    total_lines = "",
+    path_sep = "",
 }
 
 M.mode_names = {
