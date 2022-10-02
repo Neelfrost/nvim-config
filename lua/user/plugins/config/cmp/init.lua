@@ -78,7 +78,6 @@ cmp.setup({
         }),
     }),
     sources = cmp.config.sources({
-        { name = "omni" },
         { name = "ultisnips" },
         { name = "nvim_lsp" },
         {
