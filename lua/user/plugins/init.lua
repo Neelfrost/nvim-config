@@ -40,6 +40,8 @@ end --}}}
 packer.init({
     max_jobs = 8,
     compile_path = CONFIG_PATH .. "/plugin/packer_compiled.lua", -- for impatient caching
+    snapshot = "stable",
+    snapshot_path = CONFIG_PATH .. "/packer_snapshot",
     display = {
         open_fn = function()
             return require("packer.util").float({ border = "single" })
@@ -78,8 +80,8 @@ return packer.startup(function()
         "nvim-treesitter/nvim-treesitter",
         run = ":TSUpdate",
         requires = {
-            { "p00f/nvim-ts-rainbow", ft = PARSERS },
-            { "windwp/nvim-ts-autotag", ft = { "html", "javascript", "xml", "markdown" } },
+            { "p00f/nvim-ts-rainbow" },
+            { "windwp/nvim-ts-autotag" },
             { "nvim-treesitter/nvim-treesitter-textobjects" },
         },
         config = 'require("user.plugins.config.treesitter")',
@@ -124,7 +126,7 @@ return packer.startup(function()
     })
     use({
         "ThePrimeagen/refactoring.nvim",
-        after = "nvim-treesitter",
+        event = "BufReadPost",
         requires = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" },
         config = 'require("user.plugins.config.others").refactoring()',
     })
@@ -164,6 +166,7 @@ return packer.startup(function()
         cmd = "StartupTime",
         config = function()
             vim.g.startuptime_tries = 5
+            vim.g.startuptime_event_width = 50
         end,
     })
     use({
@@ -200,15 +203,39 @@ return packer.startup(function()
     })
     use({
         "nvim-neo-tree/neo-tree.nvim",
+        keys = "<C-b>",
         branch = "v2.x",
         requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
         config = 'require("user.plugins.config.neotree")',
+    })
+    use({
+        "Shatur/neovim-session-manager",
+        cmd = { "SessionManager" },
+        keys = { { "n", "<Leader>ss" }, { "n", "<Leader>ls" } },
+        requires = { "nvim-lua/plenary.nvim" },
+        config = 'require("user.plugins.config.others").session()',
     })
     use({
         "phaazon/hop.nvim",
         tag = "v2.*",
         keys = { { "n", "f" }, { "n", "S" }, { "o", "f" } },
         config = 'require("user.plugins.config.others").hop()',
+    })
+    use({
+        "kylechui/nvim-surround",
+        config = function()
+            require("nvim-surround").setup({
+                highlight = { duration = 500 },
+                move_cursor = false,
+            })
+        end,
+    })
+    use({
+        "mg979/vim-visual-multi",
+        keys = { { "n", "<C-n>" }, { "n", "<C-Down>" }, { "n", "<C-Up>" } },
+        config = function()
+            vim.g.VM_set_statusline = 0
+        end,
     })
 
     -- -------------------------------- LaTeX ------------------------------- --
@@ -230,13 +257,14 @@ return packer.startup(function()
     -- ------------------------------ Telescope ----------------------------- --
     use({
         "nvim-telescope/telescope.nvim",
+        branch = "0.1.x",
         requires = {
             { "nvim-lua/plenary.nvim" },
             { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
             {
                 "nvim-telescope/telescope-frecency.nvim",
                 requires = { "tami5/sqlite.lua" },
-                config = function()
+                setup = function()
                     vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
                 end,
             },
@@ -263,11 +291,9 @@ return packer.startup(function()
         "tpope/vim-repeat",
     })
     use({
-        "tpope/vim-surround",
-    })
-    use({
         "https://gitlab.com/yorickpeterse/nvim-pqf",
         as = "nvim-pqf",
+        event = "BufReadPost",
         config = 'require("pqf").setup()',
     })
     use({
@@ -277,10 +303,6 @@ return packer.startup(function()
     use({
         "junegunn/vim-easy-align",
         cmd = "EasyAlign",
-    })
-    use({
-        "phaazon/hop.nvim",
-        config = 'require("user.plugins.config.others").hop()',
     })
     use({
         "antoinemadec/FixCursorHold.nvim",
@@ -293,21 +315,9 @@ return packer.startup(function()
         config = 'require("user.plugins.config.others").fastfold()',
     })
     use({
-        "Shatur/neovim-session-manager",
-        requires = { "nvim-lua/plenary.nvim" },
-        config = 'require("user.plugins.config.others").session()',
-    })
-    use({
         "anuvyklack/pretty-fold.nvim",
         config = 'require("user.plugins.config.pretty_fold")',
     })
-    -- use({
-    --     "Neelfrost/vim-bujo",
-    --     cmd = "Todo",
-    --     config = function()
-    --         vim.g["bujo#window_width"] = math.floor(vim.fn.winwidth(0) / 2)
-    --     end,
-    -- })
     use({
         "rmagatti/alternate-toggler",
         cmd = { "ToggleAlternate" },
