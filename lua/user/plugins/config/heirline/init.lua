@@ -1,6 +1,5 @@
 local c = require("user.plugins.config.heirline.components")
 local conditions = require("heirline.conditions")
-local utils = require("heirline.utils")
 
 local normal_statusline = {
     c.vim_mode,
@@ -31,8 +30,14 @@ local terminal_statusline = {
     },
 }
 
-require("heirline").setup({
-    init = utils.pick_child_on_condition,
+local statusline = {
+    fallthrough = false,
     terminal_statusline,
     normal_statusline,
-})
+}
+
+local winbar = {
+    c.winbar,
+}
+
+require("heirline").setup(statusline, winbar)

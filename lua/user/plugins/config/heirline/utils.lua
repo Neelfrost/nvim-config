@@ -92,6 +92,7 @@ M.mode_names = {
     ["r?"] = "CONFIRM",
     ["!"] = "SHELL",
     ["t"] = "TERMINAL",
+    ["V-M"] = "V-MULTI",
 }
 
 M.mode_colors = {
@@ -177,6 +178,10 @@ M.lsp_status = function()
             ))
             .. "]"
     end
+end
+
+M.replace_pathsep = function(path)
+    return path:gsub("/", "\\"):gsub("\\", (" %s "):format(M.icons.path_sep))
 end
 
 return M

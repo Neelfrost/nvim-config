@@ -485,4 +485,36 @@ M.terminal_name = utils.surround({ helper.icons.powerline.slant_left, "" }, func
     return theme.bg1
 end, M.terminal_name)
 
+M.winbar = {
+    fallthrough = false,
+    {
+        condition = function()
+            return conditions.buffer_matches({
+                buftype = { "terminal", "nofile", "prompt", "help", "quickfix" },
+                filetype = { "^git.*", "fugitive" },
+            })
+        end,
+        init = function()
+            vim.opt_local.winbar = nil
+        end,
+    },
+    {
+        init = function(self)
+            self.file_path = vim.api.nvim_buf_get_name(0):gsub("^%l", string.upper)
+            self.is_git_repo = conditions.is_git_repo()
+        end,
+
+        provider = function(self)
+            return self.is_git_repo
+                    and string.rep(" ", 4) .. helper.replace_pathsep(
+                        helper.icons.git_branch
+                            .. "\\"
+                            .. self.file_path:gsub(vim.b.gitsigns_status_dict.root:gsub("/", "\\") .. "\\", "")
+                    )
+                or string.rep(" ", 4) .. helper.replace_pathsep(self.file_path)
+        end,
+    },
+    hl = theme.winbar,
+}
+
 return M
