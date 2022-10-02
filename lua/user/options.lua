@@ -60,8 +60,8 @@ vim.opt.fillchars = {
     eob = "–",
     fold = " ",
     foldsep = " ",
-    foldclose = "",
-    foldopen = "",
+    foldclose = "",
+    foldopen = "",
     horiz = "━",
     horizup = "┻",
     horizdown = "┳",
@@ -110,6 +110,9 @@ vim.opt.inccommand = "split"
 vim.opt.title = true
 
 vim.opt.startofline = false
+
+-- Cmdline height
+vim.opt.ch = 0
 
 -- Ignore LaTeX aux files
 vim.opt.wildignore = {
