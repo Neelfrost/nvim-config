@@ -40,7 +40,7 @@ end --}}}
 packer.init({
     max_jobs = 8,
     compile_path = CONFIG_PATH .. "/plugin/packer_compiled.lua", -- for impatient caching
-    snapshot = "stable",
+    snapshot = "latest",
     snapshot_path = CONFIG_PATH .. "/packer_snapshot",
     display = {
         open_fn = function()
