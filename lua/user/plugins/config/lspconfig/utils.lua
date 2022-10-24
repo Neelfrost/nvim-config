@@ -13,7 +13,7 @@ M.capabilities.textDocument.completion.completionItem = {
         },
     },
 }
-M.capabilities = require("cmp_nvim_lsp").update_capabilities(M.capabilities)
+M.capabilities = require("cmp_nvim_lsp").default_capabilities(M.capabilities)
 
 -- Use the following when ls attches to a buffer
 M.on_attach = function(client, bufnr)
