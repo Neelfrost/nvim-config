@@ -10,8 +10,8 @@ vim.api.nvim_create_autocmd("FileType", {
 local dashboard = require("alpha.themes.dashboard")
 
 -- Plugin count
-local plugins_loaded = #vim.fn.globpath(PACKER_PATH .. "\\start", "*", 0, 1)
-local plugins_waiting = #vim.fn.globpath(PACKER_PATH .. "\\opt", "*", 0, 1)
+local plugin_count = #vim.tbl_keys(packer_plugins)
+local vim_version = table.concat({ vim.version().major, vim.version().minor, vim.version().patch }, ".")
 
 -- Common highlight
 local highlight = "ThemerHeadingH1"
@@ -39,7 +39,7 @@ local header = {
 local footer = {
     type = "text",
     val = {
-        plugins_loaded + plugins_waiting .. " plugins installed",
+        " " .. plugin_count .. " plugins |  v" .. vim_version,
     },
     opts = { position = "center", hl = highlight },
 }
@@ -64,7 +64,7 @@ local buttons = {
     },
 }
 
-local top_margin_per = 0.3
+local top_margin_per = 0.2
 local header_padding = vim.fn.max({ 2, vim.fn.floor(vim.fn.winheight(0) * top_margin_per) })
 
 local opts = {
