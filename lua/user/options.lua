@@ -112,7 +112,7 @@ vim.opt.title = true
 vim.opt.startofline = false
 
 -- Cmdline height
-vim.opt.ch = 0
+-- vim.opt.ch = 0
 
 -- Ignore LaTeX aux files
 vim.opt.wildignore = {
