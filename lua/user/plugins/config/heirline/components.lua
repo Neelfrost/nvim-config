@@ -60,15 +60,19 @@ M.vim_mode = utils.insert(M.vim_mode, M.space, M.vim_icon, M.space, {
         self.mode = mode()
     end,
 
-    utils.make_flexible_component(8, {
-        provider = function(self)
-            return helper.mode_names[self.mode]
-        end,
-    }, {
-        provider = function(self)
-            return helper.mode_names[self.mode]:sub(1, 1)
-        end,
-    }),
+    {
+        flexible = 8,
+        {
+            provider = function(self)
+                return helper.mode_names[self.mode]
+            end,
+        },
+        {
+            provider = function(self)
+                return helper.mode_names[self.mode]:sub(1, 1)
+            end,
+        },
+    },
 
     hl = function(self)
         return { bg = theme.bg1, fg = helper.mode_colors[self.mode:sub(1, 1)], bold = true }
@@ -102,47 +106,51 @@ M.git_info = {
             return self.status_dict.head
         end,
     },
-    utils.make_flexible_component(6, {
+    {
+        flexible = 6,
         {
-            condition = function(self)
-                return self.has_changes
-            end,
-            provider = " (",
+            {
+                condition = function(self)
+                    return self.has_changes
+                end,
+                provider = " (",
+            },
+            {
+                provider = function(self)
+                    local count = self.status_dict.added or 0
+                    return count > 0 and ("+" .. count)
+                end,
+                hl = { fg = colors.green },
+            },
+            M.space(function(self)
+                return self.added and (self.removed or self.changed)
+            end),
+            {
+                provider = function(self)
+                    local count = self.status_dict.removed or 0
+                    return count > 0 and ("-" .. count)
+                end,
+                hl = { fg = colors.red },
+            },
+            M.space(function(self)
+                return self.removed and self.changed
+            end),
+            {
+                provider = function(self)
+                    local count = self.status_dict.changed or 0
+                    return count > 0 and ("~" .. count)
+                end,
+                hl = { fg = colors.yellow },
+            },
+            {
+                condition = function(self)
+                    return self.has_changes
+                end,
+                provider = ")",
+            },
         },
-        {
-            provider = function(self)
-                local count = self.status_dict.added or 0
-                return count > 0 and ("+" .. count)
-            end,
-            hl = { fg = colors.green },
-        },
-        M.space(function(self)
-            return self.added and (self.removed or self.changed)
-        end),
-        {
-            provider = function(self)
-                local count = self.status_dict.removed or 0
-                return count > 0 and ("-" .. count)
-            end,
-            hl = { fg = colors.red },
-        },
-        M.space(function(self)
-            return self.removed and self.changed
-        end),
-        {
-            provider = function(self)
-                local count = self.status_dict.changed or 0
-                return count > 0 and ("~" .. count)
-            end,
-            hl = { fg = colors.yellow },
-        },
-        {
-            condition = function(self)
-                return self.has_changes
-            end,
-            provider = ")",
-        },
-    }, M.null),
+        M.null,
+    },
     M.delim_right("slant_right", theme.bi),
 
     hl = theme.b,
@@ -447,23 +455,28 @@ M.lsp_info = {
         self.status = helper.lsp_status()
     end,
 
-    utils.make_flexible_component(3, {
-        M.delim_left("slant_left", theme.bi),
+    {
+        flexible = 3,
         {
-            provider = function(self)
-                return self.status ~= "" and self.status or self.clients
-            end,
+            M.delim_left("slant_left", theme.bi),
+            {
+                provider = function(self)
+                    return self.status ~= "" and self.status or self.clients
+                end,
+            },
+            M.delim_right("slant_right_2", theme.bi),
         },
-        M.delim_right("slant_right_2", theme.bi),
-    }, {
-        M.delim_left("slant_left", theme.bi),
         {
-            provider = function(self)
-                return self.short_clients
-            end,
+            M.delim_left("slant_left", theme.bi),
+            {
+                provider = function(self)
+                    return self.short_clients
+                end,
+            },
+            M.delim_right("slant_right_2", theme.bi),
         },
-        M.delim_right("slant_right_2", theme.bi),
-    }, M.null),
+        M.null,
+    },
 
     hl = theme.b,
 }
@@ -475,15 +488,19 @@ M.line_info = {
     end,
 
     M.delim_left("slant_left", theme.bi),
-    utils.make_flexible_component(4, {
-        provider = function(self)
-            return string.format("Ln %d, Col %d", self.line, self.column)
-        end,
-    }, {
-        provider = function(self)
-            return string.format("%d : %d", self.line, self.column)
-        end,
-    }),
+    {
+        flexible = 4,
+        {
+            provider = function(self)
+                return string.format("Ln %d, Col %d", self.line, self.column)
+            end,
+        },
+        {
+            provider = function(self)
+                return string.format("%d : %d", self.line, self.column)
+            end,
+        },
+    },
     M.delim_right("slant_right_2", theme.bi),
 
     hl = theme.b,
@@ -556,11 +573,11 @@ M.winbar = {
 
         provider = function(self)
             return self.is_git_repo
-                    and string.rep(" ", 4) .. helper.replace_pathsep(
-                        helper.icons.git_branch
-                            .. "\\"
-                            .. self.file_path:gsub(vim.b.gitsigns_status_dict.root:gsub("/", "\\") .. "\\", "")
-                    )
+                and string.rep(" ", 4) .. helper.replace_pathsep(
+                    helper.icons.git_branch
+                    .. "\\"
+                    .. self.file_path:gsub(vim.b.gitsigns_status_dict.root:gsub("/", "\\") .. "\\", "")
+                )
                 or string.rep(" ", 4) .. helper.replace_pathsep(self.file_path)
         end,
     },
