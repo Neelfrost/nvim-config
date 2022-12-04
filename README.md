@@ -7,7 +7,7 @@
   <br />
   <a href="https://github.com/neovim/neovim">
     <img
-      src="https://img.shields.io/badge/requires-neovim%200.7%2B-green?color=76946A&labelColor=16161D&style=for-the-badge&logo=neovim"
+      src="https://img.shields.io/badge/requires-neovim%200.8%2B-green?color=76946A&labelColor=16161D&style=for-the-badge&logo=neovim"
     />
   </a>
   <a href="https://github.com/Neelfrost/dotfiles/blob/main/LICENSE"
