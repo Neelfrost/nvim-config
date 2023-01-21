@@ -14,7 +14,7 @@ local plugin_count = #vim.tbl_keys(packer_plugins)
 local vim_version = table.concat({ vim.version().major, vim.version().minor, vim.version().patch }, ".")
 
 -- Common highlight
-local highlight = "ThemerHeadingH1"
+local highlight = "Alpha"
 
 local function set_button(sc, txt, keybind, keybind_opts)
     local button = dashboard.button(sc, txt, keybind, keybind_opts)
@@ -82,5 +82,4 @@ local opts = {
     },
 }
 
--- Send config to alpha
 require("alpha").setup(opts)

@@ -4,6 +4,7 @@ local darken = require("themer.utils.colors").darken
 
 colors.bg.lighter = utils.adjust_color(colors.bg.base, 5)
 colors.bg.darker = darken(colors.bg.base, 0.9, "#000000")
+colors.alpha = utils.adjust_color(colors.blue, -50)
 
 require("themer").setup({
     colorscheme = SCHEME,
@@ -20,6 +21,7 @@ require("themer").setup({
                     ThemerSelected = { bg = darken(colors.bg.base, 0.8, colors.magenta) },
                 },
                 base = {
+                    Alpha = { fg = colors.alpha, bg = colors.bg.base },
                     Folded = { fg = utils.adjust_color(colors.fg, -80), bg = colors.bg.lighter },
                     FoldColumn = { fg = colors.blue, bg = colors.bg.base },
                     LineNr = { fg = colors.blue, bg = colors.bg.base },
