@@ -41,4 +41,4 @@ local winbar = {
     c.winbar,
 }
 
-require("heirline").setup(statusline, winbar)
+require("heirline").setup({ statusline = statusline, winbar = winbar })

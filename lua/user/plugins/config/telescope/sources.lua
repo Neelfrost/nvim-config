@@ -35,7 +35,7 @@ end
 
 M.dir_plugins = function()
     local opts = {
-        cwd = PACKER_PATH,
+        cwd = LAZY_PATH,
         file_ignore_patterns = vim.list_extend({ "test\\" }, utils.ignore_patterns),
         prompt_title = "Plugin Files",
     }

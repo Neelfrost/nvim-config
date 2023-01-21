@@ -31,16 +31,23 @@ function _G.open_url(url, prefix)
     launch_ext_prog("start", (prefix or "") .. url)
 end
 
--- Reloading lua modules using Telescope
--- taken and modified from:
--- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
-if pcall(require, "plenary") then
-    local reload = require("plenary.reload").reload_module
-    --- Reload module using plenary
-    --- @param name string module
-    function _G.plenary_reload(name)
-        reload(name)
+--- Reloading lua modules using Telescope
+--- taken and modified from:
+--- https://ustrajunior.com/posts/reloading-neovim-config-with-telescope/
+---
+--- Reload module using plenary
+--- @param name string module
+function _G.plenary_reload(name)
+    -- Check for plenary
+    local present, plenary = pcall(require, "plenary.reload")
+
+    if not present then
+        vim_notify("Plenary not found.", vim.levels.WARN)
+        return
     end
+
+    -- Reload module if found
+    plenary.reload_module(name)
 end
 
 --- Get module from file path

@@ -9,24 +9,21 @@ SCHEME = "nightlamp"
 SERVERS = { "pyright", "sumneko_lua", "omnisharp", "html", "cssls", "eslint", "emmet_ls" }
 
 -- Treesitter parsers
-PARSERS = { "comment", "python", "lua", "c_sharp", "html", "css", "javascript", "yaml", "json" }
+PARSERS = { "comment", "python", "lua", "c_sharp", "html", "css", "javascript", "yaml", "json", "markdown", "vim" }
 
 -- Plugin filetypes
-PLUGINS = { "packer", "alpha", "neo-tree" }
+PLUGINS = { "alpha", "neo-tree" }
 
 -- Paths
 HOME_PATH = vim.fn.expand("$HOME")
 CONFIG_PATH = vim.fn.stdpath("config")
-PACKER_PATH = vim.fn.stdpath("data") .. "\\site\\pack\\packer"
+LAZY_PATH = vim.fn.stdpath("data") .. "/lazy"
 
 -- Linting icons
 ICON_ERROR = "E"
 ICON_WARN = "W"
 ICON_INFO = "I"
 ICON_HINT = "H"
-
--- Improve startuptime using impatient
-require("user.plugins.config.impatient")
 
 -- Configuration files
 vim.cmd("source ~/AppData/Local/nvim/viml/utils.vim")

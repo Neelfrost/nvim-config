@@ -41,7 +41,8 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, opts)
 
     -- Format on save if formatting is available
-    if client.server_capabilities.documentFormattingProvider
+    if
+        client.server_capabilities.documentFormattingProvider
         or client.server_capabilities.documentRangeFormattingProvider
     then
         local group = vim.api.nvim_create_augroup("lsp_format_onsave", { clear = false })

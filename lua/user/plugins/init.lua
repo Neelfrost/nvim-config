@@ -1,136 +1,100 @@
--- Compile on change autocmd{{{
-local group = vim.api.nvim_create_augroup("packer_compile_onchange", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePost", {
-    command = [[source <afile> | PackerCompile]],
-    desc = "Run ':PackerCompile' when this file changes.",
-    group = group,
-    pattern = "*/plugins/init.lua",
-}) --}}}
-
--- Install packer.nvim in "start" folder i.e., not lazy loaded {{{
-local install_path = PACKER_PATH .. "\\start\\packer.nvim"
-local packer_bootstrap
-
--- Check if packer.nvim is already installed
-local present, packer = pcall(require, "packer")
-if not present and vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    -- Install packer.nvim
-    packer_bootstrap = vim.fn.system({
+local lazypath = LAZY_PATH .. "/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
         "git",
         "clone",
-        "--depth",
-        "1",
-        "https://github.com/wbthomason/packer.nvim",
-        install_path,
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable",
+        lazypath,
     })
+end
+vim.opt.rtp:prepend(lazypath)
 
-    -- Check for installation success
-    vim.cmd("packadd packer.nvim")
-
-    present, packer = pcall(require, "packer")
-    if present then
-        vim_notify("packer.nvim installation successful.", vim.log.levels.INFO)
-    else
-        vim_notify("packer.nvim installation failed.", vim.log.levels.ERROR)
-        return
-    end
-end --}}}
-
--- Initialize packer.nvim {{{
-packer.init({
-    max_jobs = 8,
-    compile_path = CONFIG_PATH .. "/plugin/packer_compiled.lua", -- for impatient caching
-    snapshot = "latest",
-    snapshot_path = CONFIG_PATH .. "/packer_snapshot",
-    display = {
-        open_fn = function()
-            return require("packer.util").float({ border = "single" })
-        end,
-        prompt_border = "single",
-        working_sym = "",
-        error_sym = "",
-        done_sym = "",
-    },
-    auto_clean = true,
-    compile_on_sync = true,
-    autoremove = true,
-}) --}}}
-
--- Plugin list
-local use = packer.use
-return packer.startup(function()
-    -- ------------------------------- Packer ------------------------------- --
-    use({
-        "wbthomason/packer.nvim",
-    })
-
-    -- ------------------------------ Impatient ----------------------------- --
-    use({
-        "lewis6991/impatient.nvim",
-    })
-
+require("lazy").setup({
     -- ------------------------------- Themes ------------------------------- --
-    use({
+    {
         "ThemerCorp/themer.lua",
-        config = 'require("user.plugins.config.themer")',
-    })
+        config = function()
+            require("user.plugins.config.themer")
+        end,
+    },
 
     -- -------------------------------- Looks ------------------------------- --
-    use({
+    {
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
-        requires = {
-            { "p00f/nvim-ts-rainbow" },
-            { "windwp/nvim-ts-autotag" },
-            { "nvim-treesitter/nvim-treesitter-textobjects" },
+        dependencies = {
+            "HiPhish/nvim-ts-rainbow2",
+            "windwp/nvim-ts-autotag",
+            "nvim-treesitter/nvim-treesitter-textobjects",
         },
-        config = 'require("user.plugins.config.treesitter")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.treesitter")
+        end,
+        build = ":TSUpdate",
+    },
+    {
+        "nvim-treesitter/playground",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        enabled = false,
+    },
+    {
         "kyazdani42/nvim-web-devicons",
-        config = 'require("user.plugins.config.devicons")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.devicons")
+        end,
+    },
+    {
         "lukas-reineke/indent-blankline.nvim",
-        config = 'require("user.plugins.config.indentline")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.indentline")
+        end,
+    },
+    {
         "lukas-reineke/virt-column.nvim",
-        config = 'require("virt-column").setup()',
-    })
-    use({
+        config = true,
+    },
+    {
         "RRethy/vim-hexokinase",
-        run = "make",
-        cmd = { "HexokinaseToggle" },
         config = function()
             vim.g.Hexokinase_optInPatterns = "full_hex,rgb,rgba,hsl,hsla"
         end,
-    })
+        build = "make hexokinase",
+        cmd = "HexokinaseToggle",
+    },
 
     -- --------------------------------- LSP -------------------------------- --
-    use({
+    {
         "neovim/nvim-lspconfig",
-        after = "nvim-cmp",
-        requires = { "hrsh7th/cmp-nvim-lsp" },
-        config = 'require("user.plugins.config.lspconfig")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.lspconfig")
+        end,
+    },
+    {
         "jose-elias-alvarez/null-ls.nvim",
-        requires = { "nvim-lua/plenary.nvim" },
-        config = 'require("user.plugins.config.null_ls")',
-    })
-    use({
+        dependencies = "nvim-lua/plenary.nvim",
+        config = function()
+            require("user.plugins.config.null_ls")
+        end,
+    },
+    {
         "ray-x/lsp_signature.nvim",
-        after = "nvim-lspconfig",
-        config = 'require("user.plugins.config.others").lsp_signature()',
-    })
-    use({
+        dependencies = "nvim-lspconfig",
+        config = function()
+            require("user.plugins.config.others").lsp_signature()
+        end,
+    },
+    {
         "ThePrimeagen/refactoring.nvim",
-        event = "BufReadPost",
-        requires = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter" },
-        config = 'require("user.plugins.config.others").refactoring()',
-    })
-    use({
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        init = function()
+            require("user.plugins.config.others").refactoring()
+        end,
+    },
+    {
         "sbdchd/neoformat",
         cmd = "Neoformat",
         setup = function()
@@ -141,194 +105,267 @@ return packer.startup(function()
                 pattern = "*",
             })
         end,
-        config = 'require("user.plugins.config.neoformat")',
-        disable = true,
-    })
+        config = function()
+            require("user.plugins.config.neoformat")
+        end,
+        enabled = false,
+    },
 
     -- ----------------------------- Completion ----------------------------- --
-    use({
+    {
         "hrsh7th/nvim-cmp",
-        requires = {
-            { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", requires = "neovim/nvim-lspconfig" },
-            { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-            { "hrsh7th/cmp-omni", after = "nvim-cmp", ft = "tex" },
-            { "hrsh7th/cmp-path", after = "nvim-cmp" },
-            { "hrsh7th/cmp-cmdline", after = "nvim-cmp" },
-            { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
-            { "quangnguyen30192/cmp-nvim-ultisnips", after = "nvim-cmp" },
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+            "hrsh7th/cmp-nvim-lua",
+            "quangnguyen30192/cmp-nvim-ultisnips",
+            { "hrsh7th/cmp-omni", ft = "tex" },
         },
-        config = 'require("user.plugins.config.cmp")',
-    })
+        config = function()
+            require("user.plugins.config.cmp")
+        end,
+        event = "InsertEnter",
+    },
 
     -- ------------------------------ Features ------------------------------ --
-    use({
+    {
         "dstein64/vim-startuptime",
-        cmd = "StartupTime",
         config = function()
             vim.g.startuptime_tries = 5
             vim.g.startuptime_event_width = 50
         end,
-    })
-    use({
+        cmd = "StartupTime",
+    },
+    {
         "skywind3000/asyncrun.vim",
-        cmd = { "AsyncRun", "AsyncStop" },
-    })
-    use({
+        cmd = {
+            "Asyncbuild",
+            "AsyncStop",
+        },
+    },
+    {
         "terrortylor/nvim-comment",
+        config = function()
+            require("user.plugins.config.others").nvim_comment()
+        end,
         cmd = "CommentToggle",
-        keys = { { "n", "<C-/>" }, { "v", "<C-/>" }, { "i", "<C-/>" }, { "n", "gc" }, { "v", "gc" } },
-        config = 'require("user.plugins.config.others").nvim_comment()',
-    })
-    use({
+        keys = {
+            { mode = "n", "<C-/>" },
+            { mode = "v", "<C-/>" },
+            { mode = "i", "<C-/>" },
+            { mode = "n", "gc" },
+            { mode = "v", "gc" },
+        },
+    },
+    {
         "jiangmiao/auto-pairs",
-        config = 'require("user.plugins.config.others").autopairs()',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.others").autopairs()
+        end,
+        event = "InsertEnter",
+    },
+    {
         "goolord/alpha-nvim",
-        after = "themer.lua",
-        config = 'require("user.plugins.config.alpha")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.alpha")
+        end,
+    },
+    {
         "iamcco/markdown-preview.nvim",
+        config = function()
+            require("user.plugins.config.others").markdown_preview()
+        end,
         cmd = "MarkdownPreview",
         ft = "markdown",
-        run = "cd app && yarn install",
-        config = 'require("user.plugins.config.others").markdown_preview()',
-    })
-    use({
+        build = "cd app && yarn install",
+    },
+    {
         "danymat/neogen",
-        cmd = "Neogen",
-        requires = { "nvim-treesitter/nvim-treesitter" },
-        config = 'require("user.plugins.config.others").neogen()',
-    })
-    use({
-        "nvim-neo-tree/neo-tree.nvim",
-        keys = "<C-b>",
-        branch = "v2.x",
-        requires = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
-        config = 'require("user.plugins.config.neotree")',
-    })
-    use({
-        "Shatur/neovim-session-manager",
-        cmd = { "SessionManager" },
-        keys = { { "n", "<Leader>ss" }, { "n", "<Leader>ls" } },
-        requires = { "nvim-lua/plenary.nvim" },
-        config = 'require("user.plugins.config.others").session()',
-    })
-    use({
-        "phaazon/hop.nvim",
-        tag = "v2.*",
-        keys = { { "n", "f" }, { "n", "S" }, { "o", "f" } },
-        config = 'require("user.plugins.config.others").hop()',
-    })
-    use({
-        "kylechui/nvim-surround",
+        dependencies = "nvim-treesitter/nvim-treesitter",
         config = function()
-            require("nvim-surround").setup({
-                highlight = { duration = 500 },
-                move_cursor = false,
-            })
+            require("user.plugins.config.others").neogen()
         end,
-    })
-    use({
+        cmd = "Neogen",
+    },
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v2.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "MunifTanjim/nui.nvim",
+        },
+        config = function()
+            require("user.plugins.config.neotree")
+        end,
+        keys = "<C-b>",
+    },
+    {
+        "Shatur/neovim-session-manager",
+        dependencies = "nvim-lua/plenary.nvim",
+        config = function()
+            require("user.plugins.config.others").session()
+        end,
+        cmd = "SessionManager",
+        keys = {
+            { mode = "n", "<Leader>ss" },
+            { mode = "n", "<Leader>ls" },
+        },
+    },
+    {
+        "phaazon/hop.nvim",
+        version = "2.x",
+        config = function()
+            require("user.plugins.config.others").hop()
+        end,
+        keys = {
+            { mode = "n", "f" },
+            { mode = "n", "S" },
+            { mode = "o", "f" },
+        },
+    },
+    {
+        "kylechui/nvim-surround",
+        opts = {
+            highlight = { duration = 500 },
+            move_cursor = false,
+        },
+    },
+    {
         "mg979/vim-visual-multi",
-        keys = { { "n", "<C-n>" }, { "n", "<C-Down>" }, { "n", "<C-Up>" } },
         config = function()
             vim.g.VM_set_statusline = 0
         end,
-    })
+        keys = {
+            { mode = "n", "<C-n>" },
+            { mode = "n", "<C-Down>" },
+            { mode = "n", "<C-Up>" },
+        },
+    },
 
     -- -------------------------------- LaTeX ------------------------------- --
-    use({
+    {
         "lervag/vimtex",
-        ft = { "tex", "bib" },
-        config = 'require("user.plugins.config.vimtex")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.vimtex")
+        end,
+        ft = {
+            "tex",
+            "bib",
+        },
+    },
+    {
         "ludovicchabant/vim-gutentags",
-        ft = { "tex" },
-        config = 'require("user.plugins.config.others").gutentags()',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.others").gutentags()
+        end,
+        ft = {
+            "tex",
+            "bib",
+        },
+    },
+    {
         "SirVer/ultisnips",
-        config = 'require("user.plugins.config.others").ultisnips()',
-    })
+        config = function()
+            require("user.plugins.config.others").ultisnips()
+        end,
+        event = "InsertEnter",
+    },
 
     -- ------------------------------ Telescope ----------------------------- --
-    use({
+    {
         "nvim-telescope/telescope.nvim",
         branch = "0.1.x",
-        requires = {
-            { "nvim-lua/plenary.nvim" },
-            { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make",
+            },
             {
                 "nvim-telescope/telescope-frecency.nvim",
-                requires = { "tami5/sqlite.lua" },
-                setup = function()
+                dependencies = "tami5/sqlite.lua",
+                init = function()
                     vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
                 end,
             },
-            { "fhill2/telescope-ultisnips.nvim" },
+            "fhill2/telescope-ultisnips.nvim",
         },
-        config = 'require("user.plugins.config.telescope")',
-    })
+        config = function()
+            require("user.plugins.config.telescope")
+        end,
+        cmd = "Telescope",
+        keys = { "tr", "tf", "tp", "tn", "tl", "ts", "<F5>", "<F6>" },
+    },
 
     -- ------------------------- Buffer, Statusline ------------------------- --
-    use({
+    {
         "noib3/nvim-cokeline",
-        after = "themer.lua",
-        config = 'require("user.plugins.config.cokeline")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.cokeline")
+        end,
+        dependencies = "themer.lua",
+    },
+    {
         "rebelot/heirline.nvim",
-        after = "themer.lua",
-        requires = { { "lewis6991/gitsigns.nvim", config = "require('user.plugins.config.gitsigns')" } },
-        config = 'require("user.plugins.config.heirline")',
-    })
+        dependencies = {
+            "themer.lua",
+            {
+                "lewis6991/gitsigns.nvim",
+                config = "require('user.plugins.config.gitsigns')",
+                lazy = true,
+            },
+        },
+        config = function()
+            require("user.plugins.config.heirline")
+        end,
+    },
 
     -- --------------------------------- QOL -------------------------------- --
-    use({
+    {
         "tpope/vim-repeat",
-    })
-    use({
+    },
+    {
         "https://gitlab.com/yorickpeterse/nvim-pqf",
-        as = "nvim-pqf",
-        event = "BufReadPost",
-        config = 'require("pqf").setup()',
-    })
-    use({
+        config = function()
+            require("pqf").setup()
+        end,
+        name = "nvim-pqf",
+        event = "VeryLazy",
+    },
+    {
         "christoomey/vim-titlecase",
         keys = "gz",
-    })
-    use({
+    },
+    {
         "junegunn/vim-easy-align",
         cmd = "EasyAlign",
-    })
-    use({
+    },
+    {
         "antoinemadec/FixCursorHold.nvim",
         config = function()
             vim.g.curshold_updatime = 500
         end,
-    })
-    use({
+    },
+    {
         "Konfekt/FastFold",
-        config = 'require("user.plugins.config.others").fastfold()',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.others").fastfold()
+        end,
+    },
+    {
         "anuvyklack/pretty-fold.nvim",
-        config = 'require("user.plugins.config.pretty_fold")',
-    })
-    use({
+        config = function()
+            require("user.plugins.config.pretty_fold")
+        end,
+    },
+    {
         "rmagatti/alternate-toggler",
-        cmd = { "ToggleAlternate" },
-        keys = "ta",
         config = function()
             vim.keymap.set("n", "ta", "<Cmd>:ToggleAlternate<CR>")
         end,
-    })
-
-    -- Automatic initial plugin installation
-    if packer_bootstrap then
-        packer.sync()
-    end
-end)
+        cmd = "ToggleAlternate",
+        keys = "ta",
+    },
+})

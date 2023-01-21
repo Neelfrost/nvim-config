@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local dashboard = require("alpha.themes.dashboard")
 
 -- Plugin count
-local plugin_count = #vim.tbl_keys(packer_plugins)
+local lazy_stats = require("lazy").stats()
 local vim_version = table.concat({ vim.version().major, vim.version().minor, vim.version().patch }, ".")
 
 -- Common highlight
@@ -39,7 +39,7 @@ local header = {
 local footer = {
     type = "text",
     val = {
-        " " .. plugin_count .. " plugins |  v" .. vim_version,
+        " " .. lazy_stats.count .. " plugins (" .. lazy_stats.loaded .. " loaded) |  v" .. vim_version,
     },
     opts = { position = "center", hl = highlight },
 }
@@ -56,7 +56,7 @@ local buttons = {
         ),
         set_button("4", "  Find Files", "<cmd>Telescope find_files<CR>"),
         set_button("5", "  New File", "<cmd>enew<CR>"),
-        set_button("u", "  Update", "<cmd>PackerSync<CR>"),
+        set_button("u", "  Update", "<cmd>Lazy sync<CR>"),
         set_button("q", "  Quit", "<cmd>qa<CR>"),
     },
     opts = {

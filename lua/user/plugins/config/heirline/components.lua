@@ -319,7 +319,7 @@ M.visual_multi = {
     init = function(self)
         local info = vim.fn.VMInfos()
         self.patterns = exists_and_not_nil(info.patterns)
-            and string.format("(%s)", table.concat(info.patterns, ", "):gsub("[\\<>]", ""))
+                and string.format("(%s)", table.concat(info.patterns, ", "):gsub("[\\<>]", ""))
             or ""
         self.ratio = info.ratio and info.ratio:gsub(" ", "") or ""
         self.status = info.status or ""
@@ -573,11 +573,11 @@ M.winbar = {
 
         provider = function(self)
             return self.is_git_repo
-                and string.rep(" ", 4) .. helper.replace_pathsep(
-                    helper.icons.git_branch
-                    .. "\\"
-                    .. self.file_path:gsub(vim.b.gitsigns_status_dict.root:gsub("/", "\\") .. "\\", "")
-                )
+                    and string.rep(" ", 4) .. helper.replace_pathsep(
+                        helper.icons.git_branch
+                            .. "\\"
+                            .. self.file_path:gsub(vim.b.gitsigns_status_dict.root:gsub("/", "\\") .. "\\", "")
+                    )
                 or string.rep(" ", 4) .. helper.replace_pathsep(self.file_path)
         end,
     },
