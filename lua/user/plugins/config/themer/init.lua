@@ -111,6 +111,26 @@ require("themer").setup({
                         DiagnosticUnderlineInfo = { style = "underline" },
                         DiagnosticUnderlineWarn = { style = "underline" },
                         DiagnosticUnderlineError = { style = "underline" },
+                        DiagnosticVirtualTextHint = {
+                            fg = colors.diagnostic.hint,
+                            bg = darken(colors.diagnostic.hint, 0.05, colors.bg.base),
+                            style = "NONE",
+                        },
+                        DiagnosticVirtualTextInfo = {
+                            fg = colors.diagnostic.info,
+                            bg = darken(colors.diagnostic.info, 0.05, colors.bg.base),
+                            style = "NONE",
+                        },
+                        DiagnosticVirtualTextWarn = {
+                            fg = colors.diagnostic.warn,
+                            bg = darken(colors.diagnostic.warn, 0.05, colors.bg.base),
+                            style = "NONE",
+                        },
+                        DiagnosticVirtualTextError = {
+                            fg = colors.diagnostic.error,
+                            bg = darken(colors.diagnostic.error, 0.05, colors.bg.base),
+                            style = "NONE",
+                        },
                     },
                     neotree = {
                         NeoTreeRootName = { link = "ThemerMatch" },
