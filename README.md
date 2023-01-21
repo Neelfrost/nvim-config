@@ -2,7 +2,7 @@
 <p align="center">
   <b>Just another opinionated, visually appealing Neovim IDE.</b>
   <br />
-  <b>Pre-configured for LaTeX, Python, Lua, C#, HTML, CSS, and Javascript.</b>
+  <b>Configured for Windows, supports LaTeX, Python, Lua, C#, HTML, CSS, and Javascript.</b>
   <br />
   <br />
   <a href="https://github.com/neovim/neovim">
@@ -44,12 +44,13 @@
 
 ## Screenshots 📷
 
-![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.png "Alpha Startscreen")
-![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.png "NvimTree File Explorer, cmp code completion")
-![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.png "Telescope Fuzzy Finder")
-![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.png "LaTeX Preview")
-![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/snippets.png "Snippet List")
-![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/python.png "Python Preview")
+![start](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/start.png)
+![time](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/time.png)
+![file explorer](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/explorer.png)
+![file navigation](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/finder.png)
+![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/tex.png)
+![latex](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/snippets.png)
+![python](https://raw.githubusercontent.com/Neelfrost/github-assets/main/dotfiles/python.png)
 
 ## Installation ⚡
 
@@ -296,7 +297,7 @@ nvim
 
 ### Plugins
 
-- Plugin manager: [packer.nvim](https://github.com/wbthomason/packer.nvim)
+- Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 #### LSP
 
@@ -341,7 +342,7 @@ nvim
 - Thin virtual column: [virt-column.nvim](https://github.com/lukas-reineke/virt-column.nvim)
 - Icons support: [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons)
 - Syntax highlighting: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- Colored matching brackets: [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
+- Colored matching brackets: [nvim-ts-rainbow2](https://github.com/HiPhish/nvim-ts-rainbow2)
 - Color preview: [vim-hexokinase](https://github.com/RRethy/vim-hexokinase)
 - Prettier folds: [pretty-fold.nvim](https://github.com/anuvyklack/pretty-fold.nvim)
 
@@ -357,15 +358,17 @@ nvim
 - Better quickfix: [nvim-pqf](https://gitlab.com/yorickpeterse/nvim-pqf)
 - Aligning: [vim-easy-align](https://github.com/junegunn/vim-easy-align)
 - Commenting: [nvim-comment](https://github.com/terrortylor/nvim-comment)
+- Toggle booleans & more: [alternate-toggler](https://github.com/rmagatti/alternate-toggler)
+- Multiple cursors: [vim-visual-multi](https://github.com/mg979/vim-visual-multi)
 - Title Case: [vim-titlecase](https://github.com/christoomey/vim-titlecase)
 - Start screen: [alpha-nvim](goolord/alpha-nvim)
 - Auto pair brackets: [auto-pairs](https://github.com/jiangmiao/auto-pairs)
-- Bracket operations: [vim-surround](https://github.com/tpope/vim-surround)
+- Bracket operations: [nvim-surround](https://github.com/kylechui/nvim-surround)
 - Startup time: [vim-startuptime](https://github.com/dstein64/vim-startuptime)
 - Fix cursorhold autocmd: [FixCursorHold.nvim](https://github.com/antoinemadec/FixCursorHold.nvim)
 - Fast expr folds: [FastFold](https://github.com/antoinemadec/Konfekt/FastFold)
 - Markdown preview: [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim)
-- Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim), [asyncrun.extra](https://github.com/skywind3000/asyncrun.extra)
+- Run commands asynchronously: [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim)
 - Session manager: [neovim-session-manager](https://github.com/Shatur/neovim-session-manager)
 - Annotation generator: [neogen](https://github.com/danymat/neogen)
 
