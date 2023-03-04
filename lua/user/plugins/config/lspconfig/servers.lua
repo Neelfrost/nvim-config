@@ -5,28 +5,20 @@ local utils = require("user.plugins.config.lspconfig.utils")
 
 -- Setup language servers
 -- https://www.reddit.com/r/neovim/comments/r6gouy/migrating_from_nvim_051_to_nvim_060/hmvzsps/?context=3
--- Sumneko_lua vars
-local sumneko_root_path = "C:\\tools\\lua-language-server"
-local sumneko_binary = "C:\\tools\\lua-language-server\\bin\\lua-language-server.exe"
-local runtime_path = vim.split(package.path, ";")
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
 
 -- Omnisharp vars
 local omnisharp_dll = [[C:\tools\omnisharp\OmniSharp.dll]]
 
 -- Specific server config
 M.specific_configs = {
-    sumneko_lua = {
-        cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
+    lua_ls = {
         settings = {
             Lua = {
                 runtime = {
                     version = "LuaJIT",
-                    path = runtime_path,
                 },
                 diagnostics = {
-                    globals = { "vim", "use" },
+                    globals = { "vim" },
                 },
                 workspace = {
                     library = vim.api.nvim_get_runtime_file("", true),

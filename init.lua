@@ -6,7 +6,7 @@
 SCHEME = "nightlamp"
 
 -- Language servers
-SERVERS = { "pyright", "sumneko_lua", "omnisharp", "html", "cssls", "eslint", "emmet_ls" }
+SERVERS = { "pyright", "lua_ls", "omnisharp", "html", "cssls", "eslint", "emmet_ls" }
 
 -- Treesitter parsers
 PARSERS = { "comment", "python", "lua", "c_sharp", "html", "css", "javascript", "yaml", "json", "markdown", "vim" }

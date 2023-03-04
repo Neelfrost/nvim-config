@@ -150,7 +150,7 @@ Use `:checkhealth` to check for errors if any.
 
 4. Use `:checkhealth` to check for errors if any.
 
-#### Lua ([sumneko_lua](https://github.com/sumneko/lua-language-server))
+#### Lua ([LuaLs](https://github.com/LuaLS/lua-language-server))
 
 1. Install dependencies.
 
@@ -164,13 +164,19 @@ Use `:checkhealth` to check for errors if any.
    cd C:\tools
    ```
 
-3. Install sumneko lua-language-server.
+3. Install LuaLs.
 
    ```powershell
-   curl.exe -L $(curl.exe -s https://api.github.com/repos/sumneko/vscode-lua/releases/latest | findstr.exe "win32-x64" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o lua.vsix; 7z.exe x .\lua.vsix; rm '.\`[Content_Types`].xml'; rm .\extension.vsixmanifest; rm .\lua.vsix; mv .\extension\server\ .; rm .\extension\ -Recurse; Rename-Item .\server\ lua-language-server;
+   curl.exe -L $(curl.exe -s https://api.github.com/repos/LuaLS/lua-language-server/releases/latest | findstr.exe "win32-x64" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o luals.zip; 7z.exe x .\luals.zip -olua-language-server; rm luals.zip
    ```
 
-4. Install stylua for formatting.
+4. Add LuaLs to environment path.
+
+   ```powershell
+   Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "C:\tools\lua-language-server\bin" + ";"); refreshenv; exit
+   ```
+
+5. Install stylua for formatting.
 
    ```powershell
    curl.exe -L $(curl.exe -s https://api.github.com/repos/JohnnyMorganz/StyLua/releases/latest | findstr.exe "win64.zip" | %{"$($_.Split('"')[3])"} | findstr.exe "github") -o stylua-win64.zip; 7z.exe x -oC:\tools\stylua .\stylua-win64.zip; rm .\stylua-win64.zip;
@@ -178,7 +184,7 @@ Use `:checkhealth` to check for errors if any.
    Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path -Value $((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name path).path + ";" + "C:\tools\stylua" + ";"); refreshenv; exit
    ```
 
-5. Use `:checkhealth` to check for errors if any.
+6. Use `:checkhealth` to check for errors if any.
 
 #### C# ([omnisharp](https://github.com/omnisharp/omnisharp-roslyn))
 
@@ -305,7 +311,7 @@ nvim
   - Diagnostics, formatting LSP: [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
   - Python language server: [pyright](https://github.com/microsoft/pyright)
   - C# language server: [omnisharp](https://github.com/omnisharp/omnisharp-roslyn)
-  - Lua language server: [sumneko_lua](https://github.com/sumneko/lua-language-server)
+  - Lua language server: [LuaLs](https://github.com/LuaLS/lua-language-server)
   - HTML, CSS, Javascript language server: ([vscode-langservers-extracted](https://github.com/hrsh7th/vscode-langservers-extracted))
   - Function signature when typing: [lsp_signature.nvim](https://github.com/ray-x/lsp_signature.nvim)
   - Refactor functionality: [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim)
