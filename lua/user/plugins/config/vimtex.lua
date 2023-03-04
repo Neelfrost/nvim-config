@@ -1,3 +1,16 @@
+vim.g.vimtex_compiler_method = "latexmk"
+vim.g.vimtex_compiler_latexmk = {
+    callback = 1,
+    continuous = 1,
+    executable = "latexmk",
+    options = {
+        "-shell-escape",
+        "-verbose",
+        "-file-line-error",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+    },
+}
 -- Disable imaps (using Ultisnips)
 vim.g.vimtex_imaps_enabled = 0
 -- Do not open pdfviwer on compile
@@ -18,6 +31,7 @@ vim.g.vimtex_syntax_conceal = {
 }
 -- Disable quickfix auto open
 vim.g.vimtex_quickfix_ignore_mode = 0
+vim.g.vimtex_compiler_progname = "nvr"
 -- PDF viewer settings
 vim.g.vimtex_view_general_viewer = "SumatraPDF"
 vim.g.vimtex_view_general_options = "-reuse-instance -forward-search @tex @line @pdf"
@@ -65,7 +79,17 @@ vim.g.vimtex_fold_types = {
     env_options = vim.empty_dict(),
     envs = {
         blacklist = {},
-        whitelist = { "figure", "frame", "table", "example", "answer" },
+        whitelist = {
+            "figure",
+            "frame",
+            "table",
+            "example",
+            "answer",
+            "titlepage",
+            "cvskills",
+            "cventries",
+            "cvhonors",
+        },
     },
     items = {
         enabled = 0,
