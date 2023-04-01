@@ -6,7 +6,7 @@
 # ---------------------------- Figure environments --------------------------- #
 
 snippet fig "Figure env" b
-\begin{figure}[htbp]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{${1:File}}
 	\caption{${2:Caption}}%
@@ -14,7 +14,7 @@ snippet fig "Figure env" b
 endsnippet
 
 snippet figl "Figure env with label" b
-\begin{figure}[htbp]
+\begin{figure}[htb!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{${1:File}}
 	\caption{${2:Caption}}%
@@ -23,7 +23,7 @@ snippet figl "Figure env with label" b
 endsnippet
 
 snippet subfig "Subfigure env" b
-\begin{figure}[htbp]
+\begin{figure}[htb!]
 	\centering
 	\begin{subfigure}{.5\linewidth}
 		\centering
@@ -40,17 +40,18 @@ snippet subfig "Subfigure env" b
 endsnippet
 
 snippet subfigl "Subfigure env with label" b
-\begin{figure}[htbp]
+\begin{figure}[htb!]
 	\centering
-	\begin{subfigure}{.5\linewidth}
+	\begin{subfigure}{.45\linewidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{${1:File1}}
+		\includegraphics[width=\linewidth]{${1:File1}}
 		\caption{${2:Caption1}}%
 		\label{sfig:${1/\.\w+//}}
 	\end{subfigure}%
-	\begin{subfigure}{.5\linewidth}
+	\hfill%
+	\begin{subfigure}{.45\linewidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{${4:File2}}
+		\includegraphics[width=\linewidth]{${4:File2}}
 		\caption{${5:Caption2}}%
 		\label{sfig:${4/\.\w+//}}
 	\end{subfigure}%
@@ -62,7 +63,7 @@ endsnippet
 # Converts single figure to subfigure
 # Usage: visual-block select entire figure env, press tab and type fts
 snippet fts "Figure to subfigure" bA
-\begin{figure}[htbp]
+\begin{figure}[htb!]
 	\centering
 	\begin{subfigure}{.5\linewidth}
 		\centering

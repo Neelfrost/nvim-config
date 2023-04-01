@@ -9,7 +9,7 @@ def math():
 	return vim.eval('vimtex#syntax#in_mathzone()') == '1' and not vim.eval('vimtex#syntax#in("texRefArg")') == '1'
 
 def chem():
-	return vim.eval('VimtexCurrentSyntax("texCHArg")') == '1' or vim.eval('vimtex#syntax#in_mathzone()') == '1'
+	return vim.eval('vimtex#syntax#in("texCHArg")') == '1'
 
 def comment():
 	return vim.eval('vimtex#syntax#in_comment()') == '1'
@@ -21,43 +21,63 @@ endglobal
 
 # ----------------------------- Math environments ---------------------------- #
 
+context "not chem()"
 snippet ilm "Inline math env" wA
 $ ${1:${VISUAL}} $$0
 endsnippet
 
+context "chem()"
+snippet ilm "Inline math env" wA
+\(${1:${VISUAL}}\)$0
+endsnippet
+
 snippet beq "Equation env" b
 \begin{equation}
-${0:${VISUAL}}
+	${0:${VISUAL}}
 \end{equation}
 endsnippet
 
 snippet bal "Align env" b
 \begin{align}
-${0:${VISUAL}}
+	${0:${VISUAL}}
 \end{align}
 endsnippet
 
 snippet bga "Gather env" b
 \begin{gather}
-${0:${VISUAL}}
+	${0:${VISUAL}}
 \end{gather}
+endsnippet
+
+snippet example "Example, solution" b
+\begin{Example}{}{}
+	${1:Question}
+	\begin{Solution*}{}{}
+			${2:Solution}
+	\end{Solution*}
+\end{Example}
 endsnippet
 
 # ------------------------- Brackets and parenthesis ------------------------- #
 
 context "math()"
-snippet @) "long (" iA
+snippet @) "long ()" iA
 \left( ${1:${VISUAL}} \right)
 endsnippet
 
 context "math()"
-snippet @} "long {" iA
+snippet @} "long {}" iA
 \left{ ${1:${VISUAL}} \right}
 endsnippet
 
 context "math()"
-snippet @] "long [" iA
+snippet @] "long []" iA
 \left[ ${1:${VISUAL}} \right]
+endsnippet
+
+context "math()"
+snippet @> "long <>" iA
+\langle ${1:${VISUAL}} \rangle
 endsnippet
 
 # Trig, log functions
@@ -183,11 +203,6 @@ endsnippet
 context "math()"
 snippet @. "cdot" iA
 \cdot $0
-endsnippet
-
-context "math()"
-snippet ... "cdot" iA
-\cdots $0
 endsnippet
 
 # ------------------------------ Greek alphabets ----------------------------- #

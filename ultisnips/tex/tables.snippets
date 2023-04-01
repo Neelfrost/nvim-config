@@ -3,10 +3,26 @@
 # File: tables.snippets
 # Requires: tabularx, tabulary, array packages
 
+global !p
+def create_row_placeholders(snip):
+	# retrieving single line from current string and treat it like tabstops
+	# count
+	placeholders_amount = int(snip.buffer[snip.line].strip())
+
+	# erase current line
+	snip.buffer[snip.line] = ''
+
+	# create anonymous snippet with expected content and number of tabstops
+	anon_snippet_body = ' & '.join(['$' + str(i+1) for i in range(placeholders_amount)])
+
+	# expand anonymous snippet
+	snip.expand_anon(anon_snippet_body + r"\\\\")
+endglobal
+
 # ---------------------------- Table environments ---------------------------- #
 
 snippet tab "Table env" b
-\begin{table}[htbp]
+\begin{table}[htb!]
 	\centering
 	\caption{${1:Caption}}
 	\begin{tabular}{$2}
@@ -16,7 +32,7 @@ snippet tab "Table env" b
 endsnippet
 
 snippet tabl "Table env with label" b
-\begin{table}[htbp]
+\begin{table}[htb!]
 	\centering
 	\caption{${1:Caption}}%
 	\label{table:${4:Label}}
@@ -27,7 +43,7 @@ snippet tabl "Table env with label" b
 endsnippet
 
 snippet tabx "Tabularx env" b
-\begin{table}[htbp]
+\begin{table}[htb!]
 	\centering
 	\caption{${1:Caption}}
 	\begin{tabularx}{\linewidth}{$2}
@@ -37,7 +53,7 @@ snippet tabx "Tabularx env" b
 endsnippet
 
 snippet tabxl "Tabularx env with label" b
-\begin{table}[htbp]
+\begin{table}[htb!]
 	\centering
 	\caption{${1:Caption}}%
 	\label{table:${4:Label}}
@@ -48,7 +64,7 @@ snippet tabxl "Tabularx env with label" b
 endsnippet
 
 snippet taby "Tabulary env" b
-\begin{table}[htbp]
+\begin{table}[htb!]
 	\centering
 	\caption{${1:Caption}}
 	\begin{tabulary}{\linewidth}{$2}
@@ -58,7 +74,7 @@ snippet taby "Tabulary env" b
 endsnippet
 
 snippet tabyl "Tabulary env with label" b
-\begin{table}[htbp]
+\begin{table}[htb!]
 	\centering
 	\caption{${1:Caption}}%
 	\label{table:${4:Label}}
@@ -98,6 +114,11 @@ col_str = r"|>{\centering\arraybackslash}" + str(match.group(1))
 col_count = int(match.group(2))
 snip.rv = col_str*col_count + "|"
 `
+endsnippet
+
+post_jump "create_row_placeholders(snip)"
+snippet "tr(\d+)" "latex table row variable" br
+`!p snip.rv = match.group(1)`
 endsnippet
 
 # vim:ts=2 sw=2 noexpandtab

@@ -3,45 +3,91 @@
 # File: all.snippets
 
 global !p
-# from: vim-snippets\pythonx\vimsnippets.py
-import vim
+
+from lorem import get_sentence
+
+# Copied from: https://github.com/honza/vim-snippets/blob/master/pythonx/vimsnippets.py
+def _parse_comments(s):
+    """Parses vim's comments option to extract comment format"""
+    import string
+
+    i = iter(s.split(","))
+
+    rv = []
+    try:
+        while True:
+            # get the flags and text of a comment part
+            flags, text = next(i).split(":", 1)
+
+            if len(flags) == 0:
+                rv.append(("OTHER", text, text, text, ""))
+            # parse 3-part comment, but ignore those with O flag
+            elif "s" in flags and "O" not in flags:
+                ctriple = ["TRIPLE"]
+                indent = ""
+
+                if flags[-1] in string.digits:
+                    indent = " " * int(flags[-1])
+                ctriple.append(text)
+
+                flags, text = next(i).split(":", 1)
+                assert flags[0] == "m"
+                ctriple.append(text)
+
+                flags, text = next(i).split(":", 1)
+                assert flags[0] == "e"
+                ctriple.append(text)
+                ctriple.append(indent)
+
+                rv.append(ctriple)
+            elif "b" in flags:
+                if len(text) == 1:
+                    rv.insert(0, ("SINGLE_CHAR", text, text, text, ""))
+    except StopIteration:
+        return rv
+
+
 def get_comment_format():
-	""" Returns a 4-element tuple (first_line, middle_lines, end_line, indent)
-	representing the comment format for the current file.
+    """Returns a 4-element tuple (first_line, middle_lines, end_line, indent)
+    representing the comment format for the current file.
 
-	It first looks at the 'commentstring', if that ends with %s, it uses that.
-	Otherwise it parses '&comments' and prefers single character comment
-	markers if there are any.
-	"""
-	commentstring = vim.eval("&commentstring")
-	if commentstring.endswith("%s"):
-		c = commentstring[:-2]
-		return (c.rstrip(), c.rstrip(), c.rstrip(), "")
-	comments = _parse_comments(vim.eval("&comments"))
-	for c in comments:
-		if c[0] == "SINGLE_CHAR":
-			return c[1:]
-	return comments[0][1:]
+    It first looks at the 'commentstring', if that ends with %s, it uses that.
+    Otherwise it parses '&comments' and prefers single character comment
+    markers if there are any.
+    """
+    import vim
 
-def comment_divider(comment: str, comment_str: str):
-	max_length = 80
-	padding = 1
-	comment_len_is_odd = 2 if len(comment) % 2 != 0 else 0
-	comment_str_padding = len(comment_str) * 2
-	divider = (
-		" " * (len(comment) - len(comment.strip()))
-		+ comment_str
-		+ " "
-		+ "-" * int((comment_len_is_odd + max_length - len(comment) - comment_str_padding - padding * 4) / 2)
-		+ " "
-		+ comment.strip()
-		+ " "
-		+ "-" * int((max_length - len(comment) - comment_str_padding - padding * 4) / 2)
-		+ " "
-		+ comment_str
-	)
-	return divider
+    commentstring = vim.eval("&commentstring")
+    if commentstring.endswith("%s"):
+        c = commentstring[:-2]
+        return (c.rstrip(), c.rstrip(), c.rstrip(), "")
+    comments = _parse_comments(vim.eval("&comments"))
+    for c in comments:
+        if c[0] == "SINGLE_CHAR":
+            return c[1:]
+    return comments[0][1:]
 
+def comment_divider(comment: str):
+    max_length = 80
+    padding = 1
+    comment_len_is_odd = 2 if len(comment) % 2 != 0 else 0
+
+    f, m, e, i = get_comment_format()
+    comment_str_padding = len(f) * 2
+
+    divider = (
+        " " * (len(comment) - len(comment.strip()))
+        + f
+        + " "
+        + "-" * int((comment_len_is_odd + max_length - len(comment) - comment_str_padding - padding * 4) / 2)
+        + " "
+        + comment.strip()
+        + " "
+        + "-" * int((max_length - len(comment) - comment_str_padding - padding * 4) / 2)
+        + " "
+        + e
+    )
+    return divider
 endglobal
 
 snippet box "Box" b
@@ -52,13 +98,18 @@ $0
 endsnippet
 
 snippet '(.+)div' "Comment divider" r
-`!p snip.rv = comment_divider(match.group(1), get_comment_format()[0])`
+`!p snip.rv = comment_divider(match.group(1))`
 endsnippet
 
 snippet auth "Author" b
 `!p snip.rv = get_comment_format()[0] + " Author: Neel Basak"`
 `!p snip.rv = get_comment_format()[0] + " Github: https://github.com/Neelfrost"`
 `!p snip.rv = get_comment_format()[0] + " File: " + snip.fn`
+endsnippet
+
+# Generate lorem ipsum sentences
+snippet 'lorem(\d*)' "Lorem ipsum" r
+`!p if not snip.c: snip.rv = get_sentence(count=int(match.group(1)) if match.group(1) else 1)`
 endsnippet
 
 # vim:ts=4 sw=4 noexpandtab

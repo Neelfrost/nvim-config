@@ -34,14 +34,14 @@ context "beamer()"
 snippet imgsplit "BEAMER: 50-50 split frame of images" b
 \begin{columns}
 	\begin{column}{0.5\textwidth}
-		\begin{figure}[htbp]
+		\begin{figure}[htb!]
 			\centering
 			\includegraphics[width=\linewidth]{${1:File}}
 			\caption{${2:Caption}}%
 		\end{figure}
 	\end{column}
 	\begin{column}{0.5\textwidth}
-		\begin{figure}[htbp]
+		\begin{figure}[htb!]
 			\centering
 			\includegraphics[width=\linewidth]{${3:File}}
 			\caption{${4:Caption}}%
@@ -62,7 +62,7 @@ endsnippet
 
 context "beamer()"
 snippet fb "BEAMER: framebreak" b
-\framebreak
+\framebreak%
 endsnippet
 
 context "beamer()"

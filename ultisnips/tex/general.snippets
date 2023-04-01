@@ -40,22 +40,26 @@ snippet noind "Non-indented paragraph" b
 \noindent$0
 endsnippet
 
+snippet cmd "Command" iA
+\\$1$3{${2:${VISUAL}}}$0
+endsnippet
+
 # -------------------------- References and labels -------------------------- #
 
 snippet '([fF])ref' "Figure reference" wr
-`!p snip.rv = match.group(1)`igure.~\ref{$1}$0
+`!p snip.rv = match.group(1)`igure~\ref{$1}$0
 endsnippet
 
 snippet '([eE])ref' "Equation reference" wr
-`!p snip.rv = match.group(1)`quation.~\ref{$1}$0
+`!p snip.rv = match.group(1)`quation~\ref{$1}$0
 endsnippet
 
 snippet '([rR])ref' "Reaction reference" wr
-`!p snip.rv = match.group(1)`eaction.~\ref{$1}$0
+`!p snip.rv = match.group(1)`eaction~\ref{$1}$0
 endsnippet
 
 snippet '([tT])ref' "Table reference" wr
-`!p snip.rv = match.group(1)`able.~\ref{$1}$0
+`!p snip.rv = match.group(1)`able~\ref{$1}$0
 endsnippet
 
 snippet flab "Figure label" w

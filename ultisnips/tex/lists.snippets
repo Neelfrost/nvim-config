@@ -34,7 +34,7 @@ snippet benb "Enumerate env with bold labels" b
 \begin{enumerate}[font=\bfseries]
 `!p
 if snip.v.text:
-	snip.rv = snip.v.text.strip()
+	snip.rv = snip.mkline(snip.v.text).rstrip()
 else:
 	snip.rv = "\t\\item "
 `$0
@@ -47,7 +47,7 @@ snippet bit "Itemize env" b
 \begin{itemize}
 `!p
 if snip.v.text:
-	snip.rv = snip.v.text.strip()
+	snip.rv = snip.mkline(snip.v.text).rstrip()
 else:
 	snip.rv = "\t\\item "
 `$0
@@ -62,9 +62,9 @@ snippet 'bta(\d+)' "Tasks env" br
 `!p
 if snip.v.text:
 	if r"\task" in snip.v.text:
-		snip.rv = snip.v.text.strip()
+		snip.rv = snip.mkline(snip.v.text).rstrip()
 	else:
-		snip.rv = snip.v.text.strip().replace(r"\item", r"\task")
+		snip.rv = snip.mkline(snip.v.text.replace(r"\item", r"\task")).rstrip()
 else:
 	snip.rv = "\t\\task "
 `$0
@@ -85,20 +85,21 @@ $0
 endsnippet
 
 snippet imt "\item[$ x = $]" b
-\item[$ $1 = $] $0,
+\item[$ $1 = $] $2,
+$0
 endsnippet
 
 # Converts visual selected items into task
 snippet itt "\item to \task" bA
-`!p snip.rv = snip.v.text.strip().replace(r"\item", r"\task")`$0
+`!p snip.rv = snip.mkline(snip.v.text.replace(r"\item", r"\task")).rstrip()`$0
 endsnippet
 
 # Converts visual selected task into items
 snippet tti "\task to \item" bA
-`!p snip.rv = snip.v.text.strip().replace(r"\task", r"\item")`$0
+`!p snip.rv = snip.mkline(snip.v.text.replace(r"\task", r"\item")).rstrip()`$0
 endsnippet
 
-snippet nosep "No list item sep" i
+snippet nosep "No separation between list items" i
 [noitemsep]$0
 endsnippet
 

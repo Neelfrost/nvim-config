@@ -24,11 +24,11 @@ snippet '!(\w)' "Set tex program" br
 endsnippet
 
 snippet use "\usepackage" b
-\usepackage[${1:Options}]{${2:Package}}$0
+\usepackage$2{${1:Package}}$0
 endsnippet
 
 snippet doc "\documentclass" b
-\documentclass[${1:Options}]{${2:Class}}$0
+\documentclass[${2:Options}]{${1:Class}}$0
 endsnippet
 
 snippet input "\input" b
@@ -43,7 +43,7 @@ snippet maketitle "Make title (with title, auth, date)" b
 \title{${1:Title}}
 \author{${2:Author}}
 \date{${3:Date}}
-\maketitle
+\maketitle%
 endsnippet
 
 # vim:ts=2 sw=2 noexpandtab
