@@ -305,15 +305,17 @@ require("lazy").setup({
         config = function()
             require("user.plugins.config.cokeline")
         end,
-        dependencies = "themer.lua",
+        dependencies = "ThemerCorp/themer.lua",
     },
     {
         "rebelot/heirline.nvim",
         dependencies = {
-            "themer.lua",
+            "ThemerCorp/themer.lua",
             {
                 "lewis6991/gitsigns.nvim",
-                config = "require('user.plugins.config.gitsigns')",
+                config = function()
+                    require("user.plugins.config.gitsigns")
+                end,
                 lazy = true,
             },
         },
