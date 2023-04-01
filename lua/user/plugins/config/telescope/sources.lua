@@ -15,24 +15,6 @@ M.dir_nvim = function()
     require("telescope.builtin").find_files(opts)
 end
 
-M.dir_latex = function()
-    local opts = {
-        cwd = HOME_PATH .. "\\Documents\\LaTeX",
-        file_ignore_patterns = vim.list_extend({ "Sem5", "Sem6", "Internship" }, utils.ignore_patterns),
-        prompt_title = "LaTeX",
-        no_ignore = true,
-    }
-    require("telescope.builtin").find_files(opts)
-end
-
-M.dir_python = function()
-    local opts = {
-        cwd = "D:\\My Folder\\Dev\\Python",
-        prompt_title = "Python",
-    }
-    require("telescope.builtin").find_files(opts)
-end
-
 M.dir_plugins = function()
     local opts = {
         cwd = LAZY_PATH,
