@@ -68,6 +68,7 @@ map("n", "<C-f>", "gg=G''zz<Esc>", s_opts)
 
 -- Toggle spell
 map("n", "<F10>", "<cmd>setlocal spell!<CR>", s_opts)
+map("n", "<F12>", "<cmd>setlocal paste!<CR>", s_opts)
 
 -- Remove highlight
 map("n", "<Leader>h", "<cmd>nohl<CR>", s_opts)
@@ -83,13 +84,10 @@ map("n", "Y", '"+yg_', s_opts)
 map("n", "y", '"+y', s_opts)
 map("v", "y", '"+y', s_opts)
 
--- Paste from system clipboard in insert/select mode
-map("i", "<C-v>", "<C-R>+", s_opts)
-map("s", "<C-v>", "<BS>i<C-R>+", s_opts)
-
--- Toggle paste mode and paste from system clipboard
-map("n", "<Leader>v", '<F12>"+P<F12>', s_opts)
-map("i", "<Leader>v", '<ESC><F12>"+P<F12>i', s_opts)
+-- Paste from system clipboard in insert/select mode without breaking indentation
+map("i", "<C-v>", "<C-R><C-P>+", s_opts)
+map("n", "<C-v>", "i<C-R><C-P>+<ESC>", s_opts)
+map("s", "<C-v>", "<BS>i<C-R><C-P>+", s_opts)
 
 -- Move to line end
 map("i", "<C-a>", "<Esc>g_a", s_opts)
