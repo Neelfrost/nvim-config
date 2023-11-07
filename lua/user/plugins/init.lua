@@ -301,7 +301,7 @@ require("lazy").setup({
 
     -- ------------------------- Buffer, Statusline ------------------------- --
     {
-        "noib3/nvim-cokeline",
+        "willothy/nvim-cokeline",
         config = function()
             require("user.plugins.config.cokeline")
         end,

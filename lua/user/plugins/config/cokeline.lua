@@ -16,7 +16,7 @@ local switch_fg = colors.green
 --- Variable padding component
 --- @param n number Amount of padding (default: 1)
 --- @return table Padding component
-local padding = setmetatable({
+local padding_component = setmetatable({
     text = " ",
     truncation = { priority = 1 },
 }, {
@@ -55,7 +55,7 @@ require("cokeline").setup({
     show_if_buffers_are_at_least = 1,
 
     buffers = {
-        filter_visible = function(buffer)
+        filter_valid = function(buffer)
             return not vim.tbl_contains(buffer_ignore_types, buffer.type)
         end,
         new_buffers_position = "next",
@@ -102,7 +102,7 @@ require("cokeline").setup({
             bg = inactive_bg,
             truncation = { priority = 1 },
         },
-        padding(2),
+        padding_component(2),
         {
             text = function(buffer)
                 return is_picking_focus_or_close() and buffer.pick_letter .. " " or buffer.devicon.icon
@@ -131,6 +131,12 @@ require("cokeline").setup({
         },
         {
             text = function(buffer)
+                return buffer.unique_prefix ~= "" and "/" or ""
+            end,
+            truncation = { priority = 1 },
+        },
+        {
+            text = function(buffer)
                 return buffer.filename
             end,
             truncation = {
@@ -138,14 +144,14 @@ require("cokeline").setup({
                 direcion = "left",
             },
         },
-        padding,
+        padding_component,
         {
             text = function(buffer)
                 return superscript(buffer.index)
             end,
             truncation = { priority = 1 },
         },
-        padding,
+        padding_component,
         {
             text = function(buffer)
                 return buffer.is_modified and "" or ""
@@ -156,7 +162,7 @@ require("cokeline").setup({
             end,
             truncation = { priority = 1 },
         },
-        padding(2),
+        padding_component(2),
         {
             text = function(buffer)
                 return buffer.is_last and "|" or ""
