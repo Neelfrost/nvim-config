@@ -71,7 +71,7 @@ require("lazy").setup({
         end,
     },
     {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         dependencies = "nvim-lua/plenary.nvim",
         config = function()
             require("user.plugins.config.null_ls")
@@ -191,7 +191,7 @@ require("lazy").setup({
     },
     {
         "nvim-neo-tree/neo-tree.nvim",
-        branch = "v2.x",
+        branch = "v3.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
             "MunifTanjim/nui.nvim",
@@ -285,10 +285,6 @@ require("lazy").setup({
             },
             {
                 "nvim-telescope/telescope-frecency.nvim",
-                dependencies = "tami5/sqlite.lua",
-                init = function()
-                    vim.g.sqlite_clib_path = "C:\\ProgramData\\chocolatey\\lib\\SQLite\\tools\\sqlite3.dll"
-                end,
             },
             "fhill2/telescope-ultisnips.nvim",
         },

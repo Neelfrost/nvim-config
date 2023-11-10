@@ -111,7 +111,9 @@ require("neo-tree").setup({
             hide_by_name = {},
             never_show = {},
         },
-        follow_current_file = false,
+        follow_current_file = {
+            enabled = true,
+        },
         use_libuv_file_watcher = false,
         window = {
             position = "left",

@@ -1,6 +1,5 @@
 local null_present, null_ls = pcall(require, "null-ls")
 if not null_present then
-    require("packer").compile()
     return
 end
 
