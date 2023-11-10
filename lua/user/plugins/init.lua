@@ -139,11 +139,10 @@ require("lazy").setup({
         cmd = "StartupTime",
     },
     {
-        "skywind3000/asyncrun.vim",
-        cmd = {
-            "Asyncbuild",
-            "AsyncStop",
-        },
+        "is0n/jaq-nvim",
+        config = function()
+            require("user.plugins.config.jaq")
+        end,
     },
     {
         "terrortylor/nvim-comment",
