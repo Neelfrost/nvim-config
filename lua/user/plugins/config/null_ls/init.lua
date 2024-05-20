@@ -15,16 +15,8 @@ local sources = {
             vim.fn.expand("~/.stylua.toml"),
         },
     }),
-    null_ls.builtins.formatting.isort,
-    null_ls_sources.black,
     null_ls_sources.latexindent,
     -- Diagnostics
-    null_ls.builtins.diagnostics.flake8.with({
-        extra_args = {
-            "--config",
-            vim.fn.expand("~/.flake8"),
-        },
-    }),
     null_ls_sources.chktex,
 }
 
