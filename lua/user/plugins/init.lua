@@ -24,9 +24,9 @@ require("lazy").setup({
     {
         "nvim-treesitter/nvim-treesitter",
         dependencies = {
-            "HiPhish/nvim-ts-rainbow2",
+            "HiPhish/rainbow-delimiters.nvim",
             "windwp/nvim-ts-autotag",
-            "nvim-treesitter/nvim-treesitter-textobjects",
+            -- "nvim-treesitter/nvim-treesitter-textobjects",
         },
         config = function()
             require("user.plugins.config.treesitter")
