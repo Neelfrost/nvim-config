@@ -1,9 +1,13 @@
-local present, themer_api = pcall(require, "themer.modules.core.api")
+local present, _ = pcall(require, "themer.modules.core.api")
 if not present then
     return
 end
 
-local colors = themer_api.get_cp(SCHEME)
+-- Themer colors
+local themer = require("user.plugins.config.themer")
+local colors = themer.colors
+
+-- Helpers
 local helper = require("user.plugins.config.heirline.utils")
 local theme = require("user.plugins.config.heirline.theme")
 local conditions = require("heirline.conditions")
@@ -15,7 +19,12 @@ local function mode()
     return M.visual_multi.condition() and "V-M" or vim.api.nvim_get_mode().mode
 end
 
-M.align = { provider = "%=" }
+M.align = {
+    provider = "%=",
+    hl = function()
+        return { fg = helper.mode_colors[vim.api.nvim_get_mode().mode:sub(1, 1)], bold = true }
+    end,
+}
 M.null = { provider = "" }
 M.space = setmetatable({
     provider = " ",
@@ -49,7 +58,6 @@ end
 
 M.vim_icon = {
     provider = helper.icons.vim,
-
     hl = { fg = theme.vim },
 }
 
@@ -94,7 +102,7 @@ M.git_info = {
         self.has_changes = self.added or self.removed or self.changed
     end,
 
-    M.delim_left("slant_left_2", theme.bi),
+    M.delim_left("slant_left_2", theme.surround),
     {
         provider = function()
             return helper.icons.git_branch .. " "
@@ -151,9 +159,9 @@ M.git_info = {
         },
         M.null,
     },
-    M.delim_right("slant_right", theme.bi),
+    M.delim_right("slant_right", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.file_block = {
@@ -161,7 +169,7 @@ M.file_block = {
         self.filename = vim.api.nvim_buf_get_name(0)
     end,
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.readonly = {
@@ -177,11 +185,8 @@ M.readonly = {
 M.file_icon = {
     init = function(self)
         self.filetype = vim.fn.fnamemodify(self.filename, ":e")
-        self.icon, self.icon_color = require("nvim-web-devicons").get_icon_color(
-            self.filename,
-            self.filetype,
-            { default = true }
-        )
+        self.icon, self.icon_color =
+            require("nvim-web-devicons").get_icon_color(self.filename, self.filetype, { default = true })
     end,
 
     provider = function(self)
@@ -217,7 +222,7 @@ M.file_name = {
         return _filename
     end,
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.vimtex_compile_status = {
@@ -263,11 +268,8 @@ M.file_block = utils.insert(
     M.space
 )
 
-M.file_block = utils.surround(
-    { helper.icons.powerline.slant_left_2, helper.icons.powerline.slant_right },
-    theme.bg2,
-    M.file_block
-)
+M.file_block =
+    utils.surround({ helper.icons.powerline.slant_left_2, helper.icons.powerline.slant_right }, theme.bg1, M.file_block)
 
 M.search_results = {
     condition = function(self)
@@ -296,7 +298,7 @@ M.search_results = {
         return true
     end,
 
-    M.delim_left("slant_left_2", theme.bi),
+    M.delim_left("slant_left_2", theme.surround),
     {
         provider = helper.icons.search .. " ",
         hl = { fg = colors.yellow },
@@ -306,9 +308,9 @@ M.search_results = {
             return table.concat({ self.count.current, "/", self.count.total })
         end,
     },
-    M.delim_right("slant_right", theme.bi),
+    M.delim_right("slant_right", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.visual_multi = {
@@ -325,7 +327,7 @@ M.visual_multi = {
         self.status = info.status or ""
     end,
 
-    M.delim_left("slant_left_2", theme.bi),
+    M.delim_left("slant_left_2", theme.surround),
     {
         provider = helper.icons.search,
         hl = { fg = colors.yellow },
@@ -352,9 +354,9 @@ M.visual_multi = {
             return self.status
         end,
     },
-    M.delim_right("slant_right", theme.bi),
+    M.delim_right("slant_right", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.spellcheck = {
@@ -362,11 +364,11 @@ M.spellcheck = {
         return vim.wo.spell
     end,
 
-    M.delim_left("slant_left_2", theme.bi),
+    M.delim_left("slant_left_2", theme.surround),
     { provider = vim.bo.spelllang },
-    M.delim_right("slant_right", theme.bi),
+    M.delim_right("slant_right", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.file_format = {
@@ -385,15 +387,15 @@ M.file_format = {
         return self.fileformat ~= "dos"
     end,
 
-    M.delim_left("slant_left_2", theme.bi),
+    M.delim_left("slant_left_2", theme.surround),
     {
         provider = function(self)
             return self.text
         end,
     },
-    M.delim_right("slant_right", theme.bi),
+    M.delim_right("slant_right", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.file_encoding = {
@@ -401,11 +403,11 @@ M.file_encoding = {
         return vim.bo.fileencoding ~= "utf-8"
     end,
 
-    M.delim_left("slant_left_2", theme.bi),
+    M.delim_left("slant_left_2", theme.surround),
     { provider = vim.bo.fileencoding:upper() },
-    M.delim_right("slant_right", theme.bi),
+    M.delim_right("slant_right", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.paste = {
@@ -413,11 +415,11 @@ M.paste = {
         return vim.o.paste
     end,
 
-    M.delim_left("slant_left", theme.bi),
+    M.delim_left("slant_left", theme.surround),
     { provider = helper.icons.paste },
-    M.delim_right("slant_right_2", theme.bi),
+    M.delim_right("slant_right_2", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.wrap = {
@@ -425,11 +427,11 @@ M.wrap = {
         return vim.o.wrap
     end,
 
-    M.delim_left("slant_left", theme.bi),
+    M.delim_left("slant_left", theme.surround),
     { provider = helper.icons.wrap },
-    M.delim_right("slant_right_2", theme.bi),
+    M.delim_right("slant_right_2", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.mixed_indents = {
@@ -439,11 +441,11 @@ M.mixed_indents = {
         return (space_indent and tab_indent) or vim.fn.search([[\v^(\t+ | +\t)]], "nw") > 0
     end,
 
-    M.delim_left("slant_left", theme.bi),
+    M.delim_left("slant_left", theme.surround),
     { provider = helper.icons.mixed_indents },
-    M.delim_right("slant_right_2", theme.bi),
+    M.delim_right("slant_right_2", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.lsp_info = {
@@ -452,33 +454,33 @@ M.lsp_info = {
     init = function(self)
         self.clients = table.concat(helper.lsp_client_names(), ", ")
         self.short_clients = table.concat(helper.lsp_client_names(true), ", ")
-        self.status = helper.lsp_status()
+        -- self.status = helper.lsp_status()
     end,
 
     {
         flexible = 3,
         {
-            M.delim_left("slant_left", theme.bi),
+            M.delim_left("slant_left", theme.surround),
             {
                 provider = function(self)
                     return self.status ~= "" and self.status or self.clients
                 end,
             },
-            M.delim_right("slant_right_2", theme.bi),
+            M.delim_right("slant_right_2", theme.surround),
         },
         {
-            M.delim_left("slant_left", theme.bi),
+            M.delim_left("slant_left", theme.surround),
             {
                 provider = function(self)
                     return self.short_clients
                 end,
             },
-            M.delim_right("slant_right_2", theme.bi),
+            M.delim_right("slant_right_2", theme.surround),
         },
         M.null,
     },
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.line_info = {
@@ -487,7 +489,7 @@ M.line_info = {
         self.column = vim.fn.col(".")
     end,
 
-    M.delim_left("slant_left", theme.bi),
+    M.delim_left("slant_left", theme.surround),
     {
         flexible = 4,
         {
@@ -501,9 +503,9 @@ M.line_info = {
             end,
         },
     },
-    M.delim_right("slant_right_2", theme.bi),
+    M.delim_right("slant_right_2", theme.surround),
 
-    hl = theme.b,
+    hl = theme.component,
 }
 
 M.total_lines = {
@@ -517,8 +519,8 @@ M.total_lines = {
 
     hl = function()
         return {
-            bg = theme.bg1,
             fg = helper.mode_colors[mode():sub(1, 1)],
+            bg = theme.bg1,
             bold = true,
         }
     end,

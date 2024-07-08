@@ -1,10 +1,21 @@
-local colors = require("themer.modules.core.api").get_cp(SCHEME)
+local M = {}
+
+local colors = vim.tbl_extend(
+    "keep",
+    require("themer.modules.core.api").get_cp(SCHEME),
+    require("user.plugins.config.themer.defaults")
+)
 local utils = require("user.plugins.config.themer.utils")
 local darken = require("themer.utils.colors").darken
 
 colors.bg.lighter = utils.adjust_color(colors.bg.base, 5)
 colors.bg.darker = darken(colors.bg.base, 0.9, "#000000")
+colors.fg_darker = utils.adjust_color(colors.fg, -80)
 colors.alpha = utils.adjust_color(colors.blue, -50)
+
+M.colors = colors
+M.utils = utils
+M.darken = darken
 
 require("themer").setup({
     colorscheme = SCHEME,
@@ -22,20 +33,27 @@ require("themer").setup({
                 },
                 base = {
                     Alpha = { fg = colors.alpha, bg = colors.bg.base },
-                    Folded = { fg = utils.adjust_color(colors.fg, -80), bg = colors.bg.lighter },
+
+                    Folded = { fg = colors.fg_darker, bg = colors.bg.lighter },
                     FoldColumn = { fg = colors.blue, bg = colors.bg.base },
                     LineNr = { fg = colors.blue, bg = colors.bg.base },
                     LineNrAbove = { fg = utils.adjust_color(colors.bg.base, 50) },
                     LineNrBelow = { fg = utils.adjust_color(colors.bg.base, 50) },
                     MatchParen = { fg = colors.diagnostic.warn, bg = "None", style = "underline" },
                     TabLineFill = { fg = colors.bg.lighter, bg = colors.bg.lighter },
+
                     SpellBad = { fg = "#ee6d85", bg = "black", style = "bold" },
                     SpellCap = { fg = colors.green, bg = "black", style = "bold" },
                     SpellLocal = { fg = colors.blue, bg = "black", style = "bold" },
                     SpellRare = { fg = colors.magenta, bg = "black", style = "bold" },
-                    VertSplit = { fg = colors.bg.lighter, bg = "None", style = "None" },
-                    StatusLine = { link = "VertSplit", style = "None" },
-                    StatusLineNC = { link = "VertSplit", style = "None" },
+
+                    WinSeparator = { fg = colors.bg.lighter, bg = "None", style = "none" },
+                    StatusLine = { fg = colors.bg.lighter, bg = "None", style = "None" },
+                    StatusLineNC = { fg = colors.bg.lighter, bg = "None", style = "None" },
+                    WinBar = { fg = colors.bg.lighter, bg = "None", style = "None" },
+                    WinBarNC = { fg = colors.bg.lighter, bg = "None", style = "None" },
+                    ColorColumn = { fg = utils.adjust_color(colors.red, -50), bg = "None" },
+
                     NormalFloat = { bg = colors.bg.darker },
                     FloatBorder = { link = "ThemerBorder" },
                     PmenuSel = { bg = colors.syntax.comment or colors.dimmed.subtle },
@@ -46,7 +64,9 @@ require("themer").setup({
                         VirtColumn = { fg = utils.adjust_color(colors.red, -50), bg = "None" },
                     },
                     indentline = {
-                        IndentBlanklineChar = { fg = utils.adjust_color(colors.bg.base, 20) },
+                        IblIndent = { fg = utils.adjust_color(colors.bg.base, 10), bg = "None" },
+                        IblSpace = { fg = utils.adjust_color(colors.bg.base, 10), bg = "None" },
+                        IblWhiteSpace = { fg = utils.adjust_color(colors.bg.base, 10), bg = "None" },
                     },
                     cmp = {
                         CmpItemMenu = { fg = colors.syntax.comment or colors.dimmed.subtle, bg = colors.pum.bg },
@@ -143,3 +163,5 @@ require("themer").setup({
         },
     },
 })
+
+return M

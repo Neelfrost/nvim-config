@@ -134,7 +134,7 @@ M.lsp_client_names = function(shorten)
     end
 
     -- Get all active clients in the buffer
-    local clients = vim.lsp.buf_get_clients(0)
+    local clients = vim.lsp.get_clients()
     local client_names = {}
 
     if not shorten then
@@ -156,7 +156,7 @@ end
 
 M.lsp_status = function()
     local get_lsp_status = function(client_names)
-        local progress = vim.lsp.util.get_progress_messages()
+        local progress = vim.lsp.status()
         -- Get lsp status for current buffer
         for _, v in ipairs(progress) do
             if vim.tbl_contains(client_names, v.name) or v.name == "null-ls" then
