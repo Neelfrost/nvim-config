@@ -1,10 +1,12 @@
-local present, themer_api = pcall(require, "themer.modules.core.api")
+local present, _ = pcall(require, "themer.modules.core.api")
 if not present then
     return
 end
 
-local colors = themer_api.get_cp(SCHEME)
-local utils = require("user.plugins.config.themer.utils")
+-- Themer colors
+local themer = require("user.plugins.config.themer")
+local colors = themer.colors
+local utils = themer.utils
 
 local active_fg = colors.blue
 local active_bg = colors.bg.base
