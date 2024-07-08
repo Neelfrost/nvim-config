@@ -3,7 +3,7 @@
 -- File: init.lua
 
 -- Colorscheme
-SCHEME = "nightlamp"
+SCHEME = "jellybeans"
 
 -- Language servers
 SERVERS = { "pyright", "lua_ls", "omnisharp", "html", "cssls", "eslint", "emmet_ls", "ruff" }
