@@ -36,6 +36,13 @@ local header = {
     opts = { position = "center", hl = highlight },
 }
 
+local tip_text = vim.fn.system("curl.exe -s -m 3 https://vtip.43z.one")
+local tip = {
+    type = "text",
+    val = { tip_text },
+    opts = { position = "center", hl = highlight },
+}
+
 local footer = {
     type = "text",
     val = {
@@ -75,7 +82,8 @@ local opts = {
         buttons,
         { type = "padding", val = 1 },
         footer,
-        { type = "padding", val = 2 },
+        tip,
+        { type = "padding", val = 1 },
     },
     opts = {
         margin = 5,
