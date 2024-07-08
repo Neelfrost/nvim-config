@@ -62,8 +62,9 @@ M.lsp_signature = function()
         handler_opts = {
             border = "single",
         },
-        -- hi_parameter = "ThemerHeadingH1",
-        -- extra_trigger_chars = { "(", "," },
+        close_timeout = 1000,
+        zindex = 10,
+        extra_trigger_chars = { "(", "," },
     })
 end
 

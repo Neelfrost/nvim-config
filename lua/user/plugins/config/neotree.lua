@@ -140,6 +140,7 @@ require("neo-tree").setup({
                 ["x"] = "cut_to_clipboard",
                 ["p"] = "paste_from_clipboard",
                 ["q"] = "close_window",
+                ["<C-b>"] = "close_window",
                 ["y"] = function(state)
                     local node = state.tree:get_node()
                     vim_notify(("Name '%s' copied to clipboard"):format(node.name), vim.log.levels.INFO)
@@ -154,8 +155,3 @@ require("neo-tree").setup({
         },
     },
 })
-
-local map = vim.keymap.set
-local opts = { silent = true }
-
-map("n", "<C-b>", "<cmd>Neotree source=filesystem toggle=true dir=%:p:h<CR>", opts)
