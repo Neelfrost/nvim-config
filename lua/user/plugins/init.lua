@@ -1,13 +1,16 @@
 local lazypath = LAZY_PATH .. "/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable",
-        lazypath,
-    })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out,                            "WarningMsg" },
+            { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+    end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -46,21 +49,24 @@ require("lazy").setup({
     },
     {
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         config = function()
             require("user.plugins.config.indentline")
         end,
     },
+    -- Load default
     {
         "lukas-reineke/virt-column.nvim",
-        config = true,
+        opts = {},
     },
     {
-        "RRethy/vim-hexokinase",
+        "brenoprata10/nvim-highlight-colors",
         config = function()
-            vim.g.Hexokinase_optInPatterns = "full_hex,rgb,rgba,hsl,hsla"
+            require("nvim-highlight-colors").setup({
+                render = "virtual",
+            })
         end,
-        build = "make hexokinase",
-        cmd = "HexokinaseToggle",
+        cmd = "HighlightColors",
     },
 
     -- --------------------------------- LSP -------------------------------- --
@@ -93,22 +99,6 @@ require("lazy").setup({
         init = function()
             require("user.plugins.config.others").refactoring()
         end,
-    },
-    {
-        "sbdchd/neoformat",
-        cmd = "Neoformat",
-        setup = function()
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                command = [[silent! undojoin | Neoformat]],
-                desc = "Format using neoformat on save.",
-                group = vim.api.nvim_create_augroup("neoformat_format_onsave", { clear = true }),
-                pattern = "*",
-            })
-        end,
-        config = function()
-            require("user.plugins.config.neoformat")
-        end,
-        enabled = false,
     },
 
     -- ----------------------------- Completion ----------------------------- --
@@ -198,7 +188,7 @@ require("lazy").setup({
         config = function()
             require("user.plugins.config.neotree")
         end,
-        keys = "<C-b>",
+        keys = { { "<C-b>", "<cmd>Neotree source=filesystem toggle dir=%:p:h<CR>", mode = "n" } },
     },
     {
         "Shatur/neovim-session-manager",
@@ -306,11 +296,10 @@ require("lazy").setup({
         "rebelot/heirline.nvim",
         dependencies = {
             "ThemerCorp/themer.lua",
+            -- Load default
             {
                 "lewis6991/gitsigns.nvim",
-                config = function()
-                    require("user.plugins.config.gitsigns")
-                end,
+                opts = {},
                 lazy = true,
             },
         },
@@ -352,7 +341,7 @@ require("lazy").setup({
         end,
     },
     {
-        "anuvyklack/pretty-fold.nvim",
+        "bbjornstad/pretty-fold.nvim",
         config = function()
             require("user.plugins.config.pretty_fold")
         end,
