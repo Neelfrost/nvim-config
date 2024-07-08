@@ -69,6 +69,8 @@ vim.opt.fillchars = {
     vertleft = "┫",
     vertright = "┣",
     verthoriz = "╋",
+    stl = "─",
+    stlnc = "─",
 }
 vim.opt.listchars:append({ tab = " ", lead = "·", trail = "·", eol = "﬋" })
 
@@ -87,9 +89,6 @@ vim.opt.lazyredraw = true
 
 -- Enable mouse for normal and visual modes
 vim.opt.mouse = "nv"
-
--- Toggle paste mode
-vim.opt.pastetoggle = "<F12>"
 
 -- Lead scroll by 8 lines
 vim.opt.scrolloff = 8
