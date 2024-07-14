@@ -75,7 +75,7 @@ require("neo-tree").setup({
             with_markers = true,
             indent_marker = "│",
             last_indent_marker = "└",
-            highlight = "IndentBlanklineChar",
+            highlight = "IblIndent",
         },
         icon = {
             folder_closed = "",
@@ -113,11 +113,13 @@ require("neo-tree").setup({
         },
         follow_current_file = {
             enabled = true,
+            leave_dirs_open = true,
         },
         use_libuv_file_watcher = false,
+        bind_to_cwd = true,
         window = {
             position = "left",
-            width = 24,
+            width = 30,
             mappings = {
                 ["<2-LeftMouse>"] = "open",
                 ["<CR>"] = "open",

@@ -188,7 +188,7 @@ require("lazy").setup({
         config = function()
             require("user.plugins.config.neotree")
         end,
-        keys = { { "<C-b>", "<cmd>Neotree source=filesystem toggle dir=%:p:h<CR>", mode = "n" } },
+        keys = { { "<C-b>", "<cmd>Neotree source=filesystem toggle dir=./<CR>", mode = "n" } },
     },
     {
         "Shatur/neovim-session-manager",
